@@ -4,8 +4,6 @@ v0.0.2: -> target
  - GUI elements
 
 v0.0.1: -> done
-- agents with path-finding
-- basic interface functionality
-- draw map to screen with panning and zooming
-
-Domain Demo: http://www.youtube.com/watch?v=jzqsPViJm80
+ - agents with path-finding
+ - basic interface functionality
+ - draw map to screen with panning and zooming

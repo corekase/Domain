@@ -1,5 +1,4 @@
-import pygame
-import heapq
+import pygame, heapq
 from math import cos, sin, atan2, radians, degrees, sqrt
 from .util import image_resource, tile_graphical_centre
 from collections import namedtuple
@@ -41,6 +40,8 @@ class Agent(Sprite):
         self.overlap_agents = []
         # command queue
         self.command_queue = []
+        # agent memory
+        self.memory = {}
 
     def update(self, elapsed_time):
         # filter overlapped agents so that only agents still overlapping are kept
