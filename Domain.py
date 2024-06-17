@@ -5,6 +5,7 @@ from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.group import PyscrollGroup
 from components.bundled.pyscroll.data import TiledMapData
 from components.agent import Agent
+from components.mapobject import MapObject
 from pygame import Rect
 from components.graphic_util import draw_info_panel, draw_domain
 from components.bundled.pytmx.util_pygame import load_pygame
@@ -35,8 +36,8 @@ class Main:
         self.cursor_interface_image = image_resource('cursors', 'cursor_interface_x6_y0.png')
         # load the map
         self.map = load_pygame(file_resource('domains', 'domain.tmx'))
-        # give the Agent class a common reference to the map
-        Agent.map = self.map
+        # give MapObject subclasses a common reference to the map
+        MapObject.map = self.map
         # calculate view size at 1.0 zoom
         map_graphical_width = self.map.width * self.map.tilewidth
         map_graphical_height = self.map.height * self.map.tileheight
