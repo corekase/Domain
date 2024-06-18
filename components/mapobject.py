@@ -106,7 +106,11 @@ class MapObject(Sprite):
         # call find nearest with a destination list of one position and return just the path
         return self.find_nearest(position1, [position2[0], position2[1], None])[0]
 
-    def find_nearest(self, start_position, destinations):
+    def find_nearest(self, start_position, destination_objects):
+        # data structure for objects for find_nearest
+        destination_list = []
+        for item in destination_objects:
+            destination_list.append([item.x_coord, item.y_coord, item])
         # breadth-first search
         frontier = Queue()
         frontier.put(start_position)
@@ -117,7 +121,7 @@ class MapObject(Sprite):
         goal_object = None
         while not frontier.empty():
             current = frontier.get()
-            for x, y, object in destinations:
+            for x, y, object in destination_list:
                 if (current[0] == x) and (current[1] == y):
                     found = True
                     goal = current
@@ -138,13 +142,6 @@ class MapObject(Sprite):
             return path, goal_object
         else:
             return None, None
-
-    def destination_objects(self, object_list):
-        # data structure for objects for find_nearest
-        destination_list = []
-        for item in object_list:
-            destination_list.append([item.x_coord, item.y_coord, item])
-        return destination_list
 
     def adjacents(self, position):
         x, y = position
