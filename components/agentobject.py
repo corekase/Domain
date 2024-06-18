@@ -1,4 +1,4 @@
-from .mapobject import MapObject, Stall
+from .mapobject import MapObject
 from .itemobject import ItemObject
 from .utility import image_resource, tile_graphical_centre
 

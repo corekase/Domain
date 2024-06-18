@@ -8,6 +8,7 @@ from components.bundled.pyscroll.data import TiledMapData
 from components.mapobject import MapObject
 from components.agentobject import AgentObject
 from components.itemobject import ItemObject
+from components.avatarobject import AvatarObject
 from pygame import Rect
 from components.bundled.pytmx.util_pygame import load_pygame
 
@@ -87,6 +88,10 @@ class Main:
             self.agent_objects.append(agent_object)
             # add it to the domain
             self.domain.add(agent_object)
+        # create a player avatar and add it to the domain
+        self.avatar = AvatarObject()
+        self.avatar._layer = 3
+        self.domain.add(self.avatar)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # Set the state of the application to "running"
