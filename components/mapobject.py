@@ -102,11 +102,19 @@ class MapObject(Sprite):
             # tile_graphical_centre does that for each position in the path
             self.command(Move_To(tile_graphical_centre(MapObject.map, position)))
 
-    def find_path(self):
-        # call find nearest with one destination instead of a list of them
-        pass
+    def find_path(self, position1, position2):
+        # call find nearest with a destination list of one position
+        return self.find_nearest(position1, self.destination_objects(position2))
+
+    def destination_objects(self, object_list):
+        # data structure for objects for find_nearest
+        destination_list = []
+        for item in object_list:
+            destination_list.append([item.x_coord, item.y_coord, item])
+        return destination_list
 
     def find_nearest(self, start_position, destinations):
+        # breadth-first search
         frontier = Queue()
         frontier.put(start_position)
         came_from = dict()
@@ -114,7 +122,6 @@ class MapObject(Sprite):
         found = False
         goal = None
         goal_object = None
-
         while not frontier.empty():
             current = frontier.get()
             for x, y, object in destinations:
@@ -130,13 +137,12 @@ class MapObject(Sprite):
                 if next not in came_from:
                     frontier.put(next)
                     came_from[next] = current
-
         if found:
             path = []
             while goal != start_position:
-                path.append(goal)
+                path.insert(0, goal)
                 goal = came_from[goal]
-            return path[::-1], goal_object
+            return path, goal_object
         else:
             return None, None
 

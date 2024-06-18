@@ -32,8 +32,9 @@ class AgentObject(MapObject):
             self.image = self.normal_image
             self.destination_object = None
         elif len(AgentObject.item_objects) > 0:
-            destinations = self.build_list()
-            path, self.destination_object = self.find_nearest((self.x_coord, self.y_coord), destinations)
+            path, self.destination_object = self.find_nearest(
+                                                (self.x_coord, self.y_coord),
+                                                self.destination_objects(AgentObject.item_objects))
             if path != None:
                 AgentObject.item_objects.remove(self.destination_object)
                 self.follow_path(path)
@@ -41,9 +42,3 @@ class AgentObject(MapObject):
                 self.command(Stall(None))
         else:
             self.command(Stall(None))
-
-    def build_list(self):
-        destination_list = []
-        for item in AgentObject.item_objects:
-            destination_list.append([item.x_coord, item.y_coord, item])
-        return destination_list
