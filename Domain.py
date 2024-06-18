@@ -62,13 +62,14 @@ class Main:
         self.panning = False
         # when panning lock mouse position to this position
         self.pan_hold_position = None
-        # create a group which will render the map and the group contents together
+        # create a group which will render the map and map objects
         self.domain = PyscrollGroup(self.renderer)
         # lists of items and agents
         self.item_objects, self.agent_objects = [], []
         # share item_objects and the domain with the agent objects
         AgentObject.item_objects = self.item_objects
         AgentObject.domain = self.domain
+        # create items
         for _ in range(30):
             item_object = ItemObject()
             item_object._layer = 1

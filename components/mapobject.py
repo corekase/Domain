@@ -9,6 +9,7 @@ from random import randint
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
+Path_To = namedtuple('Path_To', 'destination')
 
 class MapObject(Sprite):
     # reference for the map object
@@ -24,6 +25,8 @@ class MapObject(Sprite):
         self.image = None
         self.rect = None
         self.centre_xpos, self.centre_ypos = None, None
+        # these values will be updated by rect_sync
+        self.x_coord, self.y_coord = None, None
         # speed variable, world pixels per second
         self.speed = 0.0
         # list of agents currently overlapping this one
@@ -63,6 +66,13 @@ class MapObject(Sprite):
                 else:
                     # move towards destination
                     self.move(self.find_bearing_angle(destination), elapsed_time)
+            elif command_name == 'Path_To':
+                # from current x_coord and y_coord move to destination in cells coordinates
+                # this is so the avatar can have a new position, let the last move to a cell
+                # complete, clear the rest of the moves and then this instruction picks up
+                # to go to the new destination
+                destination = command.destination
+                pass
             else:
                 raise(f'Command: {command_name} not implemented')
         else:
