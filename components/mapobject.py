@@ -1,13 +1,13 @@
 import pygame, heapq
 from math import cos, sin, atan2, radians, degrees, sqrt
-from .util import image_resource, tile_graphical_centre
+from .utility import tile_graphical_centre
 from collections import namedtuple
 from pygame.sprite import Sprite
 from random import randint
 
 # commands and their parameters for the command queue
-Move_To = namedtuple('Move_To', 'destination')
 Stall = namedtuple('Stall', 'none')
+Move_To = namedtuple('Move_To', 'destination')
 
 class MapObject(Sprite):
     # reference for the map object
@@ -45,9 +45,12 @@ class MapObject(Sprite):
         if len(self.command_queue) > 0:
             # there is a command, get it
             command = self.command_queue[0]
-            command_name = type(command).__name__.lower()
+            command_name = type(command).__name__
             # command evaluations
-            if command_name == 'move_to':
+            if command_name == 'Stall':
+                # stall does nothing, doesn't remove itself, the agent just sits there until something intervenes
+                pass
+            elif command_name == 'Move_To':
                 # move straight line to the destination world pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
@@ -59,9 +62,6 @@ class MapObject(Sprite):
                 else:
                     # move towards destination
                     self.move(self.find_bearing_angle(destination), elapsed_time)
-            elif command_name == 'stall':
-                # stall does nothing, doesn't remove itself, the agent just sits there until something intervenes
-                pass
             else:
                 raise(f'Command: {command_name} not implemented')
         else:

@@ -1,15 +1,15 @@
 import time, pygame
+from components.utility import image_resource, file_resource, draw_info_panel, draw_domain
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.group import PyscrollGroup
 from components.bundled.pyscroll.data import TiledMapData
-from components.agent import Agent
 from components.mapobject import MapObject
+from components.agentobject import AgentObject
+from components.itemobject import ItemObject
 from pygame import Rect
-from components.graphic_util import draw_info_panel, draw_domain
 from components.bundled.pytmx.util_pygame import load_pygame
-from components.util import image_resource, file_resource
 
 class Main:
     def __init__(self):
@@ -62,14 +62,30 @@ class Main:
         self.panning = False
         # when panning lock mouse position to this position
         self.pan_hold_position = None
-        # create a group for agents
-        self.agent_group = PyscrollGroup(map_layer=self.renderer, default_layer=1)
+        # create a group which will render the map and the group contents together
+        self.object_group = PyscrollGroup(self.renderer)
+        # lists of items and agents
+        self.item_objects, self.agent_objects = [], []
+        # create items
+        for _ in range(30):
+            # Instantiate an item
+            item_object = ItemObject()
+            item_object._layer = 1
+            # track the item
+            self.item_objects.append(item_object)
+            # add to item group
+            self.object_group.add(item_object)
         # create agents
-        for _ in range(50):
+        for _ in range(3):
             # instantiate an agent
-            agent = Agent()
+            agent_object = AgentObject()
+            agent_object._layer = 2
+            # track the agent
+            self.agent_objects.append(agent_object)
             # add to agent group
-            self.agent_group.add(agent)
+            self.object_group.add(agent_object)
+        # share a list of items with the agent class
+        AgentObject.item_objects = self.item_objects
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # Set the state of the application to "running"
@@ -100,7 +116,7 @@ class Main:
             # clear screen
             self.screen.fill((0, 128, 128))
             # draw the main viewport to the viewport surface
-            draw_domain(self.view_surface, self.main_viewport, self.renderer, self.agent_group)
+            draw_domain(self.view_surface, self.main_viewport, self.renderer, self.object_group)
             # and copy that surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
@@ -190,16 +206,16 @@ class Main:
 
     def update_domain(self, elapsed_time):
         # update the agents in the group
-        self.agent_group.update(elapsed_time)
+        self.object_group.update(elapsed_time)
         # check for other agent collision, the sprites group is an expensive operation
         # so is done once on its own line here
-        agents = self.agent_group.sprites()
-        for agent in agents:
+        objects = self.object_group.sprites()
+        for object in objects:
             # same, done once on its own line because it's an expensive operation
-            other_agents = pygame.sprite.spritecollide(agent, self.agent_group, False)
-            for other_agent in other_agents:
-                if other_agent is not agent:
-                    other_agent.overlap(agent)
+            other_objects = pygame.sprite.spritecollide(object, self.object_group, False)
+            for other_object in other_objects:
+                if other_object is not object:
+                    other_object.overlap(object)
 
 if __name__ == '__main__':
     Main().run()
