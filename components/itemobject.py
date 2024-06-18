@@ -4,7 +4,7 @@ from .utility import image_resource, tile_graphical_centre
 class ItemObject(MapObject):
     def __init__(self):
         super().__init__()
-        self.normal_image = image_resource('sprites', 'item_generic.png')
+        self.normal_image = image_resource('sprites', 'item', 'item_generic.png')
         self.overlap_image = self.normal_image
         self.image = self.normal_image
         self.rect = self.image.get_rect()

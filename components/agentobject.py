@@ -8,8 +8,8 @@ class AgentObject(MapObject):
     def __init__(self):
         super().__init__()
         # load images for the agents
-        self.normal_image = image_resource('sprites', 'agent_normal.png')
-        self.overlap_image = image_resource('sprites', 'agent_overlap.png')
+        self.normal_image = image_resource('sprites', 'agent', 'agent_normal.png')
+        self.overlap_image = image_resource('sprites', 'agent', 'agent_overlap.png')
         # set default image for drawing
         self.image = self.normal_image
         # initialize agent rect for movement and drawing
