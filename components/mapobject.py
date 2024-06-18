@@ -49,10 +49,10 @@ class MapObject(Sprite):
         if len(self.command_queue) > 0:
             # there is a command, get it
             command = self.command_queue[0]
-            command_name = type(command).__name__
+            command_name = self.command_name(command)
             # command evaluations
             if command_name == 'Stall':
-                # stall does nothing, doesn't remove itself, the agent just sits there until something intervenes
+                # stall does nothing and doesn't remove itself so it effectively suspends the object
                 pass
             elif command_name == 'Move_To':
                 # move straight line to the destination world pixel coordinates
@@ -72,7 +72,13 @@ class MapObject(Sprite):
                 # complete, clear the rest of the moves and then this instruction picks up
                 # to go to the new destination
                 destination = command.destination
-                pass
+                if self.command_name(self.command_queue[0]) == "Move_To":
+                    # It's a move_to, so leave it and do: command_queue[1:] + Path_To
+                    pass
+                else:
+                    # clear the queue
+                    self.command_queue = []
+                    # Now do Path_To positions
             else:
                 raise(f'Command: {command_name} not implemented')
         else:
@@ -86,6 +92,9 @@ class MapObject(Sprite):
     def command(self, command):
         # add a command to the command queue
         self.command_queue.append(command)
+
+    def command_name(self, command):
+        return type(command).__name__
 
     def move(self, degree, elapsed_time):
         # move in the direction of degree

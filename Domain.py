@@ -192,6 +192,14 @@ class Main:
                             if self.zoom_amounts_index == 0:
                                 self.panning = False
             elif event.type == MOUSEBUTTONUP:
+                if event.button == 1:
+                    # left button up, which is destination point for avatar
+                    x, y = pygame.mouse.get_pos()
+                    # if mouse is inside the view rect
+                    if self.view_surface_rect.collidepoint(x, y):
+                        x -= self.view_surface_rect.x
+                        y -= self.view_surface_rect.y
+
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False
