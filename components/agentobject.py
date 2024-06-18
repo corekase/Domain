@@ -3,6 +3,7 @@ from .utility import image_resource, tile_graphical_centre
 
 class AgentObject(MapObject):
     item_objects = None
+    object_group = None
 
     def __init__(self):
         super().__init__()
@@ -22,18 +23,19 @@ class AgentObject(MapObject):
         # update position state with the translation
         self.rect_sync((self.centre_xpos, self.centre_ypos))
         # agent memory
+        self.destination = None
         self.memory = {}
 
     def process(self):
-        while True:
-            # find a random position with a floor tile
-            destination = self.find_random_position(MapObject.FLOOR)
-            if self.x_coord != destination[0] or self.y_coord != destination[1]:
-                break
-        # find and add a path to the command queue from the agents current position to that destination
-        path = self.find_path((self.x_coord, self.y_coord), destination)
-        if path != None:
-            self.follow_path(path)
+        if self.destination == None:
+            if len(AgentObject.item_objects) > 0:
+                self.destination = AgentObject.item_objects.pop(0)
+                path = self.find_path((self.x_coord, self.y_coord), (self.destination.x_coord, self.destination.y_coord))
+                if path != None:
+                    self.follow_path(path)
+                else:
+                    self.queue(Stall(None))
         else:
-            # not a valid path, suspend the agent.
-            self.queue(Stall(None))
+            AgentObject.object_group.remove(self.destination)
+            self.image = self.normal_image
+            self.destination = None

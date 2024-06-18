@@ -67,7 +67,7 @@ class Main:
         # lists of items and agents
         self.item_objects, self.agent_objects = [], []
         # create items
-        for _ in range(30):
+        for _ in range(20):
             # Instantiate an item
             item_object = ItemObject()
             item_object._layer = 1
@@ -86,6 +86,7 @@ class Main:
             self.object_group.add(agent_object)
         # share a list of items with the agent class
         AgentObject.item_objects = self.item_objects
+        AgentObject.object_group = self.object_group
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # Set the state of the application to "running"
