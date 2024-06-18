@@ -71,9 +71,12 @@ class Main:
         AgentObject.domain = self.domain
         # create items
         for _ in range(30):
+            # instantiate an item
             item_object = ItemObject()
             item_object._layer = 1
+            # track the item
             self.item_objects.append(item_object)
+            # add it to the domain
             self.domain.add(item_object)
         # create agents
         for _ in range(3):
@@ -82,7 +85,7 @@ class Main:
             agent_object._layer = 2
             # track the agent
             self.agent_objects.append(agent_object)
-            # add to object group
+            # add it to the domain
             self.domain.add(agent_object)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
