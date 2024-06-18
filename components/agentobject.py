@@ -23,19 +23,27 @@ class AgentObject(MapObject):
         # update position state with the translation
         self.rect_sync((self.centre_xpos, self.centre_ypos))
         # agent memory
-        self.destination = None
+        self.destination_object = None
         self.memory = {}
 
     def process(self):
-        if self.destination == None:
-            if len(AgentObject.item_objects) > 0:
-                self.destination = AgentObject.item_objects.pop(0)
-                path = self.find_path((self.x_coord, self.y_coord), (self.destination.x_coord, self.destination.y_coord))
-                if path != None:
-                    self.follow_path(path)
-                else:
-                    self.queue(Stall(None))
-        else:
-            AgentObject.domain_group.remove(self.destination)
+        if self.destination_object != None:
+            AgentObject.domain_group.remove(self.destination_object)
             self.image = self.normal_image
-            self.destination = None
+            self.destination_object = None
+        elif len(AgentObject.item_objects) > 0:
+            destinations = self.build_list()
+            path, self.destination_object = self.find_nearest((self.x_coord, self.y_coord), destinations)
+            if path != None:
+                AgentObject.item_objects.remove(self.destination_object)
+                self.follow_path(path)
+            else:
+                self.command(Stall(None))
+        else:
+            self.command(Stall(None))
+
+    def build_list(self):
+        destination_list = []
+        for item in AgentObject.item_objects:
+            destination_list.append([item.x_coord, item.y_coord, item])
+        return destination_list

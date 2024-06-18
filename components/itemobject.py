@@ -16,4 +16,4 @@ class ItemObject(MapObject):
         self.rect_sync((self.centre_xpos, self.centre_ypos))
 
     def process(self):
-        self.queue(Stall(None))
+        self.command(Stall(None))

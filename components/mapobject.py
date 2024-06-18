@@ -1,4 +1,5 @@
-import pygame, heapq
+import pygame
+from queue import Queue
 from math import cos, sin, atan2, radians, degrees, sqrt
 from .utility import tile_graphical_centre
 from collections import namedtuple
@@ -72,7 +73,7 @@ class MapObject(Sprite):
         # override in subclass
         pass
 
-    def queue(self, command):
+    def command(self, command):
         # add a command to the command queue
         self.command_queue.append(command)
 
@@ -99,54 +100,45 @@ class MapObject(Sprite):
         # translate cell coordinates to world pixel coordinate movements for the overall path
         for position in path:
             # tile_graphical_centre does that for each position in the path
-            self.command_queue.append(Move_To(tile_graphical_centre(MapObject.map, position)))
+            self.command(Move_To(tile_graphical_centre(MapObject.map, position)))
 
-    def find_path(self, position1, position2):
-        # Dijkstra’s Algorithm
-        # find a path from position1 to position2 consisting only of floor tiles
-        class PriorityQueue:
-            # supporting queue class
-            def __init__(self):
-                self.elements = []
-            def empty(self):
-                return not self.elements
-            def put(self, item, priority):
-                heapq.heappush(self.elements, (priority, item))
-            def get(self):
-                return heapq.heappop(self.elements)[1]
-        # setup
-        frontier = PriorityQueue()
-        frontier.put(position1, 0)
-        came_from, cost_so_far = {}, {}
-        came_from[position1], cost_so_far[position1] = None, 0
-        # if while loop exits without setting found to True then there is no path
+    def find_path(self):
+        # call find nearest with one destination instead of a list of them
+        pass
+
+    def find_nearest(self, start_position, destinations):
+        frontier = Queue()
+        frontier.put(start_position)
+        came_from = dict()
+        came_from[start_position] = None
         found = False
-        # main
+        goal = None
+        goal_object = None
+
         while not frontier.empty():
             current = frontier.get()
-            # if current and position2 elements are done by tuple comparisons
-            # you will occassionally get key errors with position2.  comparing
-            # the elements separately solves that problem as follows
-            if (current[0] == position2[0]) and (current[1] == position2[1]):
-                found = True
+            for x, y, object in destinations:
+                if (current[0] == x) and (current[1] == y):
+                    found = True
+                    goal = current
+                    goal_object = object
+                    break
+            if found:
                 break
             neighbours = self.adjacents(current)
             for next in neighbours:
-                new_cost = cost_so_far[current] + 1
-                if next not in cost_so_far or new_cost < cost_so_far[next]:
-                    cost_so_far[next] = new_cost
-                    priority = new_cost
-                    frontier.put(next, priority)
+                if next not in came_from:
+                    frontier.put(next)
                     came_from[next] = current
+
         if found:
-            # build a path in reverse from position2 to position1
             path = []
-            while position2 != position1:
-                path.insert(0, position2)
-                position2 = came_from[position2]
-            return path
+            while goal != start_position:
+                path.append(goal)
+                goal = came_from[goal]
+            return path[::-1], goal_object
         else:
-            return None
+            return None, None
 
     def adjacents(self, position):
         x, y = position

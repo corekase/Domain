@@ -67,7 +67,7 @@ class Main:
         # lists of items and agents
         self.item_objects, self.agent_objects = [], []
         # create items
-        for _ in range(20):
+        for _ in range(30):
             # Instantiate an item
             item_object = ItemObject()
             item_object._layer = 1
