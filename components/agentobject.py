@@ -3,7 +3,7 @@ from .utility import image_resource, tile_graphical_centre
 
 class AgentObject(MapObject):
     item_objects = None
-    object_group = None
+    domain_group = None
 
     def __init__(self):
         super().__init__()
@@ -36,6 +36,6 @@ class AgentObject(MapObject):
                 else:
                     self.queue(Stall(None))
         else:
-            AgentObject.object_group.remove(self.destination)
+            AgentObject.domain_group.remove(self.destination)
             self.image = self.normal_image
             self.destination = None

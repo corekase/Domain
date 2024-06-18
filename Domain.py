@@ -63,7 +63,7 @@ class Main:
         # when panning lock mouse position to this position
         self.pan_hold_position = None
         # create a group which will render the map and the group contents together
-        self.object_group = PyscrollGroup(self.renderer)
+        self.domain_group = PyscrollGroup(self.renderer)
         # lists of items and agents
         self.item_objects, self.agent_objects = [], []
         # create items
@@ -73,8 +73,8 @@ class Main:
             item_object._layer = 1
             # track the item
             self.item_objects.append(item_object)
-            # add to item group
-            self.object_group.add(item_object)
+            # add to object group
+            self.domain_group.add(item_object)
         # create agents
         for _ in range(3):
             # instantiate an agent
@@ -82,11 +82,11 @@ class Main:
             agent_object._layer = 2
             # track the agent
             self.agent_objects.append(agent_object)
-            # add to agent group
-            self.object_group.add(agent_object)
+            # add to object group
+            self.domain_group.add(agent_object)
         # share a list of items with the agent class
         AgentObject.item_objects = self.item_objects
-        AgentObject.object_group = self.object_group
+        AgentObject.domain_group = self.domain_group
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # Set the state of the application to "running"
@@ -117,7 +117,7 @@ class Main:
             # clear screen
             self.screen.fill((0, 128, 128))
             # draw the main viewport to the viewport surface
-            draw_domain(self.view_surface, self.main_viewport, self.renderer, self.object_group)
+            draw_domain(self.view_surface, self.main_viewport, self.renderer, self.domain_group)
             # and copy that surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
@@ -207,13 +207,13 @@ class Main:
 
     def update_domain(self, elapsed_time):
         # update the agents in the group
-        self.object_group.update(elapsed_time)
+        self.domain_group.update(elapsed_time)
         # check for other agent collision, the sprites group is an expensive operation
         # so is done once on its own line here
-        objects = self.object_group.sprites()
+        objects = self.domain_group.sprites()
         for object in objects:
             # same, done once on its own line because it's an expensive operation
-            other_objects = pygame.sprite.spritecollide(object, self.object_group, False)
+            other_objects = pygame.sprite.spritecollide(object, self.domain_group, False)
             for other_object in other_objects:
                 if other_object is not object:
                     other_object.overlap(object)
