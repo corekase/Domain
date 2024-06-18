@@ -1,11 +1,11 @@
-from .mapobject import MapObject
-from .mapobject import Stall
+from .mapobject import MapObject, Stall
 from .util import image_resource, tile_graphical_centre
 
 class Item(MapObject):
     def __init__(self):
         super().__init__()
         self.normal_image = image_resource('sprites', 'item_generic.png')
+        self.overlap_image = self.normal_image
         self.image = self.normal_image
         self.rect = self.image.get_rect()
         # get random starting position
@@ -16,4 +16,4 @@ class Item(MapObject):
         self.rect_sync((self.centre_xpos, self.centre_ypos))
 
     def process(self):
-        self.command_queue.append(Stall(None))
+        self.queue(Stall(None))

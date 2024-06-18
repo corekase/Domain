@@ -1,5 +1,4 @@
-from .mapobject import MapObject
-from .mapobject import Move_To, Stall
+from .mapobject import MapObject, Stall
 from .util import image_resource, tile_graphical_centre
 
 class Agent(MapObject):
@@ -35,4 +34,4 @@ class Agent(MapObject):
             self.follow_path(path)
         else:
             # not a valid path, suspend the agent.
-            self.command_queue.append(Stall(None))
+            self.queue(Stall(None))

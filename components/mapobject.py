@@ -17,7 +17,7 @@ class MapObject(Sprite):
 
     def __init__(self):
         super().__init__()
-        # values to be filled in by subclasses in their init and before any calls to process()
+        # values that must be filled in by subclasses in their init and before any calls to process()
         self.normal_image = None
         self.overlap_image = None
         self.image = None
@@ -69,7 +69,12 @@ class MapObject(Sprite):
             self.process()
 
     def process(self):
+        # override in subclass
         pass
+
+    def queue(self, command):
+        # add a command to the command queue
+        self.command_queue.append(command)
 
     def move(self, degree, elapsed_time):
         # move in the direction of degree
