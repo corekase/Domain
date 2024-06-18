@@ -103,15 +103,8 @@ class MapObject(Sprite):
             self.command(Move_To(tile_graphical_centre(MapObject.map, position)))
 
     def find_path(self, position1, position2):
-        # call find nearest with a destination list of one position
-        return self.find_nearest(position1, self.destination_objects(position2))
-
-    def destination_objects(self, object_list):
-        # data structure for objects for find_nearest
-        destination_list = []
-        for item in object_list:
-            destination_list.append([item.x_coord, item.y_coord, item])
-        return destination_list
+        # call find nearest with a destination list of one position and return just the path
+        return self.find_nearest(position1, [position2[0], position2[1], None])[0]
 
     def find_nearest(self, start_position, destinations):
         # breadth-first search
@@ -145,6 +138,13 @@ class MapObject(Sprite):
             return path, goal_object
         else:
             return None, None
+
+    def destination_objects(self, object_list):
+        # data structure for objects for find_nearest
+        destination_list = []
+        for item in object_list:
+            destination_list.append([item.x_coord, item.y_coord, item])
+        return destination_list
 
     def adjacents(self, position):
         x, y = position
