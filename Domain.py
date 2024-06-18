@@ -66,14 +66,13 @@ class Main:
         self.domain_group = PyscrollGroup(self.renderer)
         # lists of items and agents
         self.item_objects, self.agent_objects = [], []
-        # create items
+        # share a list of items with the agent class
+        AgentObject.item_objects = self.item_objects
+        AgentObject.domain_group = self.domain_group
         for _ in range(30):
-            # Instantiate an item
             item_object = ItemObject()
             item_object._layer = 1
-            # track the item
             self.item_objects.append(item_object)
-            # add to object group
             self.domain_group.add(item_object)
         # create agents
         for _ in range(3):
@@ -84,9 +83,6 @@ class Main:
             self.agent_objects.append(agent_object)
             # add to object group
             self.domain_group.add(agent_object)
-        # share a list of items with the agent class
-        AgentObject.item_objects = self.item_objects
-        AgentObject.domain_group = self.domain_group
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # Set the state of the application to "running"
@@ -110,6 +106,8 @@ class Main:
             elapsed_time = now_time - previous_time
             previous_time = now_time
             total_time += elapsed_time
+            # top up items
+            #self.top_up_items()
             # handle events
             self.handle_events()
             # update domain state

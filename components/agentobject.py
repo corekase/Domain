@@ -1,4 +1,5 @@
 from .mapobject import MapObject, Stall
+from .itemobject import ItemObject
 from .utility import image_resource, tile_graphical_centre
 
 class AgentObject(MapObject):
@@ -24,14 +25,23 @@ class AgentObject(MapObject):
         self.rect_sync((self.centre_xpos, self.centre_ypos))
         # agent memory
         self.destination_object = None
-        self.memory = {}
 
     def process(self):
         if self.destination_object != None:
+            # remove reference to old object
             AgentObject.domain_group.remove(self.destination_object)
+            # create a new item object
+            item_object = ItemObject()
+            item_object._layer = 1
+            # add it into the lists
+            AgentObject.item_objects.append(item_object)
+            AgentObject.domain_group.add(item_object)
+            # set collision image to normal
             self.image = self.normal_image
+            # reset destination to none
             self.destination_object = None
         elif len(AgentObject.item_objects) > 0:
+            # find the nearest item
             path, self.destination_object = self.find_nearest(
                 (self.x_coord, self.y_coord), AgentObject.item_objects)
             if path != None:
