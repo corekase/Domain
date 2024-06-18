@@ -4,7 +4,7 @@ from .utility import image_resource, tile_graphical_centre
 
 class AgentObject(MapObject):
     item_objects = None
-    domain_group = None
+    domain = None
 
     def __init__(self):
         super().__init__()
@@ -29,13 +29,13 @@ class AgentObject(MapObject):
     def process(self):
         if self.destination_object != None:
             # remove reference to old object
-            AgentObject.domain_group.remove(self.destination_object)
+            AgentObject.domain.remove(self.destination_object)
             # create a new item object
             item_object = ItemObject()
             item_object._layer = 1
-            # add it into the lists
+            # add it to the item objects list and the domain
             AgentObject.item_objects.append(item_object)
-            AgentObject.domain_group.add(item_object)
+            AgentObject.domain.add(item_object)
             # set collision image to normal
             self.image = self.normal_image
             # reset destination to none
@@ -47,7 +47,3 @@ class AgentObject(MapObject):
             if path != None:
                 AgentObject.item_objects.remove(self.destination_object)
                 self.follow_path(path)
-            else:
-                self.command(Stall(None))
-        else:
-            self.command(Stall(None))

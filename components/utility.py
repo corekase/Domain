@@ -16,7 +16,7 @@ def file_resource(*names):
 
 # domain is composed of both a map surface and an agent group
 # together those are "domain".  domain = map + agents
-def draw_domain(destination_surface, view_centre, renderer, domain_group):
+def draw_domain(destination_surface, view_centre, renderer, domain):
     # update the desired centre of the viewport
     renderer.center(view_centre)
     # if horizontal out-of-bounds limit them
@@ -44,7 +44,7 @@ def draw_domain(destination_surface, view_centre, renderer, domain_group):
     # reupdate the viewport, viewport is updated here in case the bounds were modified
     renderer.center(view_centre)
     # draw map and group objects to surface
-    domain_group.draw(destination_surface)
+    domain.draw(destination_surface)
 
 # draw a graphical panel showing various information
 def draw_info_panel(screen, font, cycle, total_time, fps):
