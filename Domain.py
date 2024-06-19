@@ -199,9 +199,14 @@ class Main:
                     x, y = pygame.mouse.get_pos()
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
-                        x -= self.view_surface_rect.x
-                        y -= self.view_surface_rect.y
-                        self.xy_status = f'X:{x}, Y:{y}'
+                        tx = self.renderer.map_rect.width / self.renderer._tile_view.width
+                        ty = self.renderer.map_rect.height / self.renderer._tile_view.height
+                        mx = int((x - self.view_surface_rect.x) / tx)
+                        my = int((y - self.view_surface_rect.y) / ty)
+                        x1 = mx
+                        y1 = my
+
+                        self.xy_status = f'X:{x1}, Y:{y1}'
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False
