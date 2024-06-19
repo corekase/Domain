@@ -47,10 +47,10 @@ def draw_domain(destination_surface, view_centre, renderer, domain):
     domain.draw(destination_surface)
 
 # draw a graphical panel showing various information
-def draw_info_panel(screen, font, cycle, total_time, fps):
+def draw_info_panel(screen, font, cycle, total_time, fps, xy_status):
     screen_size = screen.get_rect()
     x, y = screen_size.right - 185, 5
-    w, h = 180, 57
+    w, h = 180, 75
     seconds = total_time % (24 * 3600)
     hours = int(seconds // 3600)
     seconds %= 3600
@@ -64,3 +64,4 @@ def draw_info_panel(screen, font, cycle, total_time, fps):
     screen.blit(font.render(text, True, (200, 200, 255)), (x + 3, y + 21))
     text = f'FPS: {int(round(fps))}'
     screen.blit(font.render(text, True, (200, 200, 255)), (x + 3, y + 39))
+    screen.blit(font.render(xy_status, True, (200, 200, 255)), (x + 3, y + 56))

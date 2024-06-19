@@ -94,6 +94,8 @@ class Main:
         self.domain.add(self.avatar)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
+        # status for mouse coordinates in the view
+        self.xy_status = 'N/A'
         # Set the state of the application to "running"
         self.running = True
 
@@ -130,7 +132,7 @@ class Main:
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
             # draw information panel
-            draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps())
+            draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
             if self.panning:
                 # draw the panning cursor
@@ -199,7 +201,7 @@ class Main:
                     if self.view_surface_rect.collidepoint(x, y):
                         x -= self.view_surface_rect.x
                         y -= self.view_surface_rect.y
-
+                        self.xy_status = f'X:{x}, Y:{y}'
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False

@@ -43,7 +43,7 @@ class AgentObject(MapObject):
         elif len(AgentObject.item_objects) > 0:
             # find the nearest item
             path, self.destination_object = self.find_nearest(
-                (self.x_coord, self.y_coord), AgentObject.item_objects)
+                                            (self.x_coord, self.y_coord), AgentObject.item_objects)
             if path != None:
                 AgentObject.item_objects.remove(self.destination_object)
                 self.follow_path(path)

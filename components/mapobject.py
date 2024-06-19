@@ -9,7 +9,7 @@ from random import randint
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
-Path_To = namedtuple('Path_To', 'destination')
+Path_To = namedtuple('Path_To', 'position')
 
 class MapObject(Sprite):
     # reference for the map object
@@ -71,14 +71,20 @@ class MapObject(Sprite):
                 # this is so the avatar can have a new position, let the last move to a cell
                 # complete, clear the rest of the moves and then this instruction picks up
                 # to go to the new destination
-                destination = command.destination
+                position = command.position
                 if self.command_name(self.command_queue[0]) == "Move_To":
-                    # It's a move_to, so leave it and do: command_queue[1:] + Path_To
+                    # finish move to, then add path_to command with same position
+                    # so command queue = command queue [:1] + path_to command to position
                     pass
                 else:
+                    # if there was a move_to it's now done
+
                     # clear the queue
                     self.command_queue = []
-                    # Now do Path_To positions
+
+                    # find valid path, if no valid path do nothing
+
+                    # do Path_To positions
             else:
                 raise(f'Command: {command_name} not implemented')
         else:
