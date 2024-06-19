@@ -199,14 +199,17 @@ class Main:
                     x, y = pygame.mouse.get_pos()
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
-                        tx = self.renderer.map_rect.width / self.renderer._tile_view.width
-                        ty = self.renderer.map_rect.height / self.renderer._tile_view.height
-                        mx = int((x - self.view_surface_rect.x) / tx)
-                        my = int((y - self.view_surface_rect.y) / ty)
-                        x1 = mx
-                        y1 = my
-
-                        self.xy_status = f'X:{x1}, Y:{y1}'
+                        x_pos, y_pos = x - self.view_surface_rect.x, y - self.view_surface_rect.y
+                        view_x = self.renderer.view_rect.x
+                        view_y = self.renderer.view_rect.y
+                        tile_size_x = self.map.tilewidth
+                        tile_size_y = self.map.tileheight
+                        zoom = self.renderer.zoom
+                        tile_x_pixels = tile_size_x * zoom
+                        tile_y_pixels = tile_size_y * zoom
+                        tile_x = int((x_pos + view_x) / tile_x_pixels)
+                        tile_y = int((y_pos + view_y) / tile_y_pixels)
+                        self.xy_status = f'X:{tile_x}, Y:{tile_y}'
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False
@@ -238,6 +241,10 @@ class Main:
             other_objects = pygame.sprite.spritecollide(object, self.domain, False)
             for other_object in other_objects:
                 if other_object is not object:
+                    # right here for finer-collisions:
+                    #     "if overlapped then per-pixel (mask-based) comparison"
+                    # for overall fast collisions and then accuracy only when overlapped
+                    object.overlap(other_object)
                     other_object.overlap(object)
 
 if __name__ == '__main__':
