@@ -140,18 +140,23 @@ class Main:
             x_pos = x - xr
             y_pos = y - yr
 
-
             x_lr = self.renderer.view_rect.x
             x_total = self.renderer.map_rect.width
             x_segment = self.map.tilewidth * self.renderer._real_ratio_x
 
-            x_coord = self.cell(x_lr, x_pos, x_total, x_segment, self.map.tilewidth)
+            x_tiles = int(self.map.width / self.map.tilewidth)
+            partial_x = self.map.width - (x_tiles * self.map.tilewidth)
+
+            x_coord = self.cell(x_lr, x_pos - partial_x, x_total, x_segment, self.map.tilewidth)
 
             y_lr = self.renderer.view_rect.y
             y_total = self.renderer.map_rect.height
             y_segment = self.map.tileheight * self.renderer._real_ratio_y
 
-            y_coord = self.cell(y_lr, y_pos, y_total, y_segment, self.map.tileheight)
+            y_tiles = int(self.map.height / self.map.tileheight)
+            partial_y = self.map.height - (y_tiles * self.map.tileheight)
+
+            y_coord = self.cell(y_lr, y_pos - partial_y, y_total, y_segment, self.map.tileheight)
 
             self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
 
