@@ -57,7 +57,7 @@ class Main:
         self.main_viewport = list(self.renderer.map_rect.center)
         # set the zoom levels for the renderer
         self.zoom_amounts_index = 0
-        self.zoom_amounts = [1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0]
+        self.zoom_amounts = [1.0, 2.0, 3.0, 4.0]
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
         # state for whether or not panning the view
         self.panning = False
@@ -117,38 +117,10 @@ class Main:
             elapsed_time = now_time - previous_time
             previous_time = now_time
             total_time += elapsed_time
-            # top up items
-            #self.top_up_items()
             # handle events
             self.handle_events()
             # update domain state
             self.update_domain(elapsed_time)
-
-            x, y = pygame.mouse.get_pos()
-
-            xr = self.view_surface_rect.x
-            yr = self.view_surface_rect.y
-
-            x_pos = x - xr
-            y_pos = y - yr
-            width = self.map.tilewidth * self.renderer.zoom
-            height = self.map.tileheight * self.renderer.zoom
-            x_pos = (int(x_pos / width) * width) + int(width / 2)
-            y_pos = (int(y_pos / height) * height) + int(height / 2)
-
-            x_lr = self.renderer.view_rect.x
-            x_total = self.renderer.map_rect.width
-            x_segment = self.map.tilewidth * self.renderer._real_ratio_x
-
-            y_lr = self.renderer.view_rect.y
-            y_total = self.renderer.map_rect.height
-            y_segment = self.map.tileheight * self.renderer._real_ratio_y
-
-            x_coord = self.cell(x_lr, x_pos, x_total, x_segment, self.map.tilewidth)
-            y_coord = self.cell(y_lr, y_pos, y_total, y_segment, self.map.tileheight)
-
-            self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
-
             # clear screen
             self.screen.fill((0, 128, 128))
             # draw the main viewport to the viewport surface
@@ -157,11 +129,6 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
-
-
-            #pygame.draw.rect(self.screen, (255,255,255), pygame.Rect(xr + (x_pos_centre * tile_x_size) + tile_x_offset - 2,
-            #                                                         yr + (y_pos_centre * tile_y_size) + tile_y_offset - 2, 4, 4), 0)
-
             # draw information panel
             draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
@@ -188,6 +155,32 @@ class Main:
             clock.tick(fps)
         # release resources
         pygame.quit()
+
+    def pick_cell(self, x, y):
+
+        xr = self.view_surface_rect.x
+        yr = self.view_surface_rect.y
+
+        x_pos = x - xr
+        y_pos = y - yr
+        width = self.map.tilewidth * self.renderer.zoom
+        height = self.map.tileheight * self.renderer.zoom
+        x_pos = (int(x_pos / width) * width) + int(width / 2)
+        y_pos = (int(y_pos / height) * height) + int(height / 2)
+
+        x_lr = self.renderer.view_rect.x
+        x_total = self.renderer.map_rect.width
+        x_segment = self.map.tilewidth * self.renderer._real_ratio_x
+
+        y_lr = self.renderer.view_rect.y
+        y_total = self.renderer.map_rect.height
+        y_segment = self.map.tileheight * self.renderer._real_ratio_y
+
+        x_coord = self.cell(x_lr, x_pos, x_total, x_segment, self.map.tilewidth)
+        y_coord = self.cell(y_lr, y_pos, y_total, y_segment, self.map.tileheight)
+
+        self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
+        return x_coord, y_coord
 
     def cell(self, lr, pos, total, segment, tile):
         period = int(total / segment)
@@ -237,7 +230,7 @@ class Main:
                     x, y = pygame.mouse.get_pos()
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
-                        pass
+                        x_cell, y_cell = self.pick_cell(x, y)
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False

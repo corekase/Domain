@@ -15,7 +15,7 @@ class MapObject(Sprite):
     # reference for the map object
     map = None
     # tile gid's for wall and floor in tilesheet
-    WALL, FLOOR = 1, 2
+    FLOOR, WALL = 1, 2
 
     def __init__(self):
         super().__init__()
