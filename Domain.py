@@ -131,6 +131,33 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
+
+            x, y = pygame.mouse.get_pos()
+
+            xr = self.view_surface_rect.x
+            yr = self.view_surface_rect.y
+
+            x_pos = x - xr
+            y_pos = y - yr
+
+
+            x_lr = self.renderer.view_rect.x
+            x_total = self.renderer.map_rect.width
+            x_segment = self.map.tilewidth * self.renderer._real_ratio_x
+
+            x_coord = self.cell(x_lr, x_pos, x_total, x_segment, self.map.tilewidth)
+
+            y_lr = self.renderer.view_rect.y
+            y_total = self.renderer.map_rect.height
+            y_segment = self.map.tileheight * self.renderer._real_ratio_y
+
+            y_coord = self.cell(y_lr, y_pos, y_total, y_segment, self.map.tileheight)
+
+            self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
+
+            #pygame.draw.rect(self.screen, (255,255,255), pygame.Rect(xr + (x_pos_centre * tile_x_size) + tile_x_offset - 2,
+            #                                                         yr + (y_pos_centre * tile_y_size) + tile_y_offset - 2, 4, 4), 0)
+
             # draw information panel
             draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
@@ -157,6 +184,13 @@ class Main:
             clock.tick(fps)
         # release resources
         pygame.quit()
+
+    def cell(self, lr, pos, total, segment, tile):
+        period = int(total / segment)
+        base_coord = int(((lr + int(tile / 2)) / tile))
+        diff = int(int(pos / period) - (pos / period))
+        coord = int((pos - diff) / segment)
+        return base_coord + coord
 
     def handle_events(self):
         # handle event queue
@@ -199,17 +233,7 @@ class Main:
                     x, y = pygame.mouse.get_pos()
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
-                        x_pos, y_pos = x - self.view_surface_rect.x, y - self.view_surface_rect.y
-                        view_x = self.renderer.view_rect.x
-                        view_y = self.renderer.view_rect.y
-                        tile_size_x = self.map.tilewidth
-                        tile_size_y = self.map.tileheight
-                        zoom = self.renderer.zoom
-                        tile_x_pixels = tile_size_x * zoom
-                        tile_y_pixels = tile_size_y * zoom
-                        tile_x = int((x_pos + view_x) / tile_x_pixels)
-                        tile_y = int((y_pos + view_y) / tile_y_pixels)
-                        self.xy_status = f'X:{tile_x}, Y:{tile_y}'
+                        pass
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False
