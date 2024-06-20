@@ -170,8 +170,8 @@ class Main:
         x_pos -= partial_x * self.renderer.zoom
         y_pos -= partial_y * self.renderer.zoom
 
-        x_pos += self.snap_to(x_pos, self.map.tilewidth)
-        y_pos += self.snap_to(y_pos, self.map.tileheight)
+        x_pos += self.snap_to(x_pos, self.renderer.map_rect.width, self.map.tilewidth)
+        y_pos += self.snap_to(y_pos, self.renderer.map_rect.height, self.map.tileheight)
 
         x_lr = self.renderer.view_rect.x
         x_total = self.renderer.map_rect.width
@@ -187,9 +187,10 @@ class Main:
         self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
         return x_coord, y_coord
 
-    def snap_to(self, position, size):
-        pos = 0
-        return pos
+    def snap_to(self, position, size, tilesize):
+        grid = int(((position * tilesize) - int(position * tilesize)) / (tilesize * self.renderer.zoom))
+        #grid += (tilesize * self.renderer.zoom) / 2
+        return grid
 
     def cell(self, lr, pos, total, segment, tile):
         period = int(total / segment)
