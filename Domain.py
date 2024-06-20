@@ -170,8 +170,8 @@ class Main:
         x_pos -= partial_x * self.renderer.zoom
         y_pos -= partial_y * self.renderer.zoom
 
-        x_pos += self.centre(x_pos, self.map.tilewidth)
-        y_pos += self.centre(y_pos, self.map.tileheight)
+        x_pos += self.snap_to(x_pos, self.map.tilewidth)
+        y_pos += self.snap_to(y_pos, self.map.tileheight)
 
         x_lr = self.renderer.view_rect.x
         x_total = self.renderer.map_rect.width
@@ -187,10 +187,9 @@ class Main:
         self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
         return x_coord, y_coord
 
-    def centre(self, x, size):
-        size = size * self.renderer.zoom
-        x = int(((x * size) - int(x * size))) + int(size / 2)
-        return x
+    def snap_to(self, position, size):
+        pos = 0
+        return pos
 
     def cell(self, lr, pos, total, segment, tile):
         period = int(total / segment)
