@@ -123,6 +123,32 @@ class Main:
             self.handle_events()
             # update domain state
             self.update_domain(elapsed_time)
+
+            x, y = pygame.mouse.get_pos()
+
+            xr = self.view_surface_rect.x
+            yr = self.view_surface_rect.y
+
+            x_pos = x - xr
+            y_pos = y - yr
+            width = self.map.tilewidth * self.renderer.zoom
+            height = self.map.tileheight * self.renderer.zoom
+            x_pos = (int(x_pos / width) * width) + int(width / 2)
+            y_pos = (int(y_pos / height) * height) + int(height / 2)
+
+            x_lr = self.renderer.view_rect.x
+            x_total = self.renderer.map_rect.width
+            x_segment = self.map.tilewidth * self.renderer._real_ratio_x
+
+            y_lr = self.renderer.view_rect.y
+            y_total = self.renderer.map_rect.height
+            y_segment = self.map.tileheight * self.renderer._real_ratio_y
+
+            x_coord = self.cell(x_lr, x_pos, x_total, x_segment, self.map.tilewidth)
+            y_coord = self.cell(y_lr, y_pos, y_total, y_segment, self.map.tileheight)
+
+            self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
+
             # clear screen
             self.screen.fill((0, 128, 128))
             # draw the main viewport to the viewport surface
@@ -132,33 +158,6 @@ class Main:
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
 
-            x, y = pygame.mouse.get_pos()
-
-            xr = self.view_surface_rect.x
-            yr = self.view_surface_rect.y
-
-            x_pos = x - xr
-            y_pos = y - yr
-
-            x_lr = self.renderer.view_rect.x
-            x_total = self.renderer.map_rect.width
-            x_segment = self.map.tilewidth * self.renderer._real_ratio_x
-
-            x_tiles = int(self.map.width / self.map.tilewidth)
-            partial_x = self.map.width - (x_tiles * self.map.tilewidth)
-
-            x_coord = self.cell(x_lr, x_pos - partial_x, x_total, x_segment, self.map.tilewidth)
-
-            y_lr = self.renderer.view_rect.y
-            y_total = self.renderer.map_rect.height
-            y_segment = self.map.tileheight * self.renderer._real_ratio_y
-
-            y_tiles = int(self.map.height / self.map.tileheight)
-            partial_y = self.map.height - (y_tiles * self.map.tileheight)
-
-            y_coord = self.cell(y_lr, y_pos - partial_y, y_total, y_segment, self.map.tileheight)
-
-            self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
 
             #pygame.draw.rect(self.screen, (255,255,255), pygame.Rect(xr + (x_pos_centre * tile_x_size) + tile_x_offset - 2,
             #                                                         yr + (y_pos_centre * tile_y_size) + tile_y_offset - 2, 4, 4), 0)
