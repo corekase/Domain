@@ -117,8 +117,6 @@ class Main:
             elapsed_time = now_time - previous_time
             previous_time = now_time
             total_time += elapsed_time
-            # handle events
-            self.handle_events()
             # update domain state
             self.update_domain(elapsed_time)
             # clear screen
@@ -129,6 +127,8 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
+            # handle events
+            self.handle_events()
             # draw information panel
             draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
@@ -157,21 +157,21 @@ class Main:
         pygame.quit()
 
     def pick_cell(self, x, y):
-
+        # rewrite this and make the origin of the screen for x and y to be the centre
         xr = self.view_surface_rect.x
         yr = self.view_surface_rect.y
 
         x_pos = x - xr
         y_pos = y - yr
 
+        x_pos = self.snap_to(x_pos, self.map.tilewidth)
+        y_pos = self.snap_to(y_pos, self.map.tileheight)
+
         partial_x = int((self.renderer.map_rect.width - self.view_surface_rect.width) / self.map.tilewidth)
         partial_y = int((self.renderer.map_rect.height - self.view_surface_rect.height) / self.map.tileheight)
 
         x_pos -= partial_x * self.renderer.zoom
         y_pos -= partial_y * self.renderer.zoom
-
-        x_pos += self.snap_to(x_pos, self.renderer.map_rect.width, self.map.tilewidth)
-        y_pos += self.snap_to(y_pos, self.renderer.map_rect.height, self.map.tileheight)
 
         x_lr = self.renderer.view_rect.x
         x_total = self.renderer.map_rect.width
@@ -187,10 +187,12 @@ class Main:
         self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
         return x_coord, y_coord
 
-    def snap_to(self, position, size, tilesize):
-        grid = int(((position * tilesize) - int(position * tilesize)) / (tilesize * self.renderer.zoom))
-        #grid += (tilesize * self.renderer.zoom) / 2
-        return grid
+    def snap_to(self, position, tilesize):
+        p1 = int(position / tilesize)
+        p2 = (position / tilesize) / tilesize
+        p3 = (p1 * tilesize)
+        p4 = p2 + p3 + int(tilesize / 2)
+        return int(p4)
 
     def cell(self, lr, pos, total, segment, tile):
         period = int(total / segment)
