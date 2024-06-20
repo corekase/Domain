@@ -96,6 +96,8 @@ class Main:
         self.cycle = -1
         # status for mouse coordinates in the view
         self.xy_status = 'N/A'
+        # cursor rectangle, saved to be drawn after the domain is drawn
+        self.cursor_rect = None
         # Set the state of the application to "running"
         self.running = True
 
@@ -117,6 +119,8 @@ class Main:
             elapsed_time = now_time - previous_time
             previous_time = now_time
             total_time += elapsed_time
+            # handle events
+            self.handle_events()
             # update domain state
             self.update_domain(elapsed_time)
             # clear screen
@@ -127,8 +131,9 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
-            # handle events
-            self.handle_events()
+            if self.cursor_rect != None:
+                # draw the cursor rectangle over the domain
+                pass
             # draw information panel
             draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
@@ -175,11 +180,11 @@ class Main:
 
         x_lr = self.renderer.view_rect.x
         x_total = self.renderer.map_rect.width
-        x_segment = self.map.tilewidth * self.renderer._real_ratio_x
+        x_segment = self.map.tilewidth * self.renderer.zoom
 
         y_lr = self.renderer.view_rect.y
         y_total = self.renderer.map_rect.height
-        y_segment = self.map.tileheight * self.renderer._real_ratio_y
+        y_segment = self.map.tileheight * self.renderer.zoom
 
         x_coord = self.cell(x_lr, x_pos, x_total, x_segment, self.map.tilewidth)
         y_coord = self.cell(y_lr, y_pos, y_total, y_segment, self.map.tileheight)
@@ -202,6 +207,7 @@ class Main:
         return base_coord + coord
 
     def handle_events(self):
+        cursor_flag = False
         # handle event queue
         for event in pygame.event.get():
             # window close widget
@@ -255,6 +261,12 @@ class Main:
                     self.main_viewport[0] += x - self.pan_hold_position[0]
                     self.main_viewport[1] += y - self.pan_hold_position[1]
                     pygame.mouse.set_pos(self.pan_hold_position)
+
+            if cursor_flag:
+                self.cursor_rect = pygame.Rect(0, 0, 0, 0)
+            else:
+                # don't draw the rect
+                self.cursor_rect = None
 
     def set_zoom_index(self, index_delta):
         # clamp index inside zoom_amounts list.
