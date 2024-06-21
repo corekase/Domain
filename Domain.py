@@ -74,7 +74,7 @@ class Main:
         for _ in range(30):
             # instantiate an item
             item_object = ItemObject()
-            item_object._layer = 1
+            item_object.layer = 1
             # track the item
             self.item_objects.append(item_object)
             # add it to the domain
@@ -83,14 +83,14 @@ class Main:
         for _ in range(3):
             # instantiate an agent
             agent_object = AgentObject()
-            agent_object._layer = 2
+            agent_object.layer = 2
             # track the agent
             self.agent_objects.append(agent_object)
             # add it to the domain
             self.domain.add(agent_object)
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
-        self.avatar._layer = 3
+        self.avatar.layer = 3
         self.domain.add(self.avatar)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1

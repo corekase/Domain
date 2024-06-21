@@ -32,7 +32,7 @@ class AgentObject(MapObject):
             AgentObject.domain.remove(self.destination_object)
             # create a new item object
             item_object = ItemObject()
-            item_object._layer = 1
+            item_object.layer = 1
             # add it to the item objects list and the domain
             AgentObject.item_objects.append(item_object)
             AgentObject.domain.add(item_object)
