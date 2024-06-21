@@ -74,7 +74,7 @@ class MapObject(Sprite):
                 position = command.position
                 if self.command_name(self.command_queue[0]) == "Move_To":
                     # finish move to, then add path_to command with same position
-                    # so command queue = command queue [:1] + path_to command to position
+                    # so command queue = command queue [1:] + path_to command to position
                     pass
                 else:
                     # if there was a move_to it's now done
@@ -198,6 +198,9 @@ class MapObject(Sprite):
             adjacents[0] = None
             adjacents[6] = None
         # filter for floor tiles
+        # filtering here can also be passed a list of cell ranges as rectangles.  The rectangles,
+        # allowed ones, are used to keep moving mapobjects within specific areas.  They limit pathfinding
+        # to those cell coordinate rectangles keeping the mapobjects in allowed zones
         valid_neighbours = []
         for num, value in enumerate(adjacents):
             if value == MapObject.FLOOR:
