@@ -11,6 +11,7 @@ from components.itemobject import ItemObject
 from components.avatarobject import AvatarObject
 from pygame import Rect
 from components.bundled.pytmx.util_pygame import load_pygame
+from math import floor
 
 class Main:
     def __init__(self):
@@ -163,18 +164,27 @@ class Main:
         pygame.quit()
 
     def pick_cell(self, x, y):
+        # normalize the x and y mouse coordinates to surface coordinates for the map
         x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
+        # grid the screen at the current zoom into tile-sized amounts
         x_tile_size = self.map.tilewidth * self.renderer.zoom
         y_tile_size = self.map.tileheight * self.renderer.zoom
-        x_tile_amount = self.view_surface_rect.width / x_tile_size
-        y_tile_amount = self.view_surface_rect.height / y_tile_size
-        tile_x = x_pos / x_tile_amount
-        tile_y = y_pos / y_tile_amount
-        x_pos = tile_x
-        y_pos = tile_y
-        x_pos, y_pos = int(x_pos), int(y_pos)
-        self.xy_status = f'X:{x_pos}, Y:{y_pos}'
-        return x_pos, y_pos
+        # origin coordinate
+        origin_x = self.view_surface_rect.width / 2
+        origin_y = self.view_surface_rect.height / 2
+        # calculate screen tile from origin
+        x = origin_x - x_pos
+        y = origin_y - y_pos
+        # adjust for partial tiles
+
+        # add base to screen tile
+
+        # divide into grid
+        x /= x_tile_size
+        y /= y_tile_size
+        x_coord, y_coord = int(x), int(y)
+        self.xy_status = f'X:{x_coord}, Y:{y_coord}'
+        return x_coord, y_coord
 
     def handle_events(self):
         cursor_flag = False
