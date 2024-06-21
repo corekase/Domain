@@ -173,6 +173,8 @@ class Main:
         relative_x = map_centre_x - view_centre_x - x_pos
         relative_y = map_centre_y - view_centre_y - y_pos
         x_coord, y_coord = int(relative_x / x_tile_size), int(relative_y / y_tile_size)
+        x_coord = int(-x_coord + self.map.width / 2) - 1
+        y_coord = int(-y_coord + self.map.height / 2) - 1
         self.xy_status = f'X:{x_coord}, Y:{y_coord}'
         return x_coord, y_coord
 
