@@ -45,6 +45,8 @@ class MapObject(Sprite):
         # if this agent isn't overlapping other agents return its image to normal
         if len(self.overlap_agents) == 0:
             self.image = self.normal_image
+        # if there are any interrupt commands then process them
+        pass
         # check the command queue for any commands
         if len(self.command_queue) > 0:
             # there is a command, get it
@@ -71,6 +73,8 @@ class MapObject(Sprite):
                 # this is so the avatar can have a new position, let the last move to a cell
                 # complete, clear the rest of the moves and then this instruction picks up
                 # to go to the new destination
+                # path_to will be an interrupt, when it takes over it will inspect the queue
+                # for a move_to and then let that one item complete
                 position = command.position
                 if self.command_name(self.command_queue[0]) == "Move_To":
                     # finish move to, then add path_to command with same position
@@ -97,6 +101,9 @@ class MapObject(Sprite):
 
     def command(self, command):
         # add a command to the command queue
+        if self.command_name(command) == "Path_To":
+            # interrupt command
+            pass
         self.command_queue.append(command)
 
     def command_name(self, command):
@@ -154,11 +161,11 @@ class MapObject(Sprite):
                     break
             if found:
                 break
-            # preferred direction can also be implemented here, each map object can have a direction, and when
-            #  when building adjacents preference in order is given to the square in the direction of the map
-            # object when no other considerations matter.  The direction implementation could be a integer that
+            # preferred direction can also be implemented here, each map object can have a direction, and
+            # when building adjacents preference in order is given to the square in the direction of the map
+            # object when no other considerations matter.  the direction implementation could be a integer that
             # wraps 0 to 8 in facings and is relative, like contents = direction(facing) where facing can
-            # be -1, +1, and so on for easy code
+            # be -1, +1, and so on for easy code.  preferred directions are frontier.put() first
             neighbours = self.adjacents(current)
             for next in neighbours:
                 if next not in came_from:
@@ -188,8 +195,9 @@ class MapObject(Sprite):
         # 0 1 2
         # 3 4 5
         # 6 7 8
-        # with that layout order, block out invalid orthographic moves due to walls
+        # clear the current tile so it isn't included in neighbours
         adjacents[4] = None
+        # with the layout order, block out invalid orthographic moves due to walls
         if adjacents[1] == MapObject.WALL:
             adjacents[0] = None
             adjacents[2] = None

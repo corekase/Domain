@@ -1,11 +1,11 @@
 import time, pygame
-from components.utility import image_resource, file_resource, draw_info_panel, draw_domain, tile_graphical_centre
+from components.utility import image_resource, file_resource, draw_info_panel, draw_domain
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.group import PyscrollGroup
 from components.bundled.pyscroll.data import TiledMapData
-from components.mapobject import MapObject
+from components.mapobject import MapObject, Path_To
 from components.agentobject import AgentObject
 from components.itemobject import ItemObject
 from components.avatarobject import AvatarObject
@@ -231,6 +231,7 @@ class Main:
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
                         x_cell, y_cell = self.pick_cell(x, y)
+                        self.avatar.command(Path_To((x_cell, y_cell)))
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False
