@@ -166,23 +166,15 @@ class Main:
     def pick_cell(self, x, y):
         # normalize the x and y mouse coordinates to surface coordinates for the map
         x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
-        # grid the screen at the current zoom into tile-sized amounts
         x_tile_size = self.map.tilewidth * self.renderer.zoom
         y_tile_size = self.map.tileheight * self.renderer.zoom
-        # origin coordinate
-        origin_x = self.view_surface_rect.width / 2
-        origin_y = self.view_surface_rect.height / 2
-        # calculate screen tile from origin
-        x = origin_x - x_pos
-        y = origin_y - y_pos
-        # adjust for partial tiles
-
-        # add base to screen tile
-
-        # divide into grid
-        x /= x_tile_size
-        y /= y_tile_size
-        x_coord, y_coord = int(x), int(y)
+        map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
+        map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
+        view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
+        view_centre_y = self.renderer.view_rect.centery * self.renderer.zoom
+        x = map_centre_x - view_centre_x - x_pos
+        y = map_centre_y - view_centre_y - y_pos
+        x_coord, y_coord = int(x / x_tile_size), int(y / y_tile_size)
         self.xy_status = f'X:{x_coord}, Y:{y_coord}'
         return x_coord, y_coord
 
