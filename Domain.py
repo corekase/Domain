@@ -1,5 +1,5 @@
 import time, pygame
-from components.utility import image_resource, file_resource, draw_info_panel, draw_domain
+from components.utility import image_resource, file_resource, draw_info_panel, draw_domain, tile_graphical_centre
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 from components.bundled.pyscroll.orthographic import BufferedRenderer
@@ -162,49 +162,23 @@ class Main:
         pygame.quit()
 
     def pick_cell(self, x, y):
-        # rewrite this and make the origin of the screen for x and y to be the centre
-        xr = self.view_surface_rect.x
-        yr = self.view_surface_rect.y
-
-        x_pos = x - xr
-        y_pos = y - yr
-
-        x_pos = self.snap_to(x_pos, self.map.tilewidth)
-        y_pos = self.snap_to(y_pos, self.map.tileheight)
-
-        partial_x = int((self.renderer.map_rect.width - self.view_surface_rect.width) / self.map.tilewidth)
-        partial_y = int((self.renderer.map_rect.height - self.view_surface_rect.height) / self.map.tileheight)
-
-        x_pos -= partial_x * self.renderer.zoom
-        y_pos -= partial_y * self.renderer.zoom
-
-        x_lr = self.renderer.view_rect.x
-        x_total = self.renderer.map_rect.width
-        x_segment = self.map.tilewidth * self.renderer.zoom
-
-        y_lr = self.renderer.view_rect.y
-        y_total = self.renderer.map_rect.height
-        y_segment = self.map.tileheight * self.renderer.zoom
-
-        x_coord = self.cell(x_lr, x_pos, x_total, x_segment, self.map.tilewidth)
-        y_coord = self.cell(y_lr, y_pos, y_total, y_segment, self.map.tileheight)
-
-        self.xy_status = f'X:{int(x_coord)}, Y:{int(y_coord)}'
-        return x_coord, y_coord
-
-    def snap_to(self, position, tilesize):
-        p1 = int(position / tilesize)
-        p2 = (position / tilesize) / tilesize
-        p3 = (p1 * tilesize)
-        p4 = p2 + p3 + int(tilesize / 2)
-        return int(p4)
-
-    def cell(self, lr, pos, total, segment, tile):
-        period = int(total / segment)
-        base_coord = int(((lr + int(tile / 2)) / tile))
-        diff = int(int(pos / period) - (pos / period))
-        coord = int((pos - diff) / segment)
-        return base_coord + coord
+        # normalize screen x and y to the coordinates of where the map is being drawn
+        x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
+        # get current tile sizes
+        x_tile_size, y_tile_size = self.map.tilewidth, self.map.tileheight
+        # scale tile sizes to current zoom level
+        x_tile_size *= self.renderer.zoom
+        y_tile_size *= self.renderer.zoom
+        # calculate current view centre to map position
+        x_origin, y_origin = self.main_viewport
+        x_pos -= x_origin / x_tile_size
+        y_pos -= y_origin / y_tile_size
+        # normalize them to top-left of the map
+        x_pos /= x_tile_size
+        y_pos /= y_tile_size
+        x_pos, y_pos = int(x_pos), int(y_pos)
+        self.xy_status = f'X:{x_pos}, Y:{y_pos}'
+        return x_pos, y_pos
 
     def handle_events(self):
         cursor_flag = False

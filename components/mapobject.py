@@ -154,6 +154,11 @@ class MapObject(Sprite):
                     break
             if found:
                 break
+            # preferred direction can also be implemented here, each map object can have a direction, and when
+            #  when building adjacents preference in order is given to the square in the direction of the map
+            # object when no other considerations matter.  The direction implementation could be a integer that
+            # wraps 0 to 8 in facings and is relative, like contents = direction(facing) where facing can
+            # be -1, +1, and so on for easy code
             neighbours = self.adjacents(current)
             for next in neighbours:
                 if next not in came_from:
