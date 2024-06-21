@@ -121,7 +121,11 @@ class Main:
             total_time += elapsed_time
             # handle events
             self.handle_events()
-            self.pick_cell(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+            x, y = pygame.mouse.get_pos()
+            if self.view_surface_rect.collidepoint(x, y):
+                self.pick_cell(x, y)
+            else:
+                self.xy_status = "N/A"
             # update domain state
             self.update_domain(elapsed_time)
             # clear screen
