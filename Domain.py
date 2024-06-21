@@ -121,6 +121,7 @@ class Main:
             total_time += elapsed_time
             # handle events
             self.handle_events()
+            self.pick_cell(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
             # update domain state
             self.update_domain(elapsed_time)
             # clear screen
@@ -170,10 +171,10 @@ class Main:
         x_tile_size *= self.renderer.zoom
         y_tile_size *= self.renderer.zoom
         # calculate current view centre to map position
-        x_origin, y_origin = self.main_viewport
-        x_pos -= x_origin / x_tile_size
-        y_pos -= y_origin / y_tile_size
-        # normalize them to top-left of the map
+        x_origin = self.renderer.view_rect.centerx
+        y_origin = self.renderer.view_rect.centery
+        x_pos += x_origin
+        y_pos += y_origin
         x_pos /= x_tile_size
         y_pos /= y_tile_size
         x_pos, y_pos = int(x_pos), int(y_pos)
