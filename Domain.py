@@ -11,7 +11,6 @@ from components.itemobject import ItemObject
 from components.avatarobject import AvatarObject
 from pygame import Rect
 from components.bundled.pytmx.util_pygame import load_pygame
-from math import floor
 
 class Main:
     def __init__(self):
@@ -164,7 +163,6 @@ class Main:
         pygame.quit()
 
     def pick_cell(self, x, y):
-        # normalize the x and y mouse coordinates to surface coordinates for the map
         x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
         x_tile_size = self.map.tilewidth * self.renderer.zoom
         y_tile_size = self.map.tileheight * self.renderer.zoom
@@ -172,9 +170,9 @@ class Main:
         map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
         view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
         view_centre_y = self.renderer.view_rect.centery * self.renderer.zoom
-        x = map_centre_x - view_centre_x - x_pos
-        y = map_centre_y - view_centre_y - y_pos
-        x_coord, y_coord = int(x / x_tile_size), int(y / y_tile_size)
+        relative_x = map_centre_x - view_centre_x - x_pos
+        relative_y = map_centre_y - view_centre_y - y_pos
+        x_coord, y_coord = int(relative_x / x_tile_size), int(relative_y / y_tile_size)
         self.xy_status = f'X:{x_coord}, Y:{y_coord}'
         return x_coord, y_coord
 
