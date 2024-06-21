@@ -167,18 +167,24 @@ class Main:
         pygame.quit()
 
     def pick_cell(self, x, y):
+        # normalize x and y mouse position to the screen coordinates of the surface
         x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
+        # get all the needed information from the map and renderer
         x_tile_size = self.map.tilewidth * self.renderer.zoom
         y_tile_size = self.map.tileheight * self.renderer.zoom
         map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
         map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
         view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
         view_centre_y = self.renderer.view_rect.centery * self.renderer.zoom
+        # go through each geometry frame ending at the x and y mouse position
         relative_x = map_centre_x - view_centre_x - x_pos
         relative_y = map_centre_y - view_centre_y - y_pos
+        # divide those into tile sizes to get a coordinate
         x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
+        # convert that screen coordinate into an array coordinate for programming
         x_coord = int(-x_coord + self.map.width / 2)
         y_coord = int(-y_coord + self.map.height / 2)
+        # update the status for the information panel
         self.xy_status = f'X:{x_coord}, Y:{y_coord}'
         return x_coord, y_coord
 
