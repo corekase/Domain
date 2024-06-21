@@ -163,20 +163,15 @@ class Main:
         pygame.quit()
 
     def pick_cell(self, x, y):
-        # normalize screen x and y to the coordinates of where the map is being drawn
         x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
-        # get current tile sizes
-        x_tile_size, y_tile_size = self.map.tilewidth, self.map.tileheight
-        # scale tile sizes to current zoom level
-        x_tile_size *= self.renderer.zoom
-        y_tile_size *= self.renderer.zoom
-        # calculate current view centre to map position
-        x_origin = self.renderer.view_rect.centerx
-        y_origin = self.renderer.view_rect.centery
-        x_pos += x_origin
-        y_pos += y_origin
-        x_pos /= x_tile_size
-        y_pos /= y_tile_size
+        x_tile_size = self.map.tilewidth * self.renderer.zoom
+        y_tile_size = self.map.tileheight * self.renderer.zoom
+        x_tile_amount = self.view_surface_rect.width / x_tile_size
+        y_tile_amount = self.view_surface_rect.height / y_tile_size
+        tile_x = x_pos / x_tile_amount
+        tile_y = y_pos / y_tile_amount
+        x_pos = tile_x
+        y_pos = tile_y
         x_pos, y_pos = int(x_pos), int(y_pos)
         self.xy_status = f'X:{x_pos}, Y:{y_pos}'
         return x_pos, y_pos
