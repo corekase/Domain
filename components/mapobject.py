@@ -1,7 +1,7 @@
 import pygame
 from queue import Queue
 from math import cos, sin, atan2, radians, degrees, sqrt
-from .utility import tile_graphical_centre
+from .utility import tile_graphical_centre, image_resource
 from collections import namedtuple
 from pygame.sprite import Sprite
 from random import randint
@@ -10,6 +10,10 @@ from random import randint
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
 Path_To = namedtuple('Path_To', 'position')
+
+class Position:
+    def __init__(self, position):
+        self.x_coord, self.y_coord = position
 
 class MapObject(Sprite):
     # reference for the map object
@@ -45,8 +49,6 @@ class MapObject(Sprite):
         # if this agent isn't overlapping other agents return its image to normal
         if len(self.overlap_agents) == 0:
             self.image = self.normal_image
-        # if there are any interrupt commands then process them
-        pass
         # check the command queue for any commands
         if len(self.command_queue) > 0:
             # there is a command, get it
@@ -68,27 +70,14 @@ class MapObject(Sprite):
                 else:
                     # move towards destination
                     self.move(self.find_bearing_angle(destination), elapsed_time)
-            elif command_name == 'Path_To':
+            elif command_name == "Path_To":
                 # from current x_coord and y_coord move to destination in cells coordinates
-                # this is so the avatar can have a new position, let the last move to a cell
-                # complete, clear the rest of the moves and then this instruction picks up
-                # to go to the new destination
-                # path_to will be an interrupt, when it takes over it will inspect the queue
-                # for a move_to and then let that one item complete
-                position = command.position
-                if self.command_name(self.command_queue[0]) == "Move_To":
-                    # finish move to, then add path_to command with same position
-                    # so command queue = command queue [1:] + path_to command to position
-                    pass
-                else:
-                    # if there was a move_to it's now done
-
-                    # clear the queue
-                    self.command_queue = []
-
-                    # find valid path, if no valid path do nothing
-
-                    # do Path_To positions
+                destination = command.position
+                self.command_queue = []
+                # find valid path, if no valid path do nothing
+                path = self.find_path((self.x_coord, self.y_coord), destination)
+                if path != None:
+                    self.follow_path(path)
             else:
                 raise(f'Command: {command_name} not implemented')
         else:
@@ -101,9 +90,6 @@ class MapObject(Sprite):
 
     def command(self, command):
         # add a command to the command queue
-        if self.command_name(command) == "Path_To":
-            # interrupt command
-            pass
         self.command_queue.append(command)
 
     def command_name(self, command):
@@ -136,7 +122,8 @@ class MapObject(Sprite):
 
     def find_path(self, position1, position2):
         # call find nearest with a destination list of one position and return just the path
-        return self.find_nearest(position1, [position2[0], position2[1], None])[0]
+        path = self.find_nearest(position1, [Position(position2)])[0]
+        return path
 
     def find_nearest(self, start_position, destination_objects):
         # data structure for objects for find_nearest

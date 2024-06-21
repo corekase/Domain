@@ -230,8 +230,11 @@ class Main:
                     x, y = pygame.mouse.get_pos()
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
-                        x_cell, y_cell = self.pick_cell(x, y)
-                        self.avatar.command(Path_To((x_cell, y_cell)))
+                        if len(self.avatar.command_queue) == 0:
+                            x_cell, y_cell = self.pick_cell(x, y)
+                            self.avatar.command(Path_To((x_cell, y_cell)))
+                        else:
+                            self.avatar.command_queue = []
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False
