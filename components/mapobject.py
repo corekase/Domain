@@ -34,7 +34,7 @@ class MapObject(Sprite):
         # speed variable, world pixels per second
         self.speed = 0.0
         # list of agents currently overlapping this one
-        self.overlap_agents = []
+        self.overlap_mapobjects = []
         # command queue
         self.command_queue = []
         # subclasess must do:
@@ -44,10 +44,11 @@ class MapObject(Sprite):
         # with valid values before they exit their __init__
 
     def update(self, elapsed_time):
-        # filter overlapped agents so that only agents still overlapping are kept
-        self.overlap_agents = [agent for agent in self.overlap_agents if pygame.sprite.collide_rect(self, agent)]
+        # filter overlapped mapobjects so that only objects still overlapping are kept
+        self.overlap_mapobjects = [mapobject for mapobject in self.overlap_mapobjects \
+                               if pygame.sprite.collide_rect(self, mapobject)]
         # if this agent isn't overlapping other agents return its image to normal
-        if len(self.overlap_agents) == 0:
+        if len(self.overlap_mapobjects) == 0:
             self.image = self.normal_image
         # check the command queue for any commands
         if len(self.command_queue) > 0:
@@ -228,10 +229,10 @@ class MapObject(Sprite):
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
         self.x_coord, self.y_coord = int(self.rect.centerx / MapObject.map.tilewidth), int(self.rect.centery / MapObject.map.tileheight)
 
-    def overlap(self, other_agent):
-        # other_agent is overlapping rects with this agent, if it's not already in overlap_agents then add it
-        if not (other_agent in self.overlap_agents):
+    def overlap(self, other_mapobject):
+        # other_mapobject is overlapping rects with this mapobject, if it's not already in overlap_mapobjects then add it
+        if not (other_mapobject in self.overlap_mapobjects):
             # set visual sprite to overlap image
             self.image = self.overlap_image
             # remember the agent
-            self.overlap_agents.append(other_agent)
+            self.overlap_mapobjects.append(other_mapobject)
