@@ -10,6 +10,7 @@ Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
 Path_To = namedtuple('Path_To', 'position')
 Chase = namedtuple('Chase', 'target')
+Cool_Down = namedtuple('Cool_Down', 'duration')
 
 class Position:
     def __init__(self, position):
@@ -80,9 +81,12 @@ class MapObject(Sprite):
                 if path != None:
                     self.follow_path(path)
             elif command_name == "Chase":
-                # every cycle get the cell coordinate of a target and do a find_nearest to it
+                # get the cell coordinate of a target and do a find_nearest to it
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
                 # to get a new chase coordinate each cycle
+                pass
+            elif command_name == "Cool_Down":
+                # track and wait a number of seconds and then remove the cool_down command from the queue
                 pass
             else:
                 raise(f'Command: {command_name} not implemented')
