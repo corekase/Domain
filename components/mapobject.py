@@ -46,7 +46,7 @@ class MapObject(Sprite):
     def update(self, elapsed_time):
         # filter overlapped mapobjects so that only objects still overlapping are kept
         self.overlap_mapobjects = [mapobject for mapobject in self.overlap_mapobjects \
-                               if pygame.sprite.collide_rect(self, mapobject)]
+                                   if pygame.sprite.collide_rect(self, mapobject)]
         # if this agent isn't overlapping other agents return its image to normal
         if len(self.overlap_mapobjects) == 0:
             self.image = self.normal_image
