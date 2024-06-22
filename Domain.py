@@ -1,5 +1,6 @@
 import time, pygame
 from components.utility import image_resource, file_resource, draw_info_panel, draw_domain
+from components.bundled.pytmx.util_pygame import load_pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 from components.bundled.pyscroll.orthographic import BufferedRenderer
@@ -10,7 +11,6 @@ from components.agentobject import AgentObject
 from components.itemobject import ItemObject
 from components.avatarobject import AvatarObject
 from pygame import Rect
-from components.bundled.pytmx.util_pygame import load_pygame
 
 class Main:
     def __init__(self):
