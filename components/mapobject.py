@@ -96,6 +96,10 @@ class MapObject(Sprite):
     def command_name(self, command):
         return type(command).__name__
 
+    def queue_length(self):
+        # return how many items are in the queue
+        return len(self.command_queue)
+
     def clear_queue(self):
         # remove all commands from the queue
         self.command_queue = []

@@ -181,7 +181,7 @@ class Main:
                     x, y = event.pos
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
-                        if len(self.avatar.command_queue) == 0:
+                        if self.avatar.queue_length() == 0:
                             x_cell, y_cell = self.pick_cell(x, y)
                             self.avatar.command(Path_To((x_cell, y_cell)))
                         else:
