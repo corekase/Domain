@@ -201,6 +201,7 @@ class MapObject(Sprite):
         # filtering here can also be passed a list of cell ranges as rectangles.  The rectangles,
         # allowed ones, are used to keep moving mapobjects within specific areas.  They limit pathfinding
         # to those cell coordinate rectangles keeping the mapobjects in allowed zones
+        # a zone could also be relative to a mapobject position.  So that would be "find things within range"
         valid_neighbours = []
         for num, value in enumerate(adjacents):
             if value == MapObject.FLOOR:
