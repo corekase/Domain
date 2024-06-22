@@ -30,7 +30,8 @@ class Main:
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
         # load a default font
-        self.font = pygame.font.Font(pygame.font.get_default_font(), 16)
+        self.font_size = 16
+        self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
         # load images for custom mouse pointers
         self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
         self.cursor_panning_image = image_alpha_resource('cursors', 'cursor_pan_x7_y7.png')
@@ -130,7 +131,7 @@ class Main:
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
             # draw information panel
-            self.draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
+            self.draw_info_panel(total_time, clock.get_fps())
             # draw mouse cursor
             self.draw_mouse()
             # limit frames-per-second
@@ -261,25 +262,25 @@ class Main:
         # draw map and group objects to surface
         self.domain.draw(self.view_surface)
 
-    def draw_info_panel(self, screen, font, cycle, total_time, fps, xy_status):
+    def draw_info_panel(self, total_time, fps):
         # draw a graphical panel showing various information
-        screen_size = screen.get_rect()
+        screen_size = self.screen.get_rect()
         x, y = screen_size.right - 185, 5
-        w, h = 180, 75
+        w, h = 180, (4 * self.font_size) + (4 * 2) + 2
         seconds = total_time % (24 * 3600)
         hours = int(seconds // 3600)
         seconds %= 3600
         minutes = int(seconds // 60)
         seconds = int(seconds % 60)
-        pygame.draw.rect(screen, (50, 50, 200), (x + 1, y + 1, w - 1, h - 1), 0)
-        pygame.draw.rect(screen, (255, 255, 255), (x, y, w, h), 1)
-        text = f'Cycle: {cycle}'
-        screen.blit(font.render(text, True, (200, 200, 255)), (x + 3, y + 3))
+        pygame.draw.rect(self.screen, (50, 50, 200), (x + 1, y + 1, w - 1, h - 1), 0)
+        pygame.draw.rect(self.screen, (255, 255, 255), (x, y, w, h), 1)
+        text = f'Cycle: {self.cycle}'
+        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + 2 + (0 * self.font_size) + (0 * 2)))
         text = f'Time: {hours}h {minutes}m {seconds}s'
-        screen.blit(font.render(text, True, (200, 200, 255)), (x + 3, y + 21))
+        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + 2 +(1 * self.font_size) + (1 * 2)))
         text = f'FPS: {int(round(fps))}'
-        screen.blit(font.render(text, True, (200, 200, 255)), (x + 3, y + 39))
-        screen.blit(font.render(xy_status, True, (200, 200, 255)), (x + 3, y + 56))
+        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + 2 + (2 * self.font_size) + (2 * 2)))
+        self.screen.blit(self.font.render(self.xy_status, True, (200, 200, 255)), (x + 3, y + 2 + (3 * self.font_size) + (3 * 2)))
 
     def pick_cell(self, x, y):
         # normalize x and y mouse position to the screen coordinates of the surface
