@@ -85,7 +85,7 @@ class MapObject(Sprite):
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
                 # to get a new chase coordinate each cycle
                 pass
-            elif command_name == "Cool_Down":
+            elif command_name == 'Cool_Down':
                 # track and wait a number of seconds and then remove the cool_down command from the queue
                 pass
             else:
