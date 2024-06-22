@@ -145,30 +145,7 @@ class Main:
         # release resources
         pygame.quit()
 
-    def pick_cell(self, x, y):
-        # normalize x and y mouse position to the screen coordinates of the surface
-        x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
-        # get all the needed information from the map and renderer
-        x_tile_size = self.map.tilewidth * self.renderer.zoom
-        y_tile_size = self.map.tileheight * self.renderer.zoom
-        map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
-        map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
-        view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
-        view_centre_y = self.renderer.view_rect.centery * self.renderer.zoom
-        # go through each geometry frame ending at the x and y mouse position
-        relative_x = map_centre_x - view_centre_x - x_pos
-        relative_y = map_centre_y - view_centre_y - y_pos
-        # divide those into tile sizes to get a coordinate
-        x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
-        # convert that screen coordinate into an array coordinate for programming
-        x_coord = int(-x_coord + self.map.width / 2)
-        y_coord = int(-y_coord + self.map.height / 2)
-        # update the status for the information panel
-        self.xy_status = f'X:{x_coord}, Y:{y_coord}'
-        return x_coord, y_coord
-
     def handle_events(self):
-        cursor_flag = False
         # handle event queue
         for event in pygame.event.get():
             # window close widget
@@ -227,13 +204,6 @@ class Main:
                     self.main_viewport[1] += y - self.pan_hold_position[1]
                     pygame.mouse.set_pos(self.pan_hold_position)
 
-    def set_zoom_index(self, index_delta):
-        # clamp index inside zoom_amounts list.
-        self.zoom_amounts_index = max(0, min(self.zoom_amounts_index + index_delta,
-                                             len(self.zoom_amounts) - 1))
-        # update state information inside the renderer
-        self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
-
     def update_domain(self, elapsed_time):
         # update the agents in the group
         self.domain.update(elapsed_time)
@@ -250,6 +220,35 @@ class Main:
                     # for overall fast collisions and then accuracy only when overlapped
                     object.overlap(other_object)
                     other_object.overlap(object)
+
+    def set_zoom_index(self, index_delta):
+        # clamp index inside zoom_amounts list.
+        self.zoom_amounts_index = max(0, min(self.zoom_amounts_index + index_delta,
+                                             len(self.zoom_amounts) - 1))
+        # update state information inside the renderer
+        self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
+
+    def pick_cell(self, x, y):
+        # normalize x and y mouse position to the screen coordinates of the surface
+        x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
+        # get all the needed information from the map and renderer
+        x_tile_size = self.map.tilewidth * self.renderer.zoom
+        y_tile_size = self.map.tileheight * self.renderer.zoom
+        map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
+        map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
+        view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
+        view_centre_y = self.renderer.view_rect.centery * self.renderer.zoom
+        # go through each geometry frame ending at the x and y mouse position
+        relative_x = map_centre_x - view_centre_x - x_pos
+        relative_y = map_centre_y - view_centre_y - y_pos
+        # divide those into tile sizes to get a coordinate
+        x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
+        # convert that screen coordinate into an array coordinate for programming
+        x_coord = int(-x_coord + self.map.width / 2)
+        y_coord = int(-y_coord + self.map.height / 2)
+        # update the status for the information panel
+        self.xy_status = f'X:{x_coord}, Y:{y_coord}'
+        return x_coord, y_coord
 
     def draw_mouse(self):
         # draw mouse cursor
