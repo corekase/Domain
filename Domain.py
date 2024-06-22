@@ -137,23 +137,7 @@ class Main:
             # draw information panel
             draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
-            if self.panning:
-                # draw the panning cursor
-                self.screen.set_clip(self.view_surface_rect)
-                self.screen.blit(self.cursor_panning_image,
-                                 (self.pan_hold_position[0] - 7, self.pan_hold_position[1] - 7))
-                self.screen.set_clip(None)
-            else:
-                x, y = pygame.mouse.get_pos()
-                # is the mouse in the view rect?
-                if self.view_surface_rect.collidepoint(x, y):
-                    # draw normal cursor
-                    self.screen.set_clip(self.view_surface_rect)
-                    self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
-                    self.screen.set_clip(None)
-                else:
-                    # outside of view, draw interface cursor
-                    self.screen.blit(self.cursor_interface_image, (x - 6, y))
+            self.draw_mouse()
             # swap screen buffers
             pygame.display.flip()
             # limit frames-per-second
@@ -266,6 +250,26 @@ class Main:
                     # for overall fast collisions and then accuracy only when overlapped
                     object.overlap(other_object)
                     other_object.overlap(object)
+
+    def draw_mouse(self):
+        # draw mouse cursor
+        if self.panning:
+            # draw the panning cursor
+            self.screen.set_clip(self.view_surface_rect)
+            self.screen.blit(self.cursor_panning_image,
+                                (self.pan_hold_position[0] - 7, self.pan_hold_position[1] - 7))
+            self.screen.set_clip(None)
+        else:
+            x, y = pygame.mouse.get_pos()
+            # is the mouse in the view rect?
+            if self.view_surface_rect.collidepoint(x, y):
+                # draw normal cursor
+                self.screen.set_clip(self.view_surface_rect)
+                self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
+                self.screen.set_clip(None)
+            else:
+                # outside of view, draw interface cursor
+                self.screen.blit(self.cursor_interface_image, (x - 6, y))
 
 if __name__ == '__main__':
     Main().run()
