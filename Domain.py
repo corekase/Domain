@@ -95,7 +95,7 @@ class Main:
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # status for mouse coordinates in the view
-        self.xy_status = 'N/A'
+        self.xy_status = None
         # Set the state of the application to "running"
         self.running = True
 
