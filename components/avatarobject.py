@@ -1,10 +1,10 @@
 from .mapobject import MapObject
-from .utility import image_resource, tile_graphical_centre
+from .utility import image_alpha_resource
 
 class AvatarObject(MapObject):
     def __init__(self):
         super().__init__()
-        self.normal_image = image_resource('sprites', 'avatar', 'avatar_normal.png')
+        self.normal_image = image_alpha_resource('sprites', 'avatar', 'avatar_normal.png')
         self.overlap_image = self.normal_image
         self.image = self.normal_image
         self.rect = self.image.get_rect()
@@ -12,7 +12,7 @@ class AvatarObject(MapObject):
         # get random starting position
         x, y = self.find_random_position(MapObject.FLOOR)
         # translate x and y cell coordinates into world pixel coordinates, centered in the position
-        self.centre_xpos, self.centre_ypos = tile_graphical_centre(MapObject.map, (x, y))
+        self.centre_xpos, self.centre_ypos = self.tile_graphical_centre((x, y))
         # update position state with the translation
         self.rect_sync((self.centre_xpos, self.centre_ypos))
 

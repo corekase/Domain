@@ -1,7 +1,6 @@
 import pygame
 from queue import Queue
 from math import cos, sin, atan2, radians, degrees, sqrt
-from .utility import tile_graphical_centre, image_resource
 from collections import namedtuple
 from pygame.sprite import Sprite
 from random import randint
@@ -123,11 +122,17 @@ class MapObject(Sprite):
         return self.find_distance((self.centre_xpos, self.centre_ypos),
                                   (position[0], position[1]))
 
+    def tile_graphical_centre(self, location):
+        # given a tile x and y coordinate return the graphical x and y center point in map pixels
+        x_width, y_height = self.map.tilewidth, self.map.tileheight
+        x_centre, y_centre = int(x_width / 2), int(y_height / 2)
+        return (location[0] * x_width) + x_centre, (location[1] * y_height) + y_centre
+
     def follow_path(self, path):
         # translate cell coordinates to world pixel coordinate movements for the overall path
         for position in path:
             # tile_graphical_centre does that for each position in the path
-            self.command(Move_To(tile_graphical_centre(MapObject.map, position)))
+            self.command(Move_To(self.tile_graphical_centre(position)))
 
     def find_path(self, position1, position2):
         # call find nearest with a destination list of one position and return just the path

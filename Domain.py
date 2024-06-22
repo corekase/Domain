@@ -1,5 +1,5 @@
 import time, pygame
-from components.utility import image_resource, file_resource
+from components.utility import image_alpha_resource, file_resource
 from components.bundled.pytmx.util_pygame import load_pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
@@ -26,15 +26,15 @@ class Main:
         # set window caption
         pygame.display.set_caption('Domain')
         # set window icon
-        pygame.display.set_icon(image_resource('icon.png'))
+        pygame.display.set_icon(image_alpha_resource('icon.png'))
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
         # load a default font
         self.font = pygame.font.Font(pygame.font.get_default_font(), 16)
         # load images for custom mouse pointers
-        self.cursor_normal_image = image_resource('cursors', 'cursor_normal_x7_y7.png')
-        self.cursor_panning_image = image_resource('cursors', 'cursor_pan_x7_y7.png')
-        self.cursor_interface_image = image_resource('cursors', 'cursor_interface_x6_y0.png')
+        self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
+        self.cursor_panning_image = image_alpha_resource('cursors', 'cursor_pan_x7_y7.png')
+        self.cursor_interface_image = image_alpha_resource('cursors', 'cursor_interface_x6_y0.png')
         # load the map
         self.map = load_pygame(file_resource('domains', 'domain.tmx'))
         # give MapObject subclasses a common reference to the map
