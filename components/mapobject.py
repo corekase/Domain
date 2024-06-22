@@ -122,8 +122,7 @@ class MapObject(Sprite):
 
     def find_path(self, position1, position2):
         # call find nearest with a destination list of one position and return just the path
-        path = self.find_nearest(position1, [Position(position2)])[0]
-        return path
+        return self.find_nearest(position1, [Position(position2)])[0]
 
     def find_nearest(self, start_position, destination_objects):
         # data structure for objects for find_nearest
