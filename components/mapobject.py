@@ -72,7 +72,7 @@ class MapObject(Sprite):
                 else:
                     # move towards destination
                     self.move(self.find_bearing_angle(destination), elapsed_time)
-            elif command_name == "Path_To":
+            elif command_name == 'Path_To':
                 # from current x_coord and y_coord move to destination in cells coordinates
                 destination = command.position
                 self.command_queue = []
@@ -80,7 +80,7 @@ class MapObject(Sprite):
                 path = self.find_path((self.x_coord, self.y_coord), destination)
                 if path != None:
                     self.follow_path(path)
-            elif command_name == "Chase":
+            elif command_name == 'Chase':
                 # get the cell coordinate of a target and do a find_nearest to it
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
                 # to get a new chase coordinate each cycle
