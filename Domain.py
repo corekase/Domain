@@ -133,10 +133,10 @@ class Main:
             draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
             self.draw_mouse()
-            # swap screen buffers
-            pygame.display.flip()
             # limit frames-per-second
             clock.tick(fps)
+            # swap screen buffers
+            pygame.display.flip()
         # release resources
         pygame.quit()
 
@@ -206,9 +206,7 @@ class Main:
             self.xy_status = "N/A"
 
     def update_domain(self, elapsed_time):
-        # update the agents in the group
-        self.domain.update(elapsed_time)
-        # check for other agent collision, the sprites group is an expensive operation
+        # check for other mapobject collision, the sprites group is an expensive operation
         # so is done once on its own line here
         objects = self.domain.sprites()
         for object in objects:
@@ -221,6 +219,8 @@ class Main:
                     # for overall fast collisions and then accuracy only when overlapped
                     object.overlap(other_object)
                     other_object.overlap(object)
+        # update all mapobjects and their subclasses in the domain group
+        self.domain.update(elapsed_time)
 
     def set_zoom_index(self, index_delta):
         # clamp index inside zoom_amounts list.
