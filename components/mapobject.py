@@ -96,6 +96,10 @@ class MapObject(Sprite):
     def command_name(self, command):
         return type(command).__name__
 
+    def clear_queue(self):
+        # remove all commands from the queue
+        self.command_queue = []
+
     def move(self, degree, elapsed_time):
         # move in the direction of degree
         degree %= 360

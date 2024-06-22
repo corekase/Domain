@@ -185,7 +185,7 @@ class Main:
                             x_cell, y_cell = self.pick_cell(x, y)
                             self.avatar.command(Path_To((x_cell, y_cell)))
                         else:
-                            self.avatar.command_queue = []
+                            self.avatar.clear_queue()
                 if event.button == 3:
                     # right button up, end panning state
                     self.panning = False
