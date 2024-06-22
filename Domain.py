@@ -1,5 +1,5 @@
 import time, pygame
-from components.utility import image_resource, file_resource, draw_info_panel, draw_domain
+from components.utility import image_resource, file_resource
 from components.bundled.pytmx.util_pygame import load_pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
@@ -124,13 +124,13 @@ class Main:
             # clear screen
             self.screen.fill((0, 128, 128))
             # draw the main viewport to the viewport surface
-            draw_domain(self.view_surface, self.main_viewport, self.renderer, self.domain)
+            self.draw_domain()
             # and copy that surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
             # draw information panel
-            draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
+            self.draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
             self.draw_mouse()
             # limit frames-per-second
@@ -228,6 +228,58 @@ class Main:
                                              len(self.zoom_amounts) - 1))
         # update state information inside the renderer
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
+
+    def draw_domain(self):
+        # domain is composed of both a map surface and an mapobject group
+        # together those are "domain".  domain = map + mapobjects
+        # update the desired centre of the viewport
+        self.renderer.center(self.main_viewport)
+        # if horizontal out-of-bounds limit them
+        if self.renderer.view_rect.left < self.renderer.map_rect.left:
+            self.main_viewport[0] = self.renderer.view_rect.width / 2.0
+        elif self.renderer.view_rect.right > self.renderer.map_rect.right:
+            self.main_viewport[0] = self.renderer.map_rect.right - (self.renderer.view_rect.width / 2.0)
+        # if smaller than horizontal screen size then centre
+        if self.view_surface.get_width() <= self.renderer.view_rect.width:
+            screen_centre_x = self.view_surface.get_rect().centerx
+            map_centre_x = self.renderer.map_rect.centerx
+            self.main_viewport[0] = screen_centre_x - (screen_centre_x - map_centre_x)
+        # if vertical out-of-bounds limit them
+        if self.renderer.view_rect.top < self.renderer.map_rect.top:
+            self.main_viewport[1] = self.renderer.view_rect.height / 2.0
+        elif self.renderer.view_rect.bottom > self.renderer.map_rect.bottom:
+            self.main_viewport[1] = self.renderer.map_rect.bottom - (self.renderer.view_rect.height / 2.0)
+        # if smaller than vertical screensize then centre
+        if self.view_surface.get_height() <= self.renderer.view_rect.height:
+            screen_centre_y = self.view_surface.get_rect().centery
+            map_centre_y = self.renderer.map_rect.centery
+            self.main_viewport[1] = screen_centre_y - (screen_centre_y - map_centre_y)
+        # align view centre to pixel coordinates by converting them to ints
+        self.main_viewport[0], self.main_viewport[1] = int(self.main_viewport[0]), int(self.main_viewport[1])
+        # reupdate the viewport, viewport is updated here in case the bounds were modified
+        self.renderer.center(self.main_viewport)
+        # draw map and group objects to surface
+        self.domain.draw(self.view_surface)
+
+    def draw_info_panel(self, screen, font, cycle, total_time, fps, xy_status):
+        # draw a graphical panel showing various information
+        screen_size = screen.get_rect()
+        x, y = screen_size.right - 185, 5
+        w, h = 180, 75
+        seconds = total_time % (24 * 3600)
+        hours = int(seconds // 3600)
+        seconds %= 3600
+        minutes = int(seconds // 60)
+        seconds = int(seconds % 60)
+        pygame.draw.rect(screen, (50, 50, 200), (x + 1, y + 1, w - 1, h - 1), 0)
+        pygame.draw.rect(screen, (255, 255, 255), (x, y, w, h), 1)
+        text = f'Cycle: {cycle}'
+        screen.blit(font.render(text, True, (200, 200, 255)), (x + 3, y + 3))
+        text = f'Time: {hours}h {minutes}m {seconds}s'
+        screen.blit(font.render(text, True, (200, 200, 255)), (x + 3, y + 21))
+        text = f'FPS: {int(round(fps))}'
+        screen.blit(font.render(text, True, (200, 200, 255)), (x + 3, y + 39))
+        screen.blit(font.render(xy_status, True, (200, 200, 255)), (x + 3, y + 56))
 
     def pick_cell(self, x, y):
         # normalize x and y mouse position to the screen coordinates of the surface
