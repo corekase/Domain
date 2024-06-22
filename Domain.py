@@ -119,11 +119,6 @@ class Main:
             total_time += elapsed_time
             # handle events
             self.handle_events()
-            x, y = pygame.mouse.get_pos()
-            if self.view_surface_rect.collidepoint(x, y):
-                self.pick_cell(x, y)
-            else:
-                self.xy_status = "N/A"
             # update domain state
             self.update_domain(elapsed_time)
             # clear screen
@@ -203,6 +198,12 @@ class Main:
                     self.main_viewport[0] += x - self.pan_hold_position[0]
                     self.main_viewport[1] += y - self.pan_hold_position[1]
                     pygame.mouse.set_pos(self.pan_hold_position)
+        # update the x and y cell coordinates for the information panel
+        x, y = pygame.mouse.get_pos()
+        if self.view_surface_rect.collidepoint(x, y):
+            self.pick_cell(x, y)
+        else:
+            self.xy_status = "N/A"
 
     def update_domain(self, elapsed_time):
         # update the agents in the group
