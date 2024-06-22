@@ -96,8 +96,6 @@ class Main:
         self.cycle = -1
         # status for mouse coordinates in the view
         self.xy_status = 'N/A'
-        # cursor rectangle, saved to be drawn after the domain is drawn
-        self.cursor_rect = None
         # Set the state of the application to "running"
         self.running = True
 
@@ -136,9 +134,6 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
-            if self.cursor_rect != None:
-                # draw the cursor rectangle over the domain
-                pass
             # draw information panel
             draw_info_panel(self.screen, self.font, self.cycle, total_time, clock.get_fps(), self.xy_status)
             # draw mouse cursor
@@ -227,7 +222,7 @@ class Main:
             elif event.type == MOUSEBUTTONUP:
                 if event.button == 1:
                     # left button up, which is destination point for avatar
-                    x, y = pygame.mouse.get_pos()
+                    x, y = event.pos
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if len(self.avatar.command_queue) == 0:
@@ -243,16 +238,10 @@ class Main:
                 # if the mouse is moving
                 if event.type == MOUSEMOTION:
                     # move the centre of the viewport
-                    x, y = pygame.mouse.get_pos()
+                    x, y = event.pos
                     self.main_viewport[0] += x - self.pan_hold_position[0]
                     self.main_viewport[1] += y - self.pan_hold_position[1]
                     pygame.mouse.set_pos(self.pan_hold_position)
-
-            if cursor_flag:
-                self.cursor_rect = pygame.Rect(0, 0, 0, 0)
-            else:
-                # don't draw the rect
-                self.cursor_rect = None
 
     def set_zoom_index(self, index_delta):
         # clamp index inside zoom_amounts list.
