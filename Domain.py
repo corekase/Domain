@@ -199,7 +199,7 @@ class Main:
                     self.main_viewport[0] += x - self.pan_hold_position[0]
                     self.main_viewport[1] += y - self.pan_hold_position[1]
                     pygame.mouse.set_pos(self.pan_hold_position)
-        # update the x and y cell coordinates for the information panel
+        # update the x and y map indexes for the information panel
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
             x_coord, y_coord = self.pick_cell(x, y)
