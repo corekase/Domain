@@ -264,9 +264,12 @@ class Main:
 
     def draw_info_panel(self, total_time, fps):
         # draw a graphical panel showing various information
+        def padding(line):
+            # return a y position line coordinate
+            return 2 + (line * self.font_size) + (line * 1)
         screen_size = self.screen.get_rect()
         x, y = screen_size.right - 185, 5
-        w, h = 180, (4 * self.font_size) + (4 * 2) + 2
+        w, h = 180, padding(4)
         seconds = total_time % (24 * 3600)
         hours = int(seconds // 3600)
         seconds %= 3600
@@ -275,12 +278,12 @@ class Main:
         pygame.draw.rect(self.screen, (50, 50, 200), (x + 1, y + 1, w - 1, h - 1), 0)
         pygame.draw.rect(self.screen, (255, 255, 255), (x, y, w, h), 1)
         text = f'Cycle: {self.cycle}'
-        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + 2 + (0 * self.font_size) + (0 * 2)))
+        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + padding(0)))
         text = f'Time: {hours}h {minutes}m {seconds}s'
-        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + 2 +(1 * self.font_size) + (1 * 2)))
+        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + padding(1)))
         text = f'FPS: {int(round(fps))}'
-        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + 2 + (2 * self.font_size) + (2 * 2)))
-        self.screen.blit(self.font.render(self.xy_status, True, (200, 200, 255)), (x + 3, y + 2 + (3 * self.font_size) + (3 * 2)))
+        self.screen.blit(self.font.render(text, True, (200, 200, 255)), (x + 3, y + padding(2)))
+        self.screen.blit(self.font.render(self.xy_status, True, (200, 200, 255)), (x + 3, y + padding(3)))
 
     def pick_cell(self, x, y):
         # normalize x and y mouse position to the screen coordinates of the surface
