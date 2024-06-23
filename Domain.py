@@ -265,11 +265,11 @@ class Main:
     def draw_info_panel(self, total_time, fps):
         # draw a graphical panel showing various information
         def padding(line):
-            # return a y position line coordinate
+            # y = base + line height + spacer
             return 2 + (line * self.font_size) + (line * 2)
         screen_size = self.screen.get_rect()
-        x, y = screen_size.right - 185, screen_size.bottom - (padding(4) + 5)
-        w, h = 180, padding(4)
+        x, y = screen_size.right - 145, screen_size.bottom - (padding(4) + 5)
+        w, h = 140, padding(4)
         seconds = total_time % (24 * 3600)
         hours = int(seconds // 3600)
         seconds %= 3600
