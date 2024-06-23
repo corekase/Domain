@@ -30,7 +30,7 @@ class Main:
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
         # load a default font
-        self.font_size = 16
+        self.font_size = 14
         self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
         # load images for custom mouse pointers
         self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
@@ -266,9 +266,9 @@ class Main:
         # draw a graphical panel showing various information
         def padding(line):
             # return a y position line coordinate
-            return 2 + (line * self.font_size) + (line * 1)
+            return 2 + (line * self.font_size) + (line * 2)
         screen_size = self.screen.get_rect()
-        x, y = screen_size.right - 185, 5
+        x, y = screen_size.right - 185, screen_size.bottom - (padding(4) + 5)
         w, h = 180, padding(4)
         seconds = total_time % (24 * 3600)
         hours = int(seconds // 3600)
