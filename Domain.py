@@ -202,8 +202,11 @@ class Main:
         # update the x and y cell coordinates for the information panel
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
-            self.pick_cell(x, y)
+            x_coord, y_coord = self.pick_cell(x, y)
+            # update the status for the information panel
+            self.xy_status = f'X:{x_coord}, Y:{y_coord}'
         else:
+            # not inside the surface rect
             self.xy_status = "N/A"
 
     def update_domain(self, elapsed_time):
@@ -309,8 +312,7 @@ class Main:
         # convert that screen coordinate into an array coordinate for programming
         x_coord = int(-x_coord + self.map.width / 2)
         y_coord = int(-y_coord + self.map.height / 2)
-        # update the status for the information panel
-        self.xy_status = f'X:{x_coord}, Y:{y_coord}'
+        # coordinates are now in map array indexes
         return x_coord, y_coord
 
     def draw_mouse(self):
