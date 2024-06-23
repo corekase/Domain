@@ -269,7 +269,7 @@ class Main:
         # text layout helper function
         def padding(line):
             # y = base + line height + spacer size
-            return 2 + (line * self.font_size) + (line * 1)
+            return 2 + (line * self.font_size) + (line * 2)
         # calculate divisions of total_time
         seconds = total_time % (24 * 3600)
         hours = int(seconds // 3600)
