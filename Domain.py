@@ -95,7 +95,7 @@ class Main:
         self.domain.add(self.avatar)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
-        # status for mouse coordinates in the view
+        # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.xy_status = None
         # Set the state of the application to "running"
         self.running = True
