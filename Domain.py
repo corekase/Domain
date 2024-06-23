@@ -291,6 +291,9 @@ class Main:
         def padding(line):
             # y = base + line height + spacer size
             return 2 + (line * self.font_size) + (line * 2)
+        # render helper function so same values aren't repeated
+        def render(text):
+            return self.font.render(text, True, (200, 200, 255))
         # calculate divisions of total_time
         seconds = total_time % (24 * 3600)
         hours = int(seconds // 3600)
@@ -309,11 +312,11 @@ class Main:
         time = f'Time: {hours}h {minutes}m {seconds}s'
         fps = f'FPS: {int(round(fps))}'
         # draw each line onto the screen
-        self.screen.blit(self.font.render(cycle, True, (200, 200, 255)), (x_pos + 3, y_pos + padding(0)))
-        self.screen.blit(self.font.render(time, True, (200, 200, 255)), (x_pos + 3, y_pos + padding(1)))
-        self.screen.blit(self.font.render(fps, True, (200, 200, 255)), (x_pos + 3, y_pos + padding(2)))
+        self.screen.blit(render(cycle), (x_pos + 3, y_pos + padding(0)))
+        self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
+        self.screen.blit(render(fps), (x_pos + 3, y_pos + padding(2)))
         # xy_status is constantly updated in the event handler
-        self.screen.blit(self.font.render(self.xy_status, True, (200, 200, 255)), (x_pos + 3, y_pos + padding(3)))
+        self.screen.blit(render(self.xy_status), (x_pos + 3, y_pos + padding(3)))
 
     def draw_mouse(self):
         # draw mouse cursor
