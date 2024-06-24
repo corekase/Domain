@@ -75,7 +75,7 @@ class MapObject(Sprite):
             elif command_name == 'Path_To':
                 # from current x_coord and y_coord move to destination in cells coordinates
                 destination = command.position
-                self.command_queue = []
+                self.clear_queue()
                 # find valid path, if no valid path do nothing
                 path = self.find_path((self.x_coord, self.y_coord), destination)
                 if path != None:
@@ -83,7 +83,7 @@ class MapObject(Sprite):
             elif command_name == 'Chase':
                 # get the cell coordinate of a target and do a find_nearest to it
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
-                # to get a new chase coordinate each cycle
+                # to get a new chase coordinate each process update
                 pass
             elif command_name == 'Cool_Down':
                 # track and wait a number of seconds and then remove the cool_down command from the queue
@@ -103,6 +103,7 @@ class MapObject(Sprite):
         self.command_queue.append(command)
 
     def command_name(self, command):
+        # return the name of the tuple which is the command
         return type(command).__name__
 
     def queue_length(self):
@@ -111,7 +112,7 @@ class MapObject(Sprite):
 
     def clear_queue(self):
         # remove all commands from the queue
-        self.command_queue = []
+        self.command_queue.clear()
 
     def move(self, degree, elapsed_time):
         # move in the direction of degree

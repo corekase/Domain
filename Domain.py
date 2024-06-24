@@ -144,13 +144,13 @@ class Main:
     def handle_events(self):
         # handle event queue
         for event in pygame.event.get():
-            # window close widget
             if event.type == QUIT:
+                # window close widget
                 self.running = False
             # keys
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    # quit application
+                    # escape key, also quits
                     self.running = False
             # mouse buttons
             elif event.type == MOUSEBUTTONDOWN:
@@ -255,8 +255,6 @@ class Main:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
 
     def draw_domain(self):
-        # domain is composed of both a map surface and an mapobject group
-        # together those are "domain".  domain = map + mapobjects
         # update the desired centre of the viewport
         self.renderer.center(self.main_viewport)
         # if horizontal out-of-bounds limit them
@@ -300,18 +298,19 @@ class Main:
         seconds %= 3600
         minutes = int(seconds // 60)
         seconds = int(seconds % 60)
-        # layout coordinates and sizes
-        screen_rect = self.screen.get_rect()
-        x_pos, y_pos = screen_rect.right - 145, screen_rect.bottom - padding(4) - 5
-        width, height = 140, padding(4)
-        # draw a filled panel with a border colour
-        pygame.draw.rect(self.screen, (50, 50, 200), (x_pos + 1, y_pos + 1, width - 1, height - 1), 0)
-        pygame.draw.rect(self.screen, (255, 255, 255), (x_pos, y_pos, width, height), 1)
         # gather information into text strings
         cycle = f'Cycle: {self.cycle}'
         time = f'Time: {hours}h {minutes}m {seconds}s'
         fps = f'FPS: {int(round(fps))}'
-        # draw each line onto the screen
+        # layout coordinates and sizes
+        screen_rect = self.screen.get_rect()
+        x_pos, y_pos = screen_rect.right - 145, 5
+        width, height = 140, padding(4)
+        # draw the panel outline
+        pygame.draw.rect(self.screen, (255, 255, 255), (x_pos, y_pos, width, height), 1)
+        # fill panel with a colour
+        pygame.draw.rect(self.screen, (50, 50, 200), (x_pos + 1, y_pos + 1, width - 2, height - 2), 0)
+        # draw each text line onto the screen
         self.screen.blit(render(cycle), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
         self.screen.blit(render(fps), (x_pos + 3, y_pos + padding(2)))
