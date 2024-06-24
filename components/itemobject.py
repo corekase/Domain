@@ -1,6 +1,16 @@
 from .mapobject import MapObject, Stall
 from .utility import image_alpha_resource
 
+# itemobject will have containers items can be in.  If an item is in a container it is removed from the domain
+# group.  Once there is a GUI button, then moving the avatar to an item coordinate reveals a "pick up" button
+# and the avatar can only have one item in their inventory container.  While they have an inventory they have a
+# "drop" button which will update the item coordinate and place it back into the domain group whever the avatar's
+# current location is
+
+# dictionary storage: [mapobject][container_name][itemobject]
+# each agent has a container dictionary which has itemobject instances. while an item object is in that dictionary
+# it isn't in the domain group.  containers as however named just allow addressing to be easily organized
+
 class ItemObject(MapObject):
     def __init__(self):
         super().__init__()
