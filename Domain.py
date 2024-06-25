@@ -128,7 +128,7 @@ class Main:
             # update domain state
             self.update_domain(elapsed_time)
             # clear screen
-            self.screen.fill((0, 128, 128))
+            self.screen.fill((0, 98, 98))
             # draw the main viewport to the viewport surface
             self.draw_domain()
             # and copy that surface into the main screen surface

@@ -6,11 +6,11 @@ from enum import Enum
 
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
 
-white_colour = pygame.Color((200, 255, 255))
-light_colour = pygame.Color((0, 220, 220))
-medium_colour = pygame.Color((0, 160, 160))
-dark_colour = pygame.Color((0, 80, 80))
-black_colour = pygame.Color((0, 0, 0))
+white_colour = (200, 255, 255)
+light_colour = (0, 190, 190)
+medium_colour = (0, 140, 140)
+dark_colour = (0, 60, 60)
+black_colour = (0, 0, 0)
 
 # button subclasses widget
 class Button(Widget):
