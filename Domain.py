@@ -100,7 +100,8 @@ class Main:
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.xy_status = None
         self.gui = GuiManager()
-        self.gui.add_widget(Button(1, self.screen, (10, 10, 100, 18), 'test'))
+        button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 18, 100, 18)
+        self.gui.add_widget(Button(1, self.screen, button_position, 'Button', 16))
         # Set the state of the application to "running"
         self.running = True
 

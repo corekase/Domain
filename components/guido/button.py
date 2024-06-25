@@ -14,9 +14,11 @@ black_colour = pygame.Color((0, 0, 0))
 
 # button subclasses widget
 class Button(Widget):
-    def __init__(self, id, surface, position, text):
+    def __init__(self, id, surface, position, text, font_size):
         super().__init__(id, surface, position)
         self.text = text
+        self.font_size = font_size
+        self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
         self.state = State.IDLE
 
     def handle_event(self, event):
@@ -48,6 +50,11 @@ class Button(Widget):
             self.draw_frame(light_colour, dark_colour, white_colour, black_colour, light_colour)
         elif self.state == State.ARMED:
             self.draw_frame(dark_colour, light_colour, black_colour, white_colour, dark_colour)
+        text_surface = self.render(self.text)
+        x = self.rect[0] + self.centre(self.rect.width, text_surface.get_rect().width) + 1
+        y = self.rect[1] + self.centre(self.rect.height, text_surface.get_rect().height) + 1
+        self.surface.blit(text_surface, (x, y))
+
 
     def draw_frame(self, ul, lr, d_ul, d_lr, background):
         x, y, width, height = self.rect
@@ -63,3 +70,9 @@ class Button(Widget):
         self.surface.set_at((x + 1, y +1), d_ul)
         # plot lower right dot
         self.surface.set_at((x + width - 1, y + height - 1), d_lr)
+
+    def render(self, text):
+        return self.font.render(text, True, white_colour)
+
+    def centre(self, bigger, smaller):
+        return int((bigger / 2) - (smaller / 2))
