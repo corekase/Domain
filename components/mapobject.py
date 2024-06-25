@@ -114,8 +114,8 @@ class MapObject(Sprite):
         if self.queue_length() > 0:
             current = self.command_name(self.command_queue[0])
             # if the current command is a Move_To then complete just that
-            if current == "Move_To":
-                self.command_queue = self.command_queue[:1]
+            if current == 'Move_To':
+                self.command_queue = self.command_queue[0:1]
                 # return False if the caller should stop changing the queue
                 # and wait until its next cycle to evaluate clear_queue again
                 return False
