@@ -67,7 +67,7 @@ class Button(Widget):
         # draw the button text
         self.surface.blit(self.text_bitmap, (self.text_x, self.text_y))
 
-    def draw_frame(self, ul, lr, d_ul, d_lr, background):
+    def draw_frame(self, ul, lr, ul_d, lr_d, background):
         # get positions and sizes
         x, y, width, height = self.rect
         # draw background
@@ -79,9 +79,9 @@ class Button(Widget):
         line(self.surface, lr, (x, y + height), (x + width, y + height))
         line(self.surface, lr, (x + width, y), (x + width, y + height))
         # plot upper left dot
-        self.surface.set_at((x + 1, y +1), d_ul)
+        self.surface.set_at((x + 1, y +1), ul_d)
         # plot lower right dot
-        self.surface.set_at((x + width - 1, y + height - 1), d_lr)
+        self.surface.set_at((x + width - 1, y + height - 1), lr_d)
 
     def centre(self, bigger, smaller):
         # return a centred position
