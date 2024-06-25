@@ -2,7 +2,7 @@ from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
 from .widget import Widget
 from enum import Enum
 
-State = Enum('State', ['IDLE', 'HOVER'])
+State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
 
 # button subclasses widget
 class Button(Widget):
@@ -19,6 +19,11 @@ class Button(Widget):
         if self.state == State.IDLE and collide:
                 self.state = State.HOVER
         elif self.state == State.HOVER:
+            if (event.type == MOUSEMOTION) and (not collide):
+                self.state = State.IDLE
+            if (event.type == MOUSEBUTTONDOWN) and collide:
+                self.state = State.ARMED
+        elif self.state == State.ARMED:
             if (event.type == MOUSEBUTTONUP) and collide:
                 self.state = State.IDLE
                 # button successfully clicked
@@ -33,3 +38,5 @@ class Button(Widget):
             self.draw_box('idle')
         elif self.state == State.HOVER:
             self.draw_box('hover')
+        elif self.state == State.ARMED:
+            self.draw_box('armed')

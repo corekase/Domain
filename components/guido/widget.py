@@ -17,8 +17,11 @@ class Widget:
     def draw_box(self, state):
         x, y, w, h = self.rect
         if state == 'idle':
-            # draw pressed box
-            pygame.draw.rect(self.surface, white_colour, self.rect, 0)
+            # draw normal box
+            pygame.draw.rect(self.surface, medium_colour, self.rect, 0)
         elif state == 'hover':
-            # draw raised box
-            pygame.draw.rect(self.surface, black_colour, self.rect, 0)
+            # draw hover box
+            pygame.draw.rect(self.surface, light_colour, self.rect, 0)
+        elif state == 'armed':
+            # draw armed box
+            pygame.draw.rect(self.surface, dark_colour, self.rect, 0)
