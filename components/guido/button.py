@@ -55,7 +55,6 @@ class Button(Widget):
         y = self.rect[1] + self.centre(self.rect.height, text_surface.get_rect().height) + 1
         self.surface.blit(text_surface, (x, y))
 
-
     def draw_frame(self, ul, lr, d_ul, d_lr, background):
         x, y, width, height = self.rect
         # draw background
