@@ -151,63 +151,65 @@ class Main:
         # handle event queue
         for event in pygame.event.get():
             gui_event = self.gui.handle_event(event)
-            if gui_event == 1:
-                print('id 1 clicked')
-            if event.type == QUIT:
-                # window close widget
-                self.running = False
-            # keys
-            elif event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    # escape key, also quits
+            if gui_event == None:
+                if event.type == QUIT:
+                    # window close widget
                     self.running = False
-            # mouse buttons
-            elif event.type == MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
-                # if mouse is inside the view rect
-                if self.view_surface_rect.collidepoint(x, y):
-                    if event.button == 3:
-                        # right button down, begin panning state if not fully zoomed out
-                        if self.zoom_amounts_index > 0:
-                            self.panning = True
-                            self.pan_hold_position = x, y
-                    elif event.button == 4:
-                        # wheel scroll up, increase zoom index
-                        self.set_zoom_index(1)
-                        # if right-mouse button is also pressed begin panning
-                        if pygame.mouse.get_pressed()[2]:
-                            self.panning = True
-                            self.pan_hold_position = x, y
-                    elif event.button == 5:
-                        # wheel scroll down, decrease zoom index
-                        self.set_zoom_index(-1)
-                        # if panning is active end panning if fully zoomed out
-                        if self.panning:
-                            if self.zoom_amounts_index == 0:
-                                self.panning = False
-            elif event.type == MOUSEBUTTONUP:
-                if event.button == 1:
-                    # left button up, which is destination point for avatar
-                    x, y = event.pos
+                # keys
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        # escape key, also quits
+                        self.running = False
+                # mouse buttons
+                elif event.type == MOUSEBUTTONDOWN:
+                    x, y = pygame.mouse.get_pos()
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
-                        if self.avatar.queue_length() == 0:
-                            x_cell, y_cell = self.pick_cell(x, y)
-                            self.avatar.command(Path_To((x_cell, y_cell)))
-                        else:
-                            self.avatar.clear_queue()
-                if event.button == 3:
-                    # right button up, end panning state
-                    self.panning = False
-            # panning state actions
-            if self.panning:
-                # if the mouse is moving
-                if event.type == MOUSEMOTION:
-                    # move the centre of the viewport
-                    x, y = event.pos
-                    self.main_viewport[0] += x - self.pan_hold_position[0]
-                    self.main_viewport[1] += y - self.pan_hold_position[1]
-                    pygame.mouse.set_pos(self.pan_hold_position)
+                        if event.button == 3:
+                            # right button down, begin panning state if not fully zoomed out
+                            if self.zoom_amounts_index > 0:
+                                self.panning = True
+                                self.pan_hold_position = x, y
+                        elif event.button == 4:
+                            # wheel scroll up, increase zoom index
+                            self.set_zoom_index(1)
+                            # if right-mouse button is also pressed begin panning
+                            if pygame.mouse.get_pressed()[2]:
+                                self.panning = True
+                                self.pan_hold_position = x, y
+                        elif event.button == 5:
+                            # wheel scroll down, decrease zoom index
+                            self.set_zoom_index(-1)
+                            # if panning is active end panning if fully zoomed out
+                            if self.panning:
+                                if self.zoom_amounts_index == 0:
+                                    self.panning = False
+                elif event.type == MOUSEBUTTONUP:
+                    if event.button == 1:
+                        # left button up, which is destination point for avatar
+                        x, y = event.pos
+                        # if mouse is inside the view rect
+                        if self.view_surface_rect.collidepoint(x, y):
+                            if self.avatar.queue_length() == 0:
+                                x_cell, y_cell = self.pick_cell(x, y)
+                                self.avatar.command(Path_To((x_cell, y_cell)))
+                            else:
+                                self.avatar.clear_queue()
+                    if event.button == 3:
+                        # right button up, end panning state
+                        self.panning = False
+                # panning state actions
+                if self.panning:
+                    # if the mouse is moving
+                    if event.type == MOUSEMOTION:
+                        # move the centre of the viewport
+                        x, y = event.pos
+                        self.main_viewport[0] += x - self.pan_hold_position[0]
+                        self.main_viewport[1] += y - self.pan_hold_position[1]
+                        pygame.mouse.set_pos(self.pan_hold_position)
+            else:
+                if gui_event == 1:
+                    print('id 1 clicked')
         # update the x and y map indexes for the information panel
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
