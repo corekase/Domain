@@ -18,15 +18,14 @@ class Button(Widget):
         # initialize common widget values
         super().__init__(id, surface, position)
         # font object
-        self.font_size = font_size
-        self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
-        # button text
-        self.text = text
+        font = pygame.font.Font(pygame.font.get_default_font(), font_size)
         # text bitmap
-        self.text_bitmap = self.font.render(self.text, True, white_colour)
+        self.text_bitmap = font.render(text, True, white_colour)
         # get centred dimensions for both x and y ranges
-        self.text_x = self.rect.x + self.centre(self.rect.width, self.text_bitmap.get_rect().width) + 1
-        self.text_y = self.rect.y + self.centre(self.rect.height, self.text_bitmap.get_rect().height) + 1
+        text_x = self.rect.x + self.centre(self.rect.width, self.text_bitmap.get_rect().width) + 1
+        text_y = self.rect.y + self.centre(self.rect.height, self.text_bitmap.get_rect().height) + 1
+        # store the position for later blitting
+        self.position = text_x, text_y
         # button state
         self.state = State.IDLE
 
@@ -65,7 +64,7 @@ class Button(Widget):
         elif self.state == State.ARMED:
             self.draw_frame(black_colour, light_colour, black_colour, white_colour, dark_colour)
         # draw the button text
-        self.surface.blit(self.text_bitmap, (self.text_x, self.text_y))
+        self.surface.blit(self.text_bitmap, self.position)
 
     def draw_frame(self, ul, lr, ul_d, lr_d, background):
         # get positions and sizes
