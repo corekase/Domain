@@ -192,8 +192,8 @@ class Main:
                         # if mouse is inside the view rect
                         if self.view_surface_rect.collidepoint(x, y):
                             if self.avatar.clear_queue():
-                                x_cell, y_cell = self.pick_cell(x, y)
-                                self.avatar.command(Path_To((x_cell, y_cell)))
+                                position = self.pick_cell(x, y)
+                                self.avatar.move_to(position)
                     if event.button == 3:
                         # right button up, end panning state
                         self.panning = False

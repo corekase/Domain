@@ -1,4 +1,5 @@
 from .mapobject import MapObject
+from .mapobject import Path_To
 from ..utility import image_alpha_resource
 
 class AvatarObject(MapObject):
@@ -17,4 +18,14 @@ class AvatarObject(MapObject):
         self.rect_sync((self.centre_xpos, self.centre_ypos))
 
     def process(self):
+        pass
+
+    def move_to(self, position):
+        x_cell, y_cell = position
+        self.command(Path_To((x_cell, y_cell)))
+
+    def pick_up(self):
+        pass
+
+    def put_down(self):
         pass
