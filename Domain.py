@@ -154,7 +154,12 @@ class Main:
         # handle event queue
         for event in pygame.event.get():
             gui_event = self.gui.handle_event(event)
-            if gui_event == None:
+            if gui_event != None:
+                # handle gui events
+                if gui_event == 1:
+                    print('id 1 clicked')
+            else:
+                # handle other events
                 if event.type == QUIT:
                     # window close widget
                     self.running = False
@@ -193,11 +198,9 @@ class Main:
                         x, y = event.pos
                         # if mouse is inside the view rect
                         if self.view_surface_rect.collidepoint(x, y):
-                            if self.avatar.queue_length() == 0:
+                            if self.avatar.clear_queue():
                                 x_cell, y_cell = self.pick_cell(x, y)
                                 self.avatar.command(Path_To((x_cell, y_cell)))
-                            else:
-                                self.avatar.clear_queue()
                     if event.button == 3:
                         # right button up, end panning state
                         self.panning = False
@@ -210,9 +213,6 @@ class Main:
                         self.main_viewport[0] += x - self.pan_hold_position[0]
                         self.main_viewport[1] += y - self.pan_hold_position[1]
                         pygame.mouse.set_pos(self.pan_hold_position)
-            else:
-                if gui_event == 1:
-                    print('id 1 clicked')
         # update the x and y map indexes for the information panel
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
