@@ -116,8 +116,7 @@ class MapObject(Sprite):
         if self.queue_length() > 0:
             current = self.command_queue[0]
             if self.command_name(current) == 'Move_To':
-                self.command_queue.clear()
-                self.command_queue.append(current)
+                self.command_queue = [current]
                 return False
         self.command_queue.clear()
         return True
