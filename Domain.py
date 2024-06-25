@@ -10,8 +10,8 @@ from components.agentobject import AgentObject
 from components.itemobject import ItemObject
 from components.avatarobject import AvatarObject
 from pygame import Rect
-from components.guido.gui import GuiManager
-from components.guido.button import Button
+from components.gui.guimanager import GuiManager
+from components.gui.button import Button
 from components.objectmanager import ObjectManager
 
 class Main:
