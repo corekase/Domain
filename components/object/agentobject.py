@@ -28,20 +28,20 @@ class AgentObject(MapObject):
     def process(self):
         if self.destination_object != None:
             # remove reference to old object
-            AgentObject.domain.delete('generic_objects', self.destination_object)
+            AgentObject.domain.delete('generic', self.destination_object)
             # create a new item object
             item_object = GenericObject()
             item_object.layer = 1
             # add it to the item objects list and the domain
-            AgentObject.domain.add('generic_objects', item_object)
+            AgentObject.domain.add('generic', item_object)
             # set collision image to normal
             self.image = self.normal_image
             # reset destination to none
             self.destination_object = None
-        elif len(self.domain.objects('generic_objects')) > 0:
+        elif len(self.domain.objects('generic')) > 0:
             # find the nearest item
             path, self.destination_object = self.find_nearest(
-                                            (self.x_coord, self.y_coord), self.domain.objects('generic_objects'))
+                                            (self.x_coord, self.y_coord), self.domain.objects('generic'))
             if path != None:
-                self.domain.item_pop('generic_objects', self.destination_object)
+                self.domain.item_pop('generic', self.destination_object)
                 self.follow_path(path)

@@ -70,13 +70,13 @@ class Main:
         self.object_manager = ObjectManager(self.renderer)
         # share item_objects and the domain with the agent objects
         AgentObject.domain = self.object_manager
-        # create items
+        # create generic items
         for _ in range(30):
-            # instantiate an item
+            # instantiate a generic item
             item_object = GenericObject()
             item_object.layer = 1
             # track the item
-            self.object_manager.add('generic_objects', item_object)
+            self.object_manager.add('generic', item_object)
         # create agents
         for _ in range(3):
             # instantiate an agent
