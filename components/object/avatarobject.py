@@ -21,8 +21,9 @@ class AvatarObject(MapObject):
         pass
 
     def move_to(self, position):
-        x_cell, y_cell = position
-        self.command(Path_To((x_cell, y_cell)))
+        if self.clear_queue():
+            x_cell, y_cell = position
+            self.command(Path_To((x_cell, y_cell)))
 
     def pick_up(self):
         pass

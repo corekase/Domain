@@ -75,7 +75,8 @@ class MapObject(Sprite):
             elif command_name == 'Path_To':
                 # from current x_coord and y_coord move to destination in cells coordinates
                 destination = command.position
-                self.clear_queue()
+                # remove this command from the queue
+                self.command_queue.pop(0)
                 # find valid path, if no valid path do nothing
                 path = self.find_path((self.x_coord, self.y_coord), destination)
                 if path != None:
@@ -111,17 +112,14 @@ class MapObject(Sprite):
         return len(self.command_queue)
 
     def clear_queue(self):
+        # clear the queue except for the first in-progress Move_To
         if self.queue_length() > 0:
-            current = self.command_name(self.command_queue[0])
+            current = self.command_queue[0]
             # if the current command is a Move_To then complete just that
-            if current == 'Move_To':
-                self.command_queue = [self.command_queue[0]]
-                # return False if the caller should stop changing the queue
-                # and wait until its next cycle to evaluate clear_queue again
+            if self.command_name(current) == 'Move_To':
+                self.command_queue.clear()
+                self.command_queue = [current]
                 return False
-        # fall-through to here if above return False didn't happen, remove all commands from the queue
-        self.command_queue.clear()
-        # the caller is free to change the queue without inconsistent state
         return True
 
     def move(self, degree, elapsed_time):
