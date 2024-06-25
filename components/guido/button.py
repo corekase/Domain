@@ -1,8 +1,16 @@
+import pygame
+from pygame.draw import rect, line
 from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
 from .widget import Widget
 from enum import Enum
 
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
+
+white_colour = pygame.Color((200, 255, 255))
+light_colour = pygame.Color((0, 220, 220))
+medium_colour = pygame.Color((0, 160, 160))
+dark_colour = pygame.Color((0, 80, 80))
+black_colour = pygame.Color((0, 0, 0))
 
 # button subclasses widget
 class Button(Widget):
@@ -25,7 +33,7 @@ class Button(Widget):
                 self.state = State.ARMED
         elif self.state == State.ARMED:
             if (event.type == MOUSEBUTTONUP) and collide:
-                self.state = State.IDLE
+                self.state = State.HOVER
                 # button successfully clicked
                 return True
             if (event.type == MOUSEMOTION) and (not collide):
@@ -35,8 +43,23 @@ class Button(Widget):
 
     def draw(self):
         if self.state == State.IDLE:
-            self.draw_box('idle')
+            self.draw_frame(light_colour, dark_colour, white_colour, black_colour, medium_colour)
         elif self.state == State.HOVER:
-            self.draw_box('hover')
+            self.draw_frame(light_colour, dark_colour, white_colour, black_colour, light_colour)
         elif self.state == State.ARMED:
-            self.draw_box('armed')
+            self.draw_frame(dark_colour, light_colour, black_colour, white_colour, dark_colour)
+
+    def draw_frame(self, ul, lr, d_ul, d_lr, background):
+        x, y, width, height = self.rect
+        # draw background
+        rect(self.surface, background, self.rect, 0)
+        # draw frame upper and left lines
+        line(self.surface, ul, (x, y), (x + width, y))
+        line(self.surface, ul, (x, y), (x, y + height))
+        # draw frame lower and right lines
+        line(self.surface, lr, (x, y + height), (x + width, y + height))
+        line(self.surface, lr, (x + width, y), (x + width, y + height))
+        # plot upper left dot
+        self.surface.set_at((x + 1, y +1), d_ul)
+        # plot lower right dot
+        self.surface.set_at((x + width - 1, y + height - 1), d_lr)
