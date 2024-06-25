@@ -1,5 +1,4 @@
-from .mapobject import MapObject
-from .mapobject import Path_To
+from .mapobject import MapObject, Path_To
 from ..utility import image_alpha_resource
 
 class AvatarObject(MapObject):
