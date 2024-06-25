@@ -75,7 +75,7 @@ class Main:
             # instantiate a generic item
             item_object = GenericObject()
             item_object.layer = 1
-            # track the item
+            # track the generic item
             self.object_manager.add('generic', item_object)
         # create agents
         for _ in range(3):
