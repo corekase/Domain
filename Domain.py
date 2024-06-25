@@ -99,9 +99,11 @@ class Main:
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.xy_status = None
+        # instantiate a GUI manager
         self.gui = GuiManager()
+        # create a button and add it to the gui widgets list
         button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 20, 100, 20)
-        self.gui.add_widget(Button(1, self.screen, button_position, 'Button', 16))
+        self.gui.add_widget(Button(self.screen, 1, button_position, 'Button', 16))
         # Set the state of the application to "running"
         self.running = True
 
@@ -128,7 +130,7 @@ class Main:
             # update domain state
             self.update_domain(elapsed_time)
             # clear screen
-            self.screen.fill((0, 98, 98))
+            self.screen.fill((0, 100, 100))
             # draw the main viewport to the viewport surface
             self.draw_domain()
             # and copy that surface into the main screen surface
