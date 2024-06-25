@@ -9,19 +9,16 @@ dark_colour = pygame.Color((64, 64, 64))
 black_colour = pygame.Color((0, 0, 0))
 
 class Widget:
-    IDLE, HOVER = 1, 2
-
     def __init__(self, id, surface, rect):
         self.id = id
         self.surface = surface
         self.rect = rect
-        self.state = None
 
-    def draw_box(self):
+    def draw_box(self, state):
         x, y, w, h = self.rect
-        if self.state == Widget.HOVER:
+        if state == 'idle':
             # draw pressed box
             pygame.draw.rect(self.surface, white_colour, self.rect, 0)
-        else:
+        elif state == 'hover':
             # draw raised box
             pygame.draw.rect(self.surface, black_colour, self.rect, 0)

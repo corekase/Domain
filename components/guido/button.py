@@ -2,29 +2,34 @@ from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
 from .widget import Widget
 from enum import Enum
 
+State = Enum('State', ['IDLE', 'HOVER'])
+
 # button subclasses widget
 class Button(Widget):
     def __init__(self, id, surface, position, text):
         super().__init__(id, surface, position)
         self.text = text
-        self.state = Widget.IDLE
+        self.state = State.IDLE
 
     def handle_event(self, event):
         if event.type not in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN):
             # no matching events for button logic
             return False
         collide = self.rect.collidepoint(event.pos)
-        if self.state == Widget.IDLE and collide:
-                self.state = Widget.HOVER
-        elif self.state == Widget.HOVER:
+        if self.state == State.IDLE and collide:
+                self.state = State.HOVER
+        elif self.state == State.HOVER:
             if (event.type == MOUSEBUTTONUP) and collide:
-                self.state = Widget.IDLE
+                self.state = State.IDLE
                 # button successfully clicked
                 return True
             if (event.type == MOUSEMOTION) and (not collide):
-                self.state = Widget.IDLE
+                self.state = State.IDLE
         # did not click
         return False
 
     def draw(self):
-        self.draw_box()
+        if self.state == State.IDLE:
+            self.draw_box('idle')
+        elif self.state == State.HOVER:
+            self.draw_box('hover')
