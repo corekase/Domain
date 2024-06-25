@@ -32,7 +32,7 @@ class AgentObject(MapObject):
                 path, self.destination_object = self.find_nearest(
                                                 (self.x_coord, self.y_coord), self.domain.objects('generic'))
                 if path != None:
-                    self.domain.item_pop('generic', self.destination_object)
+                    self.domain.object_remove('generic', self.destination_object)
                     self.follow_path(path)
         else:
             # remove reference to old object
@@ -41,7 +41,7 @@ class AgentObject(MapObject):
             item_object = GenericObject()
             item_object.layer = 1
             # track the generic item
-            AgentObject.domain.add('generic', item_object)
+            AgentObject.domain.object_add('generic', item_object)
             # set collision image to normal
             self.image = self.normal_image
             # reset destination to none

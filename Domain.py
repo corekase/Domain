@@ -76,18 +76,18 @@ class Main:
             item_object = GenericObject()
             item_object.layer = 1
             # track the generic item
-            self.object_manager.add('generic', item_object)
+            self.object_manager.object_add('generic', item_object)
         # create agents
         for _ in range(3):
             # instantiate an agent
             agent_object = AgentObject()
             agent_object.layer = 2
             # track the agent
-            self.object_manager.add('agents', agent_object)
+            self.object_manager.object_add('agents', agent_object)
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
         self.avatar.layer = 3
-        self.object_manager.add('avatar', self.avatar)
+        self.object_manager.object_add('avatar', self.avatar)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler

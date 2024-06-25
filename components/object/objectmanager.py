@@ -7,12 +7,17 @@ class ObjectManager:
         # main domain group, everything in this group will be drawn onscreen
         self.item_dict['domain'] = PyscrollGroup(renderer)
 
-    def add(self, name, object):
-        # append an object to the list called name
+    def object_add(self, name, object):
+        # append and add an object to the named list and the domain group
         if not (name in self.item_dict.keys()):
             self.item_dict[name] = []
         self.item_dict[name].append(object)
-        self.domain_put(object)
+        self.domain_add(object)
+
+    def object_remove(self, name, object):
+        # remove an object from the named list
+        if name in self.item_dict.keys():
+            self.item_dict[name].remove(object)
 
     def objects(self, name):
         # return all the objects for a name as a list
@@ -21,17 +26,12 @@ class ObjectManager:
         else:
             return []
 
-    def item_pop(self, name, object):
-        # remove an object from the named list
-        if name in self.item_dict.keys():
-            self.item_dict[name].remove(object)
-
-    def domain_put(self, object):
-        # put an object into the domain group only
+    def domain_add(self, object):
+        # add an object into the domain group only
         self.item_dict['domain'].add(object)
 
-    def domain_pop(self, object):
-        # pop an object from the domain group
+    def domain_remove(self, object):
+        # remove an object from the domain group
         if object in self.item_dict['domain']:
             self.item_dict['domain'].remove(object)
 
@@ -45,4 +45,4 @@ class ObjectManager:
             if object in self.item_dict[name]:
                 self.item_dict[name].remove(object)
             if object in self.domain():
-                self.domain_pop(object)
+                self.domain_remove(object)
