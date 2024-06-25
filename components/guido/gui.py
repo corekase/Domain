@@ -1,13 +1,10 @@
-# the gui manager will handle zones and widgets.  the first widget
-# will be a button
-
 class GuiManager:
     def __init__(self):
-        # all widgets to be managed
+        # widgets to be managed
         self.widgets = []
 
     def handle_event(self, event):
-        # return only confirmed events like valid click on button
+        # if a widget signals that it had an action return the widget id
         for widget in self.widgets:
             signal = widget.handle_event(event)
             if signal:

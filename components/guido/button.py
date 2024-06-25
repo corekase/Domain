@@ -15,10 +15,14 @@ black_colour = pygame.Color((0, 0, 0))
 # button subclasses widget
 class Button(Widget):
     def __init__(self, id, surface, position, text, font_size):
+        # initialize common widget values
         super().__init__(id, surface, position)
-        self.text = text
+        # font object
         self.font_size = font_size
         self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
+        # button text
+        self.text = text
+        # button state
         self.state = State.IDLE
 
     def handle_event(self, event):
@@ -26,21 +30,23 @@ class Button(Widget):
             # no matching events for button logic
             return False
         # is the mouse position within the button rect
-        collide = self.rect.collidepoint(event.pos)
+        collision = self.rect.collidepoint(event.pos)
         # manage the state of the button
-        if self.state == State.IDLE and collide:
+        if self.state == State.IDLE and collision:
             self.state = State.HOVER
         elif self.state == State.HOVER:
-            if (event.type == MOUSEMOTION) and (not collide):
+            if (event.type == MOUSEMOTION) and (not collision):
                 self.state = State.IDLE
-            if (event.type == MOUSEBUTTONDOWN) and collide:
-                self.state = State.ARMED
+            if (event.type == MOUSEBUTTONDOWN) and collision:
+                if event.button == 1:
+                    self.state = State.ARMED
         elif self.state == State.ARMED:
-            if (event.type == MOUSEBUTTONUP) and collide:
-                self.state = State.HOVER
-                # button clicked
-                return True
-            if (event.type == MOUSEMOTION) and (not collide):
+            if (event.type == MOUSEBUTTONUP) and collision:
+                if event.button == 1:
+                    # button clicked
+                    self.state = State.HOVER
+                    return True
+            if (event.type == MOUSEMOTION) and (not collision):
                 self.state = State.IDLE
         # button not clicked
         return False
