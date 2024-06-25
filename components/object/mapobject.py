@@ -9,6 +9,7 @@ from random import randint
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
 Path_To = namedtuple('Path_To', 'position')
+Datagram = namedtuple('Datagram', 'callback args')
 Chase = namedtuple('Chase', 'target')
 Cool_Down = namedtuple('Cool_Down', 'duration')
 
@@ -81,6 +82,13 @@ class MapObject(Sprite):
                 path = self.find_path((self.x_coord, self.y_coord), destination)
                 if path != None:
                     self.follow_path(path)
+            elif command_name == 'Datagram':
+                # call a method on some other object with an argument parameter.  If you need more
+                # than one value then make it a tuple of values
+                callback, args = command.callback, command.args
+                self.command_queue.pop(0)
+                # call the datagram callback function with the argument
+                callback(args)
             elif command_name == 'Chase':
                 # get the cell coordinate of a target and do a find_nearest to it
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
