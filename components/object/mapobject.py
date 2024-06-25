@@ -113,8 +113,10 @@ class MapObject(Sprite):
             current = self.command_queue[0]
             if self.command_name(current) == 'Move_To':
                 self.command_queue = [current]
+                # return that queue wasn't fully cleared
                 return False
         self.command_queue.clear()
+        # return queue fully cleared
         return True
 
     def move(self, degree, elapsed_time):
