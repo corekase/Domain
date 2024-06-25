@@ -20,17 +20,17 @@ class AvatarObject(MapObject):
         pass
 
     def move_to(self, position):
-        # clear to will leave the first move_to command if any are in the queue
-        if not self.clear_queue():
-            # after that left move_to put in a datagram so that when the queue
-            # gets to the command the mapobject coordinates will then be current
-            self.command(Datagram(self.path_to, position))
-        else:
+        if self.reset_queue():
             # nothing in the queue so just go there directly
             self.path_to(position)
+        else:
+            # reset_queue will leave the first move_to command if any are in the queue
+            # after that left move_to put in a datagram so that when the queue gets to
+            # the datagram command the mapobject coordinates will then be current
+            self.command(Datagram(self.path_to, position))
 
     def path_to(self, new_position):
-        # from current position go to position argument
+        # from current position go to new_position
         self.command(Path_To(new_position))
 
     def pick_up(self):

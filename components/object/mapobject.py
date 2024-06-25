@@ -115,7 +115,7 @@ class MapObject(Sprite):
         # return the name of the tuple which is the command
         return type(command).__name__
 
-    def clear_queue(self):
+    def reset_queue(self):
         # clear the queue except for the first in-progress Move_To
         if len(self.command_queue) > 0:
             current = self.command_queue[0]
@@ -124,7 +124,7 @@ class MapObject(Sprite):
                 # return that queue wasn't fully cleared
                 return False
         self.command_queue.clear()
-        # return queue fully cleared
+        # return queue cleared
         return True
 
     def move(self, degree, elapsed_time):
