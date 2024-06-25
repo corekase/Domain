@@ -66,10 +66,8 @@ class Main:
         self.panning = False
         # when panning lock mouse position to this position
         self.pan_hold_position = None
-        # create an item manager which will track the domain and objects
+        # create an object manager
         self.object_manager = ObjectManager(self.renderer)
-        # lists of items and agents
-        self.item_objects, self.agent_objects = [], []
         # share item_objects and the domain with the agent objects
         AgentObject.domain = self.object_manager
         # create items
