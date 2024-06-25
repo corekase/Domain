@@ -4,7 +4,6 @@ from components.bundled.pytmx.util_pygame import load_pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 from components.bundled.pyscroll.orthographic import BufferedRenderer
-from components.bundled.pyscroll.group import PyscrollGroup
 from components.bundled.pyscroll.data import TiledMapData
 from components.mapobject import MapObject, Path_To
 from components.agentobject import AgentObject
@@ -13,6 +12,7 @@ from components.avatarobject import AvatarObject
 from pygame import Rect
 from components.guido.gui import GuiManager
 from components.guido.button import Button
+from components.objectmanager import ObjectManager
 
 class Main:
     def __init__(self):
@@ -66,35 +66,30 @@ class Main:
         self.panning = False
         # when panning lock mouse position to this position
         self.pan_hold_position = None
-        # create a group which will render the map and map objects
-        self.domain = PyscrollGroup(self.renderer)
+        # create an item manager which will track the domain and objects
+        self.object_manager = ObjectManager(self.renderer)
         # lists of items and agents
         self.item_objects, self.agent_objects = [], []
         # share item_objects and the domain with the agent objects
-        AgentObject.item_objects = self.item_objects
-        AgentObject.domain = self.domain
+        AgentObject.domain = self.object_manager
         # create items
         for _ in range(30):
             # instantiate an item
             item_object = ItemObject()
             item_object.layer = 1
             # track the item
-            self.item_objects.append(item_object)
-            # add it to the domain
-            self.domain.add(item_object)
+            self.object_manager.add('generic_items', item_object)
         # create agents
         for _ in range(3):
             # instantiate an agent
             agent_object = AgentObject()
             agent_object.layer = 2
             # track the agent
-            self.agent_objects.append(agent_object)
-            # add it to the domain
-            self.domain.add(agent_object)
+            self.object_manager.add('agents', agent_object)
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
         self.avatar.layer = 3
-        self.domain.add(self.avatar)
+        self.object_manager.add('avatar', self.avatar)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
@@ -226,10 +221,10 @@ class Main:
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
         # so is done once on its own line here
-        objects = self.domain.sprites()
+        objects = self.object_manager.domain().sprites()
         for object in objects:
             # same, done once on its own line because it's an expensive operation
-            other_objects = pygame.sprite.spritecollide(object, self.domain, False)
+            other_objects = pygame.sprite.spritecollide(object, self.object_manager.domain(), False)
             for other_object in other_objects:
                 if other_object is not object:
                     # right here for finer-collisions:
@@ -238,7 +233,7 @@ class Main:
                     object.overlap(other_object)
                     other_object.overlap(object)
         # update all mapobjects and their subclasses in the domain group
-        self.domain.update(elapsed_time)
+        self.object_manager.domain().update(elapsed_time)
 
     def pick_cell(self, x, y):
         # normalize x and y mouse position to the screen coordinates of the surface
@@ -296,7 +291,7 @@ class Main:
         # reupdate the viewport, viewport is updated here in case the bounds were modified
         self.renderer.center(self.main_viewport)
         # draw map and group objects to surface
-        self.domain.draw(self.view_surface)
+        self.object_manager.domain().draw(self.view_surface)
 
     def draw_info_panel(self, total_time, fps):
         # text layout helper function
