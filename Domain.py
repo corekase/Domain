@@ -68,7 +68,7 @@ class Main:
         self.pan_hold_position = None
         # create an object manager
         self.object_manager = ObjectManager(self.renderer)
-        # share item_objects and the domain with the agent objects
+        # share that domain with agent objects
         AgentObject.domain = self.object_manager
         # create generic items
         for _ in range(30):
@@ -91,7 +91,7 @@ class Main:
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
-        self.xy_status = None
+        self.status = None
         # instantiate a GUI manager
         self.gui = GuiManager()
         # create a button and add it to the gui widgets list
@@ -210,10 +210,10 @@ class Main:
         if self.view_surface_rect.collidepoint(x, y):
             x_coord, y_coord = self.pick_cell(x, y)
             # update the status for the information panel
-            self.xy_status = f'X:{x_coord}, Y:{y_coord}'
+            self.status = f'X:{x_coord}, Y:{y_coord}'
         else:
             # not inside the surface rect
-            self.xy_status = "N/A"
+            self.status = "N/A"
 
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
@@ -321,7 +321,7 @@ class Main:
         self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
         self.screen.blit(render(fps), (x_pos + 3, y_pos + padding(2)))
         # xy_status is constantly updated in the event handler
-        self.screen.blit(render(self.xy_status), (x_pos + 3, y_pos + padding(3)))
+        self.screen.blit(render(self.status), (x_pos + 3, y_pos + padding(3)))
 
     def draw_mouse(self):
         # draw mouse cursor
