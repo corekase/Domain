@@ -25,9 +25,11 @@ class Button(Widget):
         if event.type not in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN):
             # no matching events for button logic
             return False
+        # is the mouse position within the button rect
         collide = self.rect.collidepoint(event.pos)
+        # manage the state of the button
         if self.state == State.IDLE and collide:
-                self.state = State.HOVER
+            self.state = State.HOVER
         elif self.state == State.HOVER:
             if (event.type == MOUSEMOTION) and (not collide):
                 self.state = State.IDLE
@@ -36,20 +38,22 @@ class Button(Widget):
         elif self.state == State.ARMED:
             if (event.type == MOUSEBUTTONUP) and collide:
                 self.state = State.HOVER
-                # button successfully clicked
+                # button clicked
                 return True
             if (event.type == MOUSEMOTION) and (not collide):
                 self.state = State.IDLE
-        # did not click
+        # button not clicked
         return False
 
     def draw(self):
+        # draw the button frame
         if self.state == State.IDLE:
             self.draw_frame(light_colour, dark_colour, white_colour, black_colour, medium_colour)
         elif self.state == State.HOVER:
             self.draw_frame(light_colour, dark_colour, white_colour, black_colour, light_colour)
         elif self.state == State.ARMED:
             self.draw_frame(dark_colour, light_colour, black_colour, white_colour, dark_colour)
+        # draw the button text
         text_surface = self.render(self.text)
         x = self.rect[0] + self.centre(self.rect.width, text_surface.get_rect().width) + 1
         y = self.rect[1] + self.centre(self.rect.height, text_surface.get_rect().height) + 1
@@ -71,7 +75,9 @@ class Button(Widget):
         self.surface.set_at((x + width - 1, y + height - 1), d_lr)
 
     def render(self, text):
+        # render the text to a surface
         return self.font.render(text, True, white_colour)
 
     def centre(self, bigger, smaller):
+        # return a centred position
         return int((bigger / 2) - (smaller / 2))
