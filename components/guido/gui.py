@@ -10,14 +10,18 @@ class GuiManager:
     def handle_event(self, event):
         # if a widget signals that it had an action return the widget id
         for widget in self.widgets:
-            signal = widget.handle_event(event)
-            if signal:
+            # test widget activation
+            if widget.handle_event(event):
+                # widget activated, return its id
                 return widget.id
+        # no widget activated to this event
         return None
 
     def draw_widgets(self):
+        # draw all widgets to their surfaces
         for widget in self.widgets:
             widget.draw()
 
     def add_widget(self, widget):
+        # add a widget to the manager
         self.widgets.append(widget)

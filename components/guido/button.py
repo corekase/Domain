@@ -1,8 +1,8 @@
 import pygame
-from pygame.draw import rect, line
-from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
-from .widget import Widget
 from enum import Enum
+from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
+from pygame.draw import rect, line
+from .widget import Widget
 
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
 
@@ -62,12 +62,13 @@ class Button(Widget):
         # create a bitmap of the font text
         text_surface = self.font.render(self.text, True, white_colour)
         # get centred dimensions for both x and y ranges
-        x = self.rect[0] + self.centre(self.rect.width, text_surface.get_rect().width) + 1
-        y = self.rect[1] + self.centre(self.rect.height, text_surface.get_rect().height) + 1
+        x = self.rect.x + self.centre(self.rect.width, text_surface.get_rect().width) + 1
+        y = self.rect.y + self.centre(self.rect.height, text_surface.get_rect().height) + 1
         # draw the button text
         self.surface.blit(text_surface, (x, y))
 
     def draw_frame(self, ul, lr, d_ul, d_lr, background):
+        # get positions and sizes
         x, y, width, height = self.rect
         # draw background
         rect(self.surface, background, self.rect, 0)
