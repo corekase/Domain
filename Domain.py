@@ -7,7 +7,7 @@ from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.data import TiledMapData
 from components.object.mapobject import MapObject, Path_To
 from components.object.agentobject import AgentObject
-from components.object.itemobject import ItemObject
+from components.object.genericobject import GenericObject
 from components.object.avatarobject import AvatarObject
 from pygame import Rect
 from components.gui.guimanager import GuiManager
@@ -73,10 +73,10 @@ class Main:
         # create items
         for _ in range(30):
             # instantiate an item
-            item_object = ItemObject()
+            item_object = GenericObject()
             item_object.layer = 1
             # track the item
-            self.object_manager.add('generic_items', item_object)
+            self.object_manager.add('generic_objects', item_object)
         # create agents
         for _ in range(3):
             # instantiate an agent
