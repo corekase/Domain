@@ -16,7 +16,7 @@ black_colour = (0, 0, 0)
 class Button(Widget):
     def __init__(self, surface, id, position, text, font_size):
         # initialize common widget values
-        super().__init__(id, surface, position)
+        super().__init__(surface, id, position)
         # font object
         font = pygame.font.Font(pygame.font.get_default_font(), font_size)
         # text bitmap
