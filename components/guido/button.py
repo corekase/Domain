@@ -22,6 +22,11 @@ class Button(Widget):
         self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
         # button text
         self.text = text
+        # text bitmap
+        self.text_bitmap = self.font.render(self.text, True, white_colour)
+        # get centred dimensions for both x and y ranges
+        self.text_x = self.rect.x + self.centre(self.rect.width, self.text_bitmap.get_rect().width) + 1
+        self.text_y = self.rect.y + self.centre(self.rect.height, self.text_bitmap.get_rect().height) + 1
         # button state
         self.state = State.IDLE
 
@@ -59,13 +64,8 @@ class Button(Widget):
             self.draw_frame(light_colour, dark_colour, white_colour, black_colour, light_colour)
         elif self.state == State.ARMED:
             self.draw_frame(black_colour, light_colour, black_colour, white_colour, dark_colour)
-        # create a bitmap of the font text
-        text_surface = self.font.render(self.text, True, white_colour)
-        # get centred dimensions for both x and y ranges
-        x = self.rect.x + self.centre(self.rect.width, text_surface.get_rect().width) + 1
-        y = self.rect.y + self.centre(self.rect.height, text_surface.get_rect().height) + 1
         # draw the button text
-        self.surface.blit(text_surface, (x, y))
+        self.surface.blit(self.text_bitmap, (self.text_x, self.text_y))
 
     def draw_frame(self, ul, lr, d_ul, d_lr, background):
         # get positions and sizes
