@@ -22,16 +22,6 @@ class ObjectManager:
         if name in self.item_dict.keys():
             self.item_dict[name].remove(object)
 
-    def transfer(self, name1, name2, object):
-        if not (name1 in self.item_dict.keys()):
-            raise('no source item list')
-        if not (name2 in self.item_dict.keys()):
-            # create new destination list
-            self.item_dict[name2] = []
-        if object in self.item_dict[name1]:
-            self.item_dict[name1].remove(object)
-            self.item_dict[name2].append(object)
-
     def domain_put(self, object):
         self.item_dict['domain'].add(object)
 
