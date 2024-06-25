@@ -107,13 +107,9 @@ class MapObject(Sprite):
         # return the name of the tuple which is the command
         return type(command).__name__
 
-    def queue_length(self):
-        # return how many items are in the queue
-        return len(self.command_queue)
-
     def clear_queue(self):
         # clear the queue except for the first in-progress Move_To
-        if self.queue_length() > 0:
+        if len(self.command_queue) > 0:
             current = self.command_queue[0]
             if self.command_name(current) == 'Move_To':
                 self.command_queue = [current]
