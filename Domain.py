@@ -11,6 +11,8 @@ from components.agentobject import AgentObject
 from components.itemobject import ItemObject
 from components.avatarobject import AvatarObject
 from pygame import Rect
+from components.guido.gui import GuiManager
+from components.guido.button import Button
 
 class Main:
     def __init__(self):
@@ -97,6 +99,8 @@ class Main:
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.xy_status = None
+        self.gui = GuiManager()
+        self.gui.add_widget(Button(1, self.screen, Rect(10, 10, 100, 18), 'test'))
         # Set the state of the application to "running"
         self.running = True
 
@@ -130,6 +134,8 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
             pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
+            # draw gui widgets
+            self.gui.draw_widgets()
             # draw information panel
             self.draw_info_panel(total_time, clock.get_fps())
             # draw mouse cursor
@@ -144,6 +150,9 @@ class Main:
     def handle_events(self):
         # handle event queue
         for event in pygame.event.get():
+            gui_event = self.gui.handle_event(event)
+            if gui_event == 1:
+                print('id 1 clicked')
             if event.type == QUIT:
                 # window close widget
                 self.running = False
