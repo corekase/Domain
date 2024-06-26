@@ -26,20 +26,20 @@ class AvatarObject(MapObject):
             pickups = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))
             if len(pickups) > 0:
                     # enable pickup button
-                    self.gui.switch_context('pickup')
+                    MapObject.gui.switch_context('pickup')
             else:
                 # no pickups at location and no inventory, disable both contexts
-                self.gui.switch_context(None)
+                MapObject.gui.switch_context(None)
         else:
             # enable drop button
-            self.gui_switch_context('putdown')
+            MapObject.gui.switch_context('putdown')
 
     def move_to(self, position):
         # manage context
         if self.inventory == None:
-            self.gui.switch_context(None)
+            MapObject.gui.switch_context(None)
         else:
-            self.gui.switch_context('putdown')
+            MapObject.gui.switch_context('putdown')
         # perform move
         if self.reset_queue():
             # nothing in the queue so just go there directly
@@ -55,9 +55,19 @@ class AvatarObject(MapObject):
         self.command(Path_To(new_position))
 
     def pick_up(self):
-        pass
+        pickup = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))[0]
+        self.inventory = pickup
+        MapObject.domain.delete('pickup', pickup)
 
     def put_down(self):
-        # put down does the same as move_to, if there is a move then datagram the put down after
-        # the one move command completes
-        pass
+        if self.reset_queue():
+            self.place(None)
+        else:
+            self.command(Datagram(self.place, None))
+
+    def place(self, arg):
+        self.inventory.centre_xpos, self.inventory.centre_ypos = self.tile_graphical_centre((self.x_coord, self.y_coord))
+        self.inventory.rect_sync((self.inventory.centre_xpos, self.inventory.centre_ypos))
+
+        MapObject.domain.object_add('pickup', self.inventory)
+        self.inventory = None

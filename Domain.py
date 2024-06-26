@@ -100,8 +100,8 @@ class Main:
         MapObject.gui = self.gui
         # create a button and add it to the gui widgets list
         button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 20, 100, 20)
-        self.gui.add_widget('pickup', Button(self.screen, 1, button_position, 'Pick Up', 16))
-        self.gui.add_widget('putdown', Button(self.screen, 2, button_position, 'Put Down', 16))
+        self.gui.add_widget('pickup', Button(self.screen, 'pickup', button_position, 'Pick Up', 16))
+        self.gui.add_widget('putdown', Button(self.screen, 'putdown', button_position, 'Put Down', 16))
         self.gui.switch_context('pickup')
         # Set the state of the application to "running"
         self.running = True
