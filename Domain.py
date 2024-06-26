@@ -85,7 +85,7 @@ class Main:
         # create pickup items
         populate(3, PickupObject, 2, 'pickup')
         # create agents
-        populate(3, AgentObject, 3, 'agents')
+        populate(4, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
         self.avatar.layer = 4
