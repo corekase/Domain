@@ -19,8 +19,6 @@ class AvatarObject(MapObject):
         self.inventory = None
 
     def process(self):
-        # disable all buttons
-        pass
         # check current cell for a pickup object
         if self.inventory == None:
             pickups = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))
