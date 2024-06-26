@@ -23,13 +23,13 @@ class AvatarObject(MapObject):
         if self.inventory == None:
             pickups = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))
             if len(pickups) > 0:
-                    # enable pickup button
+                    # enable pick up button
                     MapObject.gui.switch_context('pickup')
             else:
                 # no pickups at location and no inventory, disable both contexts
                 MapObject.gui.switch_context(None)
         else:
-            # enable drop button
+            # enable put down button
             MapObject.gui.switch_context('putdown')
 
     def move_to(self, position):
