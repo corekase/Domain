@@ -155,8 +155,10 @@ class Main:
             gui_event = self.gui.handle_event(event)
             if gui_event != None:
                 # handle gui events
-                if gui_event == 1:
-                    print('id 1 clicked')
+                if gui_event == 'pickup':
+                    self.avatar.pick_up()
+                elif gui_event == 'putdown':
+                    self.avatar.put_down()
             else:
                 # handle other events
                 if event.type == QUIT:
