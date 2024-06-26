@@ -98,11 +98,11 @@ class Main:
         self.gui = GuiManager()
         # give the map object access to gui switch context
         MapObject.gui = self.gui
-        # create a button and add it to the gui widgets list
+        # create buttons and add them to gui context widgets lists
         button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 20, 100, 20)
-        self.gui.add_widget('pickup', Button(self.screen, 'pickup', button_position, 'Pick Up', 16))
-        self.gui.add_widget('putdown', Button(self.screen, 'putdown', button_position, 'Put Down', 16))
-        self.gui.switch_context('pickup')
+        self.gui.add_widget('pickup_buttons', Button(self.screen, 'pickup', button_position, 'Pick Up', 16))
+        self.gui.add_widget('putdown_buttons', Button(self.screen, 'putdown', button_position, 'Put Down', 16))
+        self.gui.switch_context('pickup_buttons')
         # Set the state of the application to "running"
         self.running = True
 
