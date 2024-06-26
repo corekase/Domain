@@ -270,16 +270,16 @@ class MapObject(Sprite):
         return results
 
     def sync_position(self, position):
-        # update position state, this chains an affect to drawing functions handled by the sprite parent class
+        # update position state in pixels
         self.centre_xpos, self.centre_ypos = position
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
         self.x_coord, self.y_coord = int(self.rect.centerx / MapObject.map.tilewidth), int(self.rect.centery / MapObject.map.tileheight)
 
     def sync_cell(self, position):
-        # translate x and y cell coordinates into world pixel coordinates, centered in the position
-        position = self.tile_graphical_centre(position)
-        # update position state with the translation
-        self.sync_position(position)
+        # update position state in cells
+        self.centre_xpos, self.centre_ypos = self.tile_graphical_centre(position)
+        self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
+        self.x_coord, self.y_coord = position
 
     def overlap(self, other_mapobject):
         # other_mapobject is overlapping rects with this mapobject, if it's not already in overlap_mapobjects then add it
