@@ -102,7 +102,6 @@ class Main:
         button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 20, 100, 20)
         self.gui.add_widget('pickup_buttons', Button(self.screen, 'pickup', button_position, 'Pick Up', 16))
         self.gui.add_widget('putdown_buttons', Button(self.screen, 'putdown', button_position, 'Put Down', 16))
-        self.gui.switch_context('pickup_buttons')
         # Set the state of the application to "running"
         self.running = True
 
