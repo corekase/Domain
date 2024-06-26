@@ -8,6 +8,7 @@ from components.bundled.pyscroll.data import TiledMapData
 from components.object.objectmanager import ObjectManager
 from components.object.mapobject import MapObject
 from components.object.genericobject import GenericObject
+from components.object.pickupobject import PickupObject
 from components.object.agentobject import AgentObject
 from components.object.avatarobject import AvatarObject
 from pygame import Rect
@@ -77,16 +78,23 @@ class Main:
             item_object.layer = 1
             # track the generic item
             self.object_manager.object_add('generic', item_object)
+        # create pickup items
+        for _ in range(3):
+            # instantiate a generic item
+            pickup_object = PickupObject()
+            pickup_object.layer = 2
+            # track the generic item
+            self.object_manager.object_add('pickup', pickup_object)
         # create agents
         for _ in range(3):
             # instantiate an agent
             agent_object = AgentObject()
-            agent_object.layer = 2
+            agent_object.layer = 3
             # track the agent
             self.object_manager.object_add('agents', agent_object)
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
-        self.avatar.layer = 3
+        self.avatar.layer = 4
         self.object_manager.object_add('avatar', self.avatar)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
