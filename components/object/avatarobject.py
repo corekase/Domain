@@ -45,9 +45,7 @@ class AvatarObject(MapObject):
             # nothing in the queue so just go there directly
             self.path_to(position)
         else:
-            # reset_queue will leave the first move_to command if any are in the queue
-            # after that left move_to put in a datagram so that when the queue gets to
-            # the datagram command the mapobject coordinates will then be current
+            # do after existing move_to
             self.command(Datagram(self.path_to, position))
 
     def path_to(self, new_position):
@@ -55,18 +53,25 @@ class AvatarObject(MapObject):
         self.command(Path_To(new_position))
 
     def pick_up(self):
+        # pick up pickup object
         pickup = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))[0]
         self.inventory = pickup
+        # delete pickup object from the domain
         MapObject.domain.delete('pickup', pickup)
 
     def put_down(self):
+        # put down inventory
         if self.reset_queue():
+            # no move_to in queue, do directly
             self.place(None)
         else:
+            # do after move_to
             self.command(Datagram(self.place, None))
 
     def place(self, arg):
-        self.inventory.centre_xpos, self.inventory.centre_ypos = self.tile_graphical_centre((self.x_coord, self.y_coord))
-        self.inventory.rect_sync((self.inventory.centre_xpos, self.inventory.centre_ypos))
+        # update the pickup object coordinates
+        self.inventory.sync((self.x_coord, self.y_coord))
+        # place the pickup object back into the domain
         MapObject.domain.object_add('pickup', self.inventory)
+        # delete inventory
         self.inventory = None
