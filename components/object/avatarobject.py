@@ -68,6 +68,5 @@ class AvatarObject(MapObject):
     def place(self, arg):
         self.inventory.centre_xpos, self.inventory.centre_ypos = self.tile_graphical_centre((self.x_coord, self.y_coord))
         self.inventory.rect_sync((self.inventory.centre_xpos, self.inventory.centre_ypos))
-
         MapObject.domain.object_add('pickup', self.inventory)
         self.inventory = None
