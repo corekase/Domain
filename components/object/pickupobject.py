@@ -9,18 +9,8 @@ class PickupObject(MapObject):
         self.image = self.normal_image
         self.rect = self.image.get_rect()
         # get random starting position
-        self.x_coord, self.y_coord = self.find_random_position(MapObject.FLOOR)
-        # translate x and y cell coordinates into world pixel coordinates, centered in the position
-        self.centre_xpos, self.centre_ypos = self.tile_graphical_centre((self.x_coord, self.y_coord))
-        # update position state with the translation
-        self.rect_sync((self.centre_xpos, self.centre_ypos))
+        position = self.find_random_position(MapObject.FLOOR)
+        self.sync_cell(position)
 
     def process(self):
         self.command(Stall(None))
-
-    def sync(self, position):
-        self.x_coord, self.y_coord = position
-        # translate x and y cell coordinates into world pixel coordinates, centered in the position
-        self.centre_xpos, self.centre_ypos = self.tile_graphical_centre((self.x_coord, self.y_coord))
-        # update position state with the translation
-        self.rect_sync((self.centre_xpos, self.centre_ypos))

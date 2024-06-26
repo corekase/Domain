@@ -10,11 +10,8 @@ class AvatarObject(MapObject):
         self.rect = self.image.get_rect()
         self.speed = 64.0
         # get random starting position
-        x, y = self.find_random_position(MapObject.FLOOR)
-        # translate x and y cell coordinates into world pixel coordinates, centered in the position
-        self.centre_xpos, self.centre_ypos = self.tile_graphical_centre((x, y))
-        # update position state with the translation
-        self.rect_sync((self.centre_xpos, self.centre_ypos))
+        position = self.find_random_position(MapObject.FLOOR)
+        self.sync_cell(position)
         # agent memory
         self.inventory = None
 
@@ -68,7 +65,7 @@ class AvatarObject(MapObject):
 
     def put_down_stub(self, arg):
         # update the pickup object coordinates
-        self.inventory.sync((self.x_coord, self.y_coord))
+        self.inventory.sync_cell((self.x_coord, self.y_coord))
         # place the pickup object back into the domain
         MapObject.domain.object_add('pickup', self.inventory)
         # delete inventory
