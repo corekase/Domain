@@ -40,18 +40,18 @@ class AvatarObject(MapObject):
             MapObject.gui.switch_context('putdown')
         # perform move
         if self.reset_queue():
-            # nothing in the queue so just go there directly
-            self.path_to(position)
+            # no move_to in the queue so just go there directly
+            self.move_to_stub(position)
         else:
             # do after existing move_to
-            self.command(Datagram(self.path_to, position))
+            self.command(Datagram(self.move_to_stub, position))
 
-    def path_to(self, new_position):
+    def move_to_stub(self, new_position):
         # from current position go to new_position
         self.command(Path_To(new_position))
 
     def pick_up(self):
-        # pick up pickup object
+        # pick up inventory
         pickup = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))[0]
         self.inventory = pickup
         # delete pickup object from the domain
@@ -61,12 +61,12 @@ class AvatarObject(MapObject):
         # put down inventory
         if self.reset_queue():
             # no move_to in queue, do directly
-            self.place(None)
+            self.put_down_stub(None)
         else:
             # do after move_to
-            self.command(Datagram(self.place, None))
+            self.command(Datagram(self.put_down_stub, None))
 
-    def place(self, arg):
+    def put_down_stub(self, arg):
         # update the pickup object coordinates
         self.inventory.sync((self.x_coord, self.y_coord))
         # place the pickup object back into the domain
