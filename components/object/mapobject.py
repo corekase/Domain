@@ -22,6 +22,8 @@ class MapObject(Sprite):
     map = None
     # reference for domain objects
     domain = None
+    # reference for gui manager
+    gui = None
     # tile gid's for wall and floor in tilesheet
     FLOOR, WALL = 1, 2
 
@@ -261,6 +263,15 @@ class MapObject(Sprite):
         if x < 0 or y < 0 or x >= MapObject.map.width or y >= MapObject.map.height:
             return None
         return MapObject.map.get_tile_gid(x, y, 0)
+
+    def find_cell_objects(self, position, objects):
+        # return a list of objects which match the position coordinate
+        results = []
+        x, y = position
+        for item in objects:
+            if (item.x_coord == x) and (item.y_coord == y):
+                results.append(item)
+        return results
 
     def rect_sync(self, position):
         # update position state, this chains an affect to drawing functions handled by the sprite parent class

@@ -7,6 +7,9 @@ class GuiManager:
         self.context = 0
         self.widgets = []
 
+    def switch_context(self, context):
+        self.context = context
+
     def handle_event(self, event):
         # if a widget signals that it had an action return the widget id
         for widget in self.widgets:
@@ -22,6 +25,6 @@ class GuiManager:
         for widget in self.widgets:
             widget.draw()
 
-    def add_widget(self, widget):
+    def add_widget(self, context, widget):
         # add a widget to the manager
         self.widgets.append(widget)

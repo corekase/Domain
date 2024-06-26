@@ -15,9 +15,24 @@ class AvatarObject(MapObject):
         self.centre_xpos, self.centre_ypos = self.tile_graphical_centre((x, y))
         # update position state with the translation
         self.rect_sync((self.centre_xpos, self.centre_ypos))
+        # agent memory
+        self.inventory = None
 
     def process(self):
+        # disable all buttons
         pass
+        # check current cell for a pickup object
+        if self.inventory == None:
+            pickups = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))
+            if len(pickups) > 0:
+                    # enable pickup button
+                    self.gui.switch_context(0)
+            else:
+                # no pickups at location and no inventory, disable both contexts
+                self.gui.switch_context(None)
+        else:
+            # enable drop button
+            self.gui_switch_context(1)
 
     def move_to(self, position):
         if self.reset_queue():
