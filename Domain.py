@@ -19,6 +19,15 @@ class Main:
     def __init__(self):
         # fullscreen?
         fullscreen = True
+        # helper function to create objects
+        def populate(number, cls, layer, group):
+            for _ in range(number):
+                # instantiate from the class
+                instance = cls()
+                # set the layer, higher takes priority
+                instance.layer = layer
+                # add the instance to the group
+                self.object_manager.object_add(group, instance)
         # initialize pygame
         pygame.init()
         # create main window surface
@@ -72,26 +81,11 @@ class Main:
         # share that domain with map objects
         MapObject.domain = self.object_manager
         # create generic items
-        for _ in range(30):
-            # instantiate a generic item
-            item_object = GenericObject()
-            item_object.layer = 1
-            # track the generic item
-            self.object_manager.object_add('generic', item_object)
+        populate(30, GenericObject, 1, 'generic')
         # create pickup items
-        for _ in range(3):
-            # instantiate a generic item
-            pickup_object = PickupObject()
-            pickup_object.layer = 2
-            # track the generic item
-            self.object_manager.object_add('pickup', pickup_object)
+        populate(3, PickupObject, 2, 'pickup')
         # create agents
-        for _ in range(3):
-            # instantiate an agent
-            agent_object = AgentObject()
-            agent_object.layer = 3
-            # track the agent
-            self.object_manager.object_add('agents', agent_object)
+        populate(3, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
         self.avatar.layer = 4
