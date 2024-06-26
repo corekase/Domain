@@ -35,7 +35,12 @@ class AvatarObject(MapObject):
             self.gui_switch_context('putdown')
 
     def move_to(self, position):
-        self.gui.switch_context(None)
+        # manage context
+        if self.inventory == None:
+            self.gui.switch_context(None)
+        else:
+            self.gui.switch_context('putdown')
+        # perform move
         if self.reset_queue():
             # nothing in the queue so just go there directly
             self.path_to(position)

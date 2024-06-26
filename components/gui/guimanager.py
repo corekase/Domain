@@ -1,13 +1,12 @@
 class GuiManager:
     def __init__(self):
-        # widgets to be managed
-        # todo: add a context variable which indexes into a list of lists of widgets.
-        # GUI handle_event and draw_widgets filter by the given context and the context
-        # is switched by changing the variable in the application logic
-        self.context = None
+        # widgets to be managed: key:value -> group_name:list_of_widgets
         self.widgets = dict()
+        # which key group to show
+        self.context = None
 
     def switch_context(self, context):
+        # set which key group is active
         self.context = context
 
     def handle_event(self, event):
@@ -18,7 +17,7 @@ class GuiManager:
                 if widget.handle_event(event):
                     # widget activated, return its id
                     return widget.id
-            # no widget activated to this event
+        # no widget activated to this event
         return None
 
     def draw_widgets(self):
