@@ -18,8 +18,10 @@ class Position:
         self.x_coord, self.y_coord = position
 
 class MapObject(Sprite):
-    # reference for the map object
+    # reference for the map
     map = None
+    # reference for domain objects
+    domain = None
     # tile gid's for wall and floor in tilesheet
     FLOOR, WALL = 1, 2
 

@@ -37,4 +37,6 @@ class AvatarObject(MapObject):
         pass
 
     def put_down(self):
+        # put down does the same as move_to, if there is a move then datagram the put down after
+        # the one move command completes
         pass

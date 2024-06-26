@@ -3,8 +3,6 @@ from .genericobject import GenericObject
 from ..utility import image_alpha_resource
 
 class AgentObject(MapObject):
-    domain = None
-
     def __init__(self):
         super().__init__()
         # load images for the agents

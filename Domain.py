@@ -69,8 +69,8 @@ class Main:
         self.pan_hold_position = None
         # create an object manager
         self.object_manager = ObjectManager(self.renderer)
-        # share that domain with agent objects
-        AgentObject.domain = self.object_manager
+        # share that domain with map objects
+        MapObject.domain = self.object_manager
         # create generic items
         for _ in range(30):
             # instantiate a generic item
