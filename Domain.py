@@ -152,7 +152,7 @@ class Main:
         pygame.quit()
 
     def check_win(self, name):
-        # return whether all the objects in the named group are at the same cell coordinate
+        # if all the items in the the same cell then the game is won
         matched = True
         last_item = None
         objects = self.domain.objects(name)
@@ -162,10 +162,7 @@ class Main:
             if last_item == None:
                 last_item = item
                 continue
-            if item.x_coord != last_item.x_coord:
-                matched = False
-                break
-            if item.y_coord != last_item.y_coord:
+            if (item.x_coord != last_item.x_coord) or (item.y_coord != last_item.y_coord):
                 matched = False
                 break
         return matched
