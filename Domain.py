@@ -1,4 +1,5 @@
 import time, pygame
+from pygame import Rect
 from components.utility import image_alpha_resource, file_resource
 from components.bundled.pytmx.util_pygame import load_pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
@@ -11,7 +12,6 @@ from components.object.genericobject import GenericObject
 from components.object.pickupobject import PickupObject
 from components.object.agentobject import AgentObject
 from components.object.avatarobject import AvatarObject
-from pygame import Rect
 from components.gui.guimanager import GuiManager
 from components.gui.button import Button
 
@@ -100,13 +100,14 @@ class Main:
         MapObject.gui = self.gui
         # create buttons and add them to gui context widgets lists
         button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 20, 100, 20)
+        # pickup button context
         self.gui.add_widget('pickup_buttons', Button(self.screen, 'pickup', button_position, 'Pick Up', 16))
+        # putdown button context
         self.gui.add_widget('putdown_buttons', Button(self.screen, 'putdown', button_position, 'Put Down', 16))
+        # game won context
         w, h = 100, 20
-        x = self.screen.get_rect().centerx - int(w / 2)
-        y = self.screen.get_rect().centery - int(h / 2)
-        button_position = (x, y, w, h)
-        self.gui.add_widget('win_screen', Button(self.screen, 'win', button_position, 'Won!', 16))
+        x, y = self.screen.get_rect().centerx - int(w / 2), self.screen.get_rect().centery - int(h / 2)
+        self.gui.add_widget('win', Button(self.screen, 'won', (x, y, w, h), 'Won!', 16))
         # set won game condition to false
         self.won = False
         # Set the state of the application to "running"
@@ -153,7 +154,7 @@ class Main:
             if not self.won:
                 if self.check_win('pickup'):
                     # display winning screen here
-                    self.gui.lock_context('win_screen')
+                    self.gui.lock_context('win')
                     self.won = True
             # limit frames-per-second
             clock.tick(fps)
@@ -172,7 +173,7 @@ class Main:
                     self.avatar.pick_up()
                 elif gui_event == 'putdown':
                     self.avatar.put_down()
-                elif gui_event == 'win':
+                elif gui_event == 'won':
                     self.running = False
             else:
                 # handle other events
