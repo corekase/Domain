@@ -35,7 +35,6 @@ class MapObject(Sprite):
         self.image = None
         self.rect = None
         self.centre_xpos, self.centre_ypos = None, None
-        # these values will be updated by rect_sync
         self.x_coord, self.y_coord = None, None
         # speed variable, world pixels per second
         self.speed = 0.0
