@@ -100,13 +100,13 @@ class Main:
         MapObject.gui = self.gui
         # create buttons and add them to gui context widgets lists
         w, h = 100, 20
-        button_position = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom -h - 10, w, h)
+        button_rect = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom -h - 10, w, h)
         # pickup button context
-        self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_position, 'Pick Up', 16))
+        self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up', 16))
         # putdown button context
-        self.gui.add_widget('putdown_context', Button(self.screen, 'put_down', button_position, 'Put Down', 16))
+        self.gui.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down', 16))
         # game won context
-        self.gui.add_widget('win_context', Button(self.screen, 'won', button_position, 'Won!', 16))
+        self.gui.add_widget('win_context', Button(self.screen, 'won', button_rect, 'Won!', 16))
         # set won game condition to false
         self.won = False
         # Set the state of the application to "running"
