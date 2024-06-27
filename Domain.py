@@ -16,6 +16,7 @@ from components.gui.guimanager import GuiManager
 from components.gui.button import Button
 from components.gui.frame import Frame
 from components.gui.widget import gui_colours as colour
+from components import utility
 
 class Main:
     def __init__(self):
@@ -23,6 +24,9 @@ class Main:
         fullscreen = True
         # initialize pygame
         pygame.init()
+        # set the default font used everywhere in utility
+        utility.font_size = 16
+        utility.font = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # create main window surface
         if fullscreen:
             self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
@@ -34,9 +38,6 @@ class Main:
         pygame.display.set_icon(image_alpha_resource('icon.png'))
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
-        # load a default font
-        self.font_size = 16
-        self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
         # load images for custom mouse pointers
         self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
         self.cursor_panning_image = image_alpha_resource('cursors', 'cursor_pan_x7_y7.png')
@@ -101,17 +102,17 @@ class Main:
         # give the map object access to gui switch context
         MapObject.gui = self.gui
         # create a frame
-        information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4, self.font_size))
+        information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
         self.information_frame = Frame(self.screen, information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
         button_rect = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom - h - 10, w, h)
         # pickup button context
-        self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up', 16))
+        self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
         # putdown button context
-        self.gui.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down', 16))
+        self.gui.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down'))
         # game won context
-        self.gui.add_widget('win_context', Button(self.screen, 'won', button_rect, 'Won!', 16))
+        self.gui.add_widget('win_context', Button(self.screen, 'won', button_rect, 'Won!'))
         # set won game condition to false
         self.won = False
         # Set the state of the application to "running"
@@ -355,11 +356,11 @@ class Main:
         # layout coordinates
         x_pos, y_pos, _, _ = self.information_frame.rect
         # draw each text line onto the screen
-        self.screen.blit(render(self.font, cycle), (x_pos + 3, y_pos + padding(0, self.font_size)))
-        self.screen.blit(render(self.font, time), (x_pos + 3, y_pos + padding(1, self.font_size)))
-        self.screen.blit(render(self.font, fps), (x_pos + 3, y_pos + padding(2, self.font_size)))
+        self.screen.blit(render(cycle), (x_pos + 3, y_pos + padding(0)))
+        self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
+        self.screen.blit(render(fps), (x_pos + 3, y_pos + padding(2)))
         # xy_status is constantly updated in the event handler
-        self.screen.blit(render(self.font, self.status), (x_pos + 3, y_pos + padding(3, self.font_size)))
+        self.screen.blit(render(self.status), (x_pos + 3, y_pos + padding(3)))
 
     def draw_mouse(self):
         # draw mouse cursor

@@ -8,13 +8,11 @@ from ..utility import render, centre
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
 
 class Button(Widget):
-    def __init__(self, surface, id, rect, text, font_size):
+    def __init__(self, surface, id, rect, text):
         # initialize common widget values
         super().__init__(surface, id, rect)
-        # font object
-        font = pygame.font.Font(pygame.font.get_default_font(), font_size)
         # text bitmap
-        self.text_bitmap = render(font, text)
+        self.text_bitmap = render(text)
         # get centred dimensions for both x and y ranges
         text_x = self.rect.x + centre(self.rect.width, self.text_bitmap.get_rect().width)
         text_y = self.rect.y + centre(self.rect.height, self.text_bitmap.get_rect().height)
