@@ -141,12 +141,34 @@ class Main:
             self.draw_info_panel(total_time, clock.get_fps())
             # draw mouse cursor
             self.draw_mouse()
+            # check for winning conditions
+            if self.check_win('pickup'):
+                pass
             # limit frames-per-second
             clock.tick(fps)
             # swap screen buffers
             pygame.display.flip()
         # release resources
         pygame.quit()
+
+    def check_win(self, name):
+        # return whether all the objects in the named group are at the same cell coordinate
+        matched = True
+        last_item = None
+        objects = self.domain.objects(name)
+        if self.avatar.inventory != None:
+            objects.append(self.avatar.inventory)
+        for item in objects:
+            if last_item == None:
+                last_item = item
+                continue
+            if item.x_coord != last_item.x_coord:
+                matched = False
+                break
+            if item.y_coord != last_item.y_coord:
+                matched = False
+                break
+        return matched
 
     def handle_events(self):
         # handle event queue
