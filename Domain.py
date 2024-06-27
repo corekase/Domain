@@ -99,15 +99,14 @@ class Main:
         # give the map object access to gui switch context
         MapObject.gui = self.gui
         # create buttons and add them to gui context widgets lists
-        button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 20, 100, 20)
-        # pickup button context
-        self.gui.add_widget('pickup_group', Button(self.screen, 'pick_up', button_position, 'Pick Up', 16))
-        # putdown button context
-        self.gui.add_widget('putdown_group', Button(self.screen, 'put_down', button_position, 'Put Down', 16))
-        # game won context
         w, h = 100, 20
-        x, y = self.screen.get_rect().centerx - int(w / 2), self.screen.get_rect().centery - int(h / 2)
-        self.gui.add_widget('win_group', Button(self.screen, 'won', (x, y, w, h), 'Won!', 16))
+        button_position = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom -h - 10, w, h)
+        # pickup button context
+        self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_position, 'Pick Up', 16))
+        # putdown button context
+        self.gui.add_widget('putdown_context', Button(self.screen, 'put_down', button_position, 'Put Down', 16))
+        # game won context
+        self.gui.add_widget('win_context', Button(self.screen, 'won', button_position, 'Won!', 16))
         # set won game condition to false
         self.won = False
         # Set the state of the application to "running"
@@ -154,7 +153,7 @@ class Main:
             if not self.won:
                 if self.check_win():
                     # display winning screen here
-                    self.gui.lock_context('win_group')
+                    self.gui.lock_context('win_context')
                     self.won = True
             # limit frames-per-second
             clock.tick(fps)
@@ -378,14 +377,14 @@ class Main:
             self.screen.set_clip(None)
         else:
             x, y = pygame.mouse.get_pos()
-            # is the mouse in the view rect and the game hasn't been won?
-            if self.view_surface_rect.collidepoint(x, y) and (not self.won):
+            # is the mouse in the view rect?
+            if self.view_surface_rect.collidepoint(x, y):
                 # draw normal cursor
                 self.screen.set_clip(self.view_surface_rect)
                 self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
                 self.screen.set_clip(None)
             else:
-                # outside of view surface rect or game won, draw interface cursor
+                # outside of view surface rect, draw interface cursor
                 self.screen.blit(self.cursor_interface_image, (x - 6, y))
 
 if __name__ == '__main__':
