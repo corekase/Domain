@@ -5,11 +5,7 @@ from .widget import Widget
 
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
 
-white_colour = (255, 255, 255)
-light_colour = (0, 200, 200)
-medium_colour = (0, 140, 140)
-dark_colour = (0, 80, 80)
-black_colour = (0, 0, 0)
+from .widget import gui_colours as colour
 
 # button subclasses widget
 class Button(Widget):
@@ -19,7 +15,7 @@ class Button(Widget):
         # font object
         font = pygame.font.Font(pygame.font.get_default_font(), font_size)
         # text bitmap
-        self.text_bitmap = font.render(text, True, white_colour)
+        self.text_bitmap = font.render(text, True, colour['full'])
         # helper function that returns a centred position
         def centre(bigger, smaller):
             return int((bigger / 2) - (smaller / 2))
@@ -60,10 +56,10 @@ class Button(Widget):
     def draw(self):
         # draw the button frame
         if self.state == State.IDLE:
-            self.draw_frame(light_colour, dark_colour, white_colour, black_colour, medium_colour)
+            self.draw_frame(colour['light'], colour['dark'], colour['full'], colour['none'], colour['medium'])
         elif self.state == State.HOVER:
-            self.draw_frame(light_colour, dark_colour, white_colour, black_colour, light_colour)
+            self.draw_frame(colour['light'], colour['dark'], colour['full'], colour['none'], colour['light'])
         elif self.state == State.ARMED:
-            self.draw_frame(black_colour, light_colour, black_colour, white_colour, dark_colour)
+            self.draw_frame(colour['none'], colour['light'], colour['none'], colour['full'], colour['dark'])
         # draw the button text
         self.surface.blit(self.text_bitmap, self.position)

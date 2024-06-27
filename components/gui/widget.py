@@ -2,6 +2,13 @@
 from pygame import Rect
 from pygame.draw import rect, line
 
+gui_colours = dict()
+gui_colours['full'] = (255, 255, 255)
+gui_colours['light'] = (0, 200, 200)
+gui_colours['medium'] = (0, 140, 140)
+gui_colours['dark'] = (0, 80, 80)
+gui_colours['none'] = (0, 0, 0)
+
 class Widget:
     def __init__(self, surface, id, rect):
         # surface to draw the widget on
