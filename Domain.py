@@ -101,8 +101,8 @@ class Main:
         # give the map object access to gui switch context
         MapObject.gui = self.gui
         # create a frame
-        frame_rect = (self.screen.get_rect().right - 170, 5, 160, 100)
-        self.frame = Frame(self.screen, frame_rect)
+        information_frame_rect = (self.screen.get_rect().right - 170, 5, 160, 100)
+        self.information_frame = Frame(self.screen, information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
         button_rect = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom - h - 10, w, h)
@@ -358,11 +358,11 @@ class Main:
         time = f'Time: {hours}h {minutes}m {seconds}s'
         fps = f'FPS: {int(round(fps))}'
         # adjust frame
-        self.frame.rect.height = padding(4)
+        self.information_frame.rect.height = padding(4)
         # draw frame
-        self.frame.draw()
+        self.information_frame.draw()
         # layout coordinates and sizes
-        x_pos, y_pos, width, height = self.frame.rect
+        x_pos, y_pos, width, height = self.information_frame.rect
         # fill panel with a colour
         pygame.draw.rect(self.screen, colour['medium'], (x_pos + 1, y_pos + 1, width - 2, height - 2), 0)
         # draw each text line onto the screen
