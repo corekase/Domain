@@ -8,8 +8,9 @@ class GuiManager:
         self.locked_context = None
 
     def switch_context(self, context):
-        # set which key group is active
+        # if locked_context isn't none then ignore the switch_context call
         if self.locked_context == None:
+            # set which key group is active
             self.context = context
 
     def lock_context(self, lock_context):
