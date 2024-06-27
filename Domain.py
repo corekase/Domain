@@ -24,9 +24,6 @@ class Main:
         fullscreen = True
         # initialize pygame
         pygame.init()
-        # set the default font used everywhere in utility
-        utility.font_size = 16
-        utility.font = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # create main window surface
         if fullscreen:
             self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
@@ -38,6 +35,9 @@ class Main:
         pygame.display.set_icon(image_alpha_resource('icon.png'))
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
+        # set the default font for utility functions
+        utility.font_size = 16
+        utility.font = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # load images for custom mouse pointers
         self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
         self.cursor_panning_image = image_alpha_resource('cursors', 'cursor_pan_x7_y7.png')
