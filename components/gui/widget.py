@@ -12,8 +12,8 @@ class Widget:
 
     def handle_event(self, event):
         # implement in subclasses
-        raise('Not Implemented in Subclass')
+        pass
 
     def draw(self):
         # implement in subclasses
-        raise('Not Implemented in Subclass')
+        pass
