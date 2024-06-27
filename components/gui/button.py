@@ -1,7 +1,6 @@
 import pygame
 from enum import Enum
 from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
-from pygame.draw import rect, line
 from .widget import Widget
 
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
@@ -68,23 +67,3 @@ class Button(Widget):
             self.draw_frame(black_colour, light_colour, black_colour, white_colour, dark_colour)
         # draw the button text
         self.surface.blit(self.text_bitmap, self.position)
-
-    def draw_frame(self, ul, lr, ul_d, lr_d, background):
-        # get positions and sizes
-        x, y, width, height = self.rect
-        # lock surface for drawing
-        self.surface.lock()
-        # draw background
-        rect(self.surface, background, self.rect, 0)
-        # draw frame upper and left lines
-        line(self.surface, ul, (x, y), (x + width, y))
-        line(self.surface, ul, (x, y), (x, y + height))
-        # draw frame lower and right lines
-        line(self.surface, lr, (x, y + height), (x + width, y + height))
-        line(self.surface, lr, (x + width, y), (x + width, y + height))
-        # plot upper left dot
-        self.surface.set_at((x + 1, y +1), ul_d)
-        # plot lower right dot
-        self.surface.set_at((x + width - 1, y + height - 1), lr_d)
-        # unlock surface
-        self.surface.unlock()
