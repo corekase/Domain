@@ -1,6 +1,6 @@
 import time, pygame
 from pygame import Rect
-from components.utility import image_alpha_resource, file_resource
+from components.utility import image_alpha_resource, file_resource, padding, render
 from components.bundled.pytmx.util_pygame import load_pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
@@ -101,7 +101,7 @@ class Main:
         # give the map object access to gui switch context
         MapObject.gui = self.gui
         # create a frame
-        information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, 100)
+        information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4, self.font_size))
         self.information_frame = Frame(self.screen, information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
@@ -340,13 +340,6 @@ class Main:
         self.domain.domain().draw(self.view_surface)
 
     def draw_info_panel(self, total_time, fps):
-        # text layout helper function
-        def padding(line):
-            # y = base + line height + spacer size
-            return 2 + (line * self.font_size) + (line * 2)
-        # render helper function so same values aren't repeated
-        def render(text):
-            return self.font.render(text, colour['full'], (200, 200, 255))
         # calculate divisions of total_time
         seconds = total_time % (24 * 3600)
         hours = int(seconds // 3600)
@@ -357,18 +350,16 @@ class Main:
         cycle = f'Cycle: {self.cycle}'
         time = f'Time: {hours}h {minutes}m {seconds}s'
         fps = f'FPS: {int(round(fps))}'
-        # adjust frame
-        self.information_frame.rect.height = padding(4)
         # draw frame
         self.information_frame.draw()
         # layout coordinates
         x_pos, y_pos, _, _ = self.information_frame.rect
         # draw each text line onto the screen
-        self.screen.blit(render(cycle), (x_pos + 3, y_pos + padding(0)))
-        self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
-        self.screen.blit(render(fps), (x_pos + 3, y_pos + padding(2)))
+        self.screen.blit(render(self.font, cycle), (x_pos + 3, y_pos + padding(0, self.font_size)))
+        self.screen.blit(render(self.font, time), (x_pos + 3, y_pos + padding(1, self.font_size)))
+        self.screen.blit(render(self.font, fps), (x_pos + 3, y_pos + padding(2, self.font_size)))
         # xy_status is constantly updated in the event handler
-        self.screen.blit(render(self.status), (x_pos + 3, y_pos + padding(3)))
+        self.screen.blit(render(self.font, self.status), (x_pos + 3, y_pos + padding(3, self.font_size)))
 
     def draw_mouse(self):
         # draw mouse cursor
