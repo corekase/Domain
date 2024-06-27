@@ -153,7 +153,7 @@ class Main:
             if not self.won:
                 if self.check_win('pickup'):
                     # display winning screen here
-                    self.gui.switch_context('win_screen')
+                    self.gui.lock_context('win_screen')
                     self.won = True
             # limit frames-per-second
             clock.tick(fps)
@@ -237,8 +237,7 @@ class Main:
                         if self.view_surface_rect.collidepoint(x, y):
                             position = self.pick_cell(x, y)
                             # avatar move_to resets the GUI context, skip it if won
-                            if not self.won:
-                                self.avatar.move_to(position)
+                            self.avatar.move_to(position)
                     if event.button == 3:
                         # right button up, end panning state
                         self.panning = False
