@@ -72,6 +72,8 @@ class Button(Widget):
     def draw_frame(self, ul, lr, ul_d, lr_d, background):
         # get positions and sizes
         x, y, width, height = self.rect
+        # lock surface for drawing
+        self.surface.lock()
         # draw background
         rect(self.surface, background, self.rect, 0)
         # draw frame upper and left lines
@@ -84,3 +86,5 @@ class Button(Widget):
         self.surface.set_at((x + 1, y +1), ul_d)
         # plot lower right dot
         self.surface.set_at((x + width - 1, y + height - 1), lr_d)
+        # unlock surface
+        self.surface.unlock()
