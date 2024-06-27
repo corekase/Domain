@@ -230,7 +230,7 @@ class Main:
             # same, done once on its own line because it's an expensive operation
             other_objects = pygame.sprite.spritecollide(object, self.object_manager.domain(), False)
             for other_object in other_objects:
-                if other_object is not object:
+                if not (other_object is object):
                     # right here for finer-collisions:
                     #     "if overlapped then per-pixel (mask-based) comparison"
                     # for overall fast collisions and then accuracy only when overlapped
