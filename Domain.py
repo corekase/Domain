@@ -35,7 +35,7 @@ class Main:
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
         # load a default font
-        self.font_size = 14
+        self.font_size = 16
         self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
         # load images for custom mouse pointers
         self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
@@ -101,7 +101,7 @@ class Main:
         # give the map object access to gui switch context
         MapObject.gui = self.gui
         # create a frame
-        frame_rect = (self.screen.get_rect().right - 150, 5, 140, 100)
+        frame_rect = (self.screen.get_rect().right - 170, 5, 160, 100)
         self.frame = Frame(self.screen, frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
