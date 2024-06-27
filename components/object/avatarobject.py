@@ -30,11 +30,8 @@ class AvatarObject(MapObject):
             MapObject.gui.switch_context('putdown_buttons')
 
     def move_to(self, position):
-        # manage context
-        if self.inventory == None:
-            MapObject.gui.switch_context(None)
-        else:
-            MapObject.gui.switch_context('putdown_buttons')
+        # hide gui while moving
+        MapObject.gui.switch_context(None)
         # perform move
         if self.reset_queue():
             # no move_to in the queue so just go there directly
@@ -55,15 +52,6 @@ class AvatarObject(MapObject):
         MapObject.domain.delete('pickup', pickup)
 
     def put_down(self):
-        # put down inventory
-        if self.reset_queue():
-            # no move_to in queue, do directly
-            self.put_down_stub(None)
-        else:
-            # do after move_to
-            self.command(Datagram(self.put_down_stub, None))
-
-    def put_down_stub(self, arg):
         # update the pickup object coordinates
         self.inventory.sync_cell((self.x_coord, self.y_coord))
         # place the pickup object back into the domain
