@@ -12,7 +12,7 @@ class AvatarObject(MapObject):
         # get random starting position
         position = self.find_random_position(MapObject.FLOOR)
         self.sync_cell(position)
-        # agent memory
+        # avatar inventory
         self.inventory = None
 
     def process(self):
