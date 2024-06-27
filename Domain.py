@@ -14,6 +14,8 @@ from components.object.agentobject import AgentObject
 from components.object.avatarobject import AvatarObject
 from components.gui.guimanager import GuiManager
 from components.gui.button import Button
+from components.gui.frame import Frame
+from components.gui.widget import gui_colours as colour
 
 class Main:
     def __init__(self):
@@ -98,6 +100,9 @@ class Main:
         self.gui = GuiManager()
         # give the map object access to gui switch context
         MapObject.gui = self.gui
+        # create a frame
+        frame_rect = (self.screen.get_rect().right - 150, 5, 140, 100)
+        self.frame = Frame(self.screen, frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
         button_rect = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom - h - 10, w, h)
@@ -341,7 +346,7 @@ class Main:
             return 2 + (line * self.font_size) + (line * 2)
         # render helper function so same values aren't repeated
         def render(text):
-            return self.font.render(text, True, (200, 200, 255))
+            return self.font.render(text, colour['full'], (200, 200, 255))
         # calculate divisions of total_time
         seconds = total_time % (24 * 3600)
         hours = int(seconds // 3600)
@@ -352,14 +357,14 @@ class Main:
         cycle = f'Cycle: {self.cycle}'
         time = f'Time: {hours}h {minutes}m {seconds}s'
         fps = f'FPS: {int(round(fps))}'
+        # adjust frame
+        self.frame.rect.height = padding(4)
+        # draw frame
+        self.frame.draw()
         # layout coordinates and sizes
-        screen_rect = self.screen.get_rect()
-        x_pos, y_pos = screen_rect.right - 145, 5
-        width, height = 140, padding(4)
-        # draw the panel outline
-        pygame.draw.rect(self.screen, (255, 255, 255), (x_pos, y_pos, width, height), 1)
+        x_pos, y_pos, width, height = self.frame.rect
         # fill panel with a colour
-        pygame.draw.rect(self.screen, (50, 50, 200), (x_pos + 1, y_pos + 1, width - 2, height - 2), 0)
+        pygame.draw.rect(self.screen, colour['medium'], (x_pos + 1, y_pos + 1, width - 2, height - 2), 0)
         # draw each text line onto the screen
         self.screen.blit(render(cycle), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
