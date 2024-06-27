@@ -107,6 +107,8 @@ class Main:
         y = self.screen.get_rect().centery - int(h / 2)
         button_position = (x, y, w, h)
         self.gui.add_widget('win_screen', Button(self.screen, 'win', button_position, 'Won!', 16))
+        # set won game condition to false
+        self.won = False
         # Set the state of the application to "running"
         self.running = True
 
@@ -119,8 +121,6 @@ class Main:
         previous_time = time.time()
         # total time for information panel
         total_time = 0.0
-        # game won
-        won = False
         # continue while the running flag is true
         while self.running:
             # main loop
@@ -133,7 +133,7 @@ class Main:
             # handle events
             self.handle_events()
             # update domain state
-            if not won:
+            if not self.won:
                 self.update_domain(elapsed_time)
             # clear screen
             self.screen.fill((0, 100, 100))
@@ -150,11 +150,11 @@ class Main:
             # draw mouse cursor
             self.draw_mouse()
             # check for winning conditions
-            if not won:
+            if not self.won:
                 if self.check_win('pickup'):
                     # display winning screen here
                     self.gui.switch_context('win_screen')
-                    won = True
+                    self.won = True
             # limit frames-per-second
             clock.tick(fps)
             # swap screen buffers
@@ -373,18 +373,22 @@ class Main:
             # draw the panning cursor
             self.screen.set_clip(self.view_surface_rect)
             self.screen.blit(self.cursor_panning_image,
-                                (self.pan_hold_position[0] - 7, self.pan_hold_position[1] - 7))
+                             (self.pan_hold_position[0] - 7, self.pan_hold_position[1] - 7))
             self.screen.set_clip(None)
         else:
             x, y = pygame.mouse.get_pos()
-            # is the mouse in the view rect?
-            if self.view_surface_rect.collidepoint(x, y):
-                # draw normal cursor
-                self.screen.set_clip(self.view_surface_rect)
-                self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
-                self.screen.set_clip(None)
+            if not self.won:
+                # is the mouse in the view rect?
+                if self.view_surface_rect.collidepoint(x, y):
+                    # draw normal cursor
+                    self.screen.set_clip(self.view_surface_rect)
+                    self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
+                    self.screen.set_clip(None)
+                else:
+                    # outside of view, draw interface cursor
+                    self.screen.blit(self.cursor_interface_image, (x - 6, y))
             else:
-                # outside of view, draw interface cursor
+                # won game, show interface cursor or panning cursor but not normal
                 self.screen.blit(self.cursor_interface_image, (x - 6, y))
 
 if __name__ == '__main__':
