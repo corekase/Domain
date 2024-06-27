@@ -236,7 +236,6 @@ class Main:
                         # if mouse is inside the view rect
                         if self.view_surface_rect.collidepoint(x, y):
                             position = self.pick_cell(x, y)
-                            # avatar move_to resets the GUI context, skip it if won
                             self.avatar.move_to(position)
                     if event.button == 3:
                         # right button up, end panning state
