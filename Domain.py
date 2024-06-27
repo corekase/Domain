@@ -37,7 +37,7 @@ class Main:
         pygame.mouse.set_visible(False)
         # set the default font for utility functions
         utility.font_size = 16
-        utility.font = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
+        utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # load images for custom mouse pointers
         self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
         self.cursor_panning_image = image_alpha_resource('cursors', 'cursor_pan_x7_y7.png')
@@ -142,7 +142,7 @@ class Main:
             if not self.won:
                 self.update_domain(elapsed_time)
             # clear screen
-            self.screen.fill((0, 100, 100))
+            self.screen.fill(colour['background'])
             # draw the main viewport to the viewport surface
             self.draw_domain()
             # and copy that surface into the main screen surface

@@ -3,7 +3,7 @@ from .gui.widget import gui_colours as colour
 
 # these are filled in during the initializer of Main()
 font_size = None
-font = None
+font_object = None
 
 def image_alpha_resource(*names):
     # load, convert with an alpha channel, and return an image surface
@@ -20,7 +20,7 @@ def padding(line):
 
 def render(text):
     # render helper function so same values aren't repeated
-    return font.render(text, colour['full'], (200, 200, 255))
+    return font_object.render(text, colour['full'], (200, 200, 255))
 
 def centre(bigger, smaller):
     # helper function that returns a centred position
