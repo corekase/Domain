@@ -162,27 +162,6 @@ class Main:
         # release resources
         pygame.quit()
 
-    def check_win(self, name):
-        # if all the items in name are in the same cell then the game is won
-        matched = True
-        last_item = None
-        objects = self.domain.objects(name)
-        # if the avatar has an item in their inventory then include it
-        if self.avatar.inventory != None:
-            objects.append(self.avatar.inventory)
-        # compare cell coordinates for all items, if any don't match then the check fails
-        # the last item in the avatar inventory doesn't count until it's placed on the map
-        # because its coordinates aren't updated until then
-        for item in objects:
-            if last_item == None:
-                last_item = item
-                continue
-            if (item.x_coord != last_item.x_coord) or (item.y_coord != last_item.y_coord):
-                matched = False
-                break
-        # if true then won
-        return matched
-
     def handle_events(self):
         # handle event queue
         for event in pygame.event.get():
@@ -275,6 +254,27 @@ class Main:
                     other_object.overlap(object)
         # update all mapobjects and their subclasses in the domain group
         self.domain.domain().update(elapsed_time)
+
+    def check_win(self, name):
+        # if all the items in name are in the same cell then the game is won
+        matched = True
+        last_item = None
+        objects = self.domain.objects(name)
+        # if the avatar has an item in their inventory then include it
+        if self.avatar.inventory != None:
+            objects.append(self.avatar.inventory)
+        # compare cell coordinates for all items, if any don't match then the check fails
+        # the last item in the avatar inventory doesn't count until it's placed on the map
+        # because its coordinates aren't updated until then
+        for item in objects:
+            if last_item == None:
+                last_item = item
+                continue
+            if (item.x_coord != last_item.x_coord) or (item.y_coord != last_item.y_coord):
+                matched = False
+                break
+        # if true then won
+        return matched
 
     def pick_cell(self, x, y):
         # normalize x and y mouse position to the screen coordinates of the surface
