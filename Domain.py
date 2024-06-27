@@ -102,6 +102,11 @@ class Main:
         button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 20, 100, 20)
         self.gui.add_widget('pickup_buttons', Button(self.screen, 'pickup', button_position, 'Pick Up', 16))
         self.gui.add_widget('putdown_buttons', Button(self.screen, 'putdown', button_position, 'Put Down', 16))
+        w, h = 100, 20
+        x = self.screen.get_rect().centerx - int(w / 2)
+        y = self.screen.get_rect().centery - int(h / 2)
+        button_position = (x, y, w, h)
+        self.gui.add_widget('win_screen', Button(self.screen, 'win', button_position, 'Won!', 16))
         # Set the state of the application to "running"
         self.running = True
 
@@ -114,6 +119,8 @@ class Main:
         previous_time = time.time()
         # total time for information panel
         total_time = 0.0
+        # game won
+        won = False
         # continue while the running flag is true
         while self.running:
             # main loop
@@ -126,7 +133,8 @@ class Main:
             # handle events
             self.handle_events()
             # update domain state
-            self.update_domain(elapsed_time)
+            if not won:
+                self.update_domain(elapsed_time)
             # clear screen
             self.screen.fill((0, 100, 100))
             # draw the main viewport to the viewport surface
@@ -142,11 +150,11 @@ class Main:
             # draw mouse cursor
             self.draw_mouse()
             # check for winning conditions
-            if self.check_win('pickup'):
-                # display winning screen here
-                pass
-                # application exit
-                self.running = False
+            if not won:
+                if self.check_win('pickup'):
+                    # display winning screen here
+                    self.gui.switch_context('win_screen')
+                    won = True
             # limit frames-per-second
             clock.tick(fps)
             # swap screen buffers
@@ -185,6 +193,8 @@ class Main:
                     self.avatar.pick_up()
                 elif gui_event == 'putdown':
                     self.avatar.put_down()
+                elif gui_event == 'win':
+                    self.running = False
             else:
                 # handle other events
                 if event.type == QUIT:
