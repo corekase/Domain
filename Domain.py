@@ -152,12 +152,14 @@ class Main:
         pygame.quit()
 
     def check_win(self, name):
-        # if all the items in the the same cell then the game is won
+        # if all the items in name are in the same cell then the game is won
         matched = True
         last_item = None
         objects = self.domain.objects(name)
+        # if the avatar has an item in their inventory then include it
         if self.avatar.inventory != None:
             objects.append(self.avatar.inventory)
+        # compare cell coordinates for all items, if any don't match then the check fails
         for item in objects:
             if last_item == None:
                 last_item = item
@@ -165,6 +167,7 @@ class Main:
             if (item.x_coord != last_item.x_coord) or (item.y_coord != last_item.y_coord):
                 matched = False
                 break
+        # if true then won
         return matched
 
     def handle_events(self):
