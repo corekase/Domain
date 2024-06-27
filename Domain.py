@@ -83,7 +83,7 @@ class Main:
         # create generic items
         populate(30, GenericObject, 1, 'generic')
         # create pickup items
-        populate(3, PickupObject, 2, 'pickup')
+        populate(3, PickupObject, 2, 'pickups')
         # create agents
         populate(4, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
@@ -101,13 +101,13 @@ class Main:
         # create buttons and add them to gui context widgets lists
         button_position = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - 20, 100, 20)
         # pickup button context
-        self.gui.add_widget('pickup_buttons', Button(self.screen, 'pickup', button_position, 'Pick Up', 16))
+        self.gui.add_widget('pickup_group', Button(self.screen, 'pick_up', button_position, 'Pick Up', 16))
         # putdown button context
-        self.gui.add_widget('putdown_buttons', Button(self.screen, 'putdown', button_position, 'Put Down', 16))
+        self.gui.add_widget('putdown_group', Button(self.screen, 'put_down', button_position, 'Put Down', 16))
         # game won context
         w, h = 100, 20
         x, y = self.screen.get_rect().centerx - int(w / 2), self.screen.get_rect().centery - int(h / 2)
-        self.gui.add_widget('win', Button(self.screen, 'won', (x, y, w, h), 'Won!', 16))
+        self.gui.add_widget('win_group', Button(self.screen, 'won', (x, y, w, h), 'Won!', 16))
         # set won game condition to false
         self.won = False
         # Set the state of the application to "running"
@@ -152,9 +152,9 @@ class Main:
             self.draw_mouse()
             # check for winning conditions
             if not self.won:
-                if self.check_win('pickup'):
+                if self.check_win():
                     # display winning screen here
-                    self.gui.lock_context('win')
+                    self.gui.lock_context('win_group')
                     self.won = True
             # limit frames-per-second
             clock.tick(fps)
@@ -169,9 +169,9 @@ class Main:
             gui_event = self.gui.handle_event(event)
             if gui_event != None:
                 # handle gui events
-                if gui_event == 'pickup':
+                if gui_event == 'pick_up':
                     self.avatar.pick_up()
-                elif gui_event == 'putdown':
+                elif gui_event == 'put_down':
                     self.avatar.put_down()
                 elif gui_event == 'won':
                     self.running = False
@@ -256,11 +256,11 @@ class Main:
         # update all mapobjects and their subclasses in the domain group
         self.domain.domain().update(elapsed_time)
 
-    def check_win(self, name):
+    def check_win(self):
         # if all the items in name are in the same cell then the game is won
         matched = True
         last_item = None
-        objects = self.domain.objects(name)
+        objects = self.domain.objects('pickups')
         # if the avatar has an item in their inventory then include it
         if self.avatar.inventory != None:
             objects.append(self.avatar.inventory)

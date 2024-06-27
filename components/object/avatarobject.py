@@ -18,16 +18,16 @@ class AvatarObject(MapObject):
     def process(self):
         # check current cell for a pickup object
         if self.inventory == None:
-            pickups = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))
+            pickups = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickups'))
             if len(pickups) > 0:
                     # enable pick up button
-                    MapObject.gui.switch_context('pickup_buttons')
+                    MapObject.gui.switch_context('pickup_group')
             else:
                 # no pickups at location and no inventory, disable both contexts
                 MapObject.gui.switch_context(None)
         else:
             # enable put down button
-            MapObject.gui.switch_context('putdown_buttons')
+            MapObject.gui.switch_context('putdown_group')
 
     def move_to(self, position):
         # hide gui while moving
@@ -46,15 +46,15 @@ class AvatarObject(MapObject):
 
     def pick_up(self):
         # pick up inventory
-        pickup = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickup'))[0]
+        pickup = self.find_cell_objects((self.x_coord, self.y_coord), MapObject.domain.objects('pickups'))[0]
         self.inventory = pickup
         # delete pickup object from the domain
-        MapObject.domain.delete('pickup', pickup)
+        MapObject.domain.delete('pickups', pickup)
 
     def put_down(self):
         # update the pickup object coordinates
         self.inventory.sync_cell((self.x_coord, self.y_coord))
         # place the pickup object back into the domain
-        MapObject.domain.object_add('pickup', self.inventory)
+        MapObject.domain.object_add('pickups', self.inventory)
         # delete inventory
         self.inventory = None
