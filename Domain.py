@@ -385,7 +385,7 @@ class Main:
                 self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
                 self.screen.set_clip(None)
             else:
-                # outside of view, draw interface cursor
+                # outside of view surface rect or game won, draw interface cursor
                 self.screen.blit(self.cursor_interface_image, (x - 6, y))
 
 if __name__ == '__main__':
