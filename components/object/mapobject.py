@@ -185,11 +185,6 @@ class MapObject(Sprite):
                     break
             if found:
                 break
-            # preferred direction can also be implemented here, each map object can have a direction, and
-            # when building adjacents preference in order is given to the square in the direction of the map
-            # object when no other considerations matter.  the direction implementation could be a integer that
-            # wraps 0 to 8 in facings and is relative, like contents = direction(facing) where facing can
-            # be -1, +1, and so on for easy code.  preferred directions are frontier.put() first
             neighbours = self.adjacents(current)
             for next in neighbours:
                 if next not in came_from:
@@ -234,11 +229,6 @@ class MapObject(Sprite):
         if adjacents[3] == MapObject.WALL:
             adjacents[0] = None
             adjacents[6] = None
-        # filter for floor tiles
-        # filtering here can also be passed a list of cell ranges as rectangles.  The rectangles,
-        # allowed ones, are used to keep moving mapobjects within specific areas.  They limit pathfinding
-        # to those cell coordinate rectangles keeping the mapobjects in allowed zones
-        # a zone could also be relative to a mapobject position.  So that would be "find things within range"
         valid_neighbours = []
         for num, value in enumerate(adjacents):
             if value == MapObject.FLOOR:
