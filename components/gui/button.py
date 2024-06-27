@@ -21,9 +21,12 @@ class Button(Widget):
         font = pygame.font.Font(pygame.font.get_default_font(), font_size)
         # text bitmap
         self.text_bitmap = font.render(text, True, white_colour)
+        # helper function that returns a centred position
+        def centre(bigger, smaller):
+            return int((bigger / 2) - (smaller / 2))
         # get centred dimensions for both x and y ranges
-        text_x = self.rect.x + self.centre(self.rect.width, self.text_bitmap.get_rect().width) + 1
-        text_y = self.rect.y + self.centre(self.rect.height, self.text_bitmap.get_rect().height) + 1
+        text_x = self.rect.x + centre(self.rect.width, self.text_bitmap.get_rect().width)
+        text_y = self.rect.y + centre(self.rect.height, self.text_bitmap.get_rect().height)
         # store the position for later blitting
         self.position = text_x, text_y
         # button state
@@ -81,7 +84,3 @@ class Button(Widget):
         self.surface.set_at((x + 1, y +1), ul_d)
         # plot lower right dot
         self.surface.set_at((x + width - 1, y + height - 1), lr_d)
-
-    def centre(self, bigger, smaller):
-        # return a centred position
-        return int((bigger / 2) - (smaller / 2))
