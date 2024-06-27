@@ -27,7 +27,7 @@ class Main:
                 # set the layer, higher takes priority
                 instance.layer = layer
                 # add the instance to the group
-                self.object_manager.object_add(group, instance)
+                self.domain.object_add(group, instance)
         # initialize pygame
         pygame.init()
         # create main window surface
@@ -77,9 +77,9 @@ class Main:
         # when panning lock mouse position to this position
         self.pan_hold_position = None
         # create an object manager
-        self.object_manager = ObjectManager(self.renderer)
+        self.domain = ObjectManager(self.renderer)
         # share that domain with map objects
-        MapObject.domain = self.object_manager
+        MapObject.domain = self.domain
         # create generic items
         populate(30, GenericObject, 1, 'generic')
         # create pickup items
@@ -89,7 +89,7 @@ class Main:
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
         self.avatar.layer = 4
-        self.object_manager.object_add('avatar', self.avatar)
+        self.domain.object_add('avatar', self.avatar)
         # cycle counter, to be used for demo recording, marking, and playback later
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
@@ -225,10 +225,10 @@ class Main:
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
         # so is done once on its own line here
-        objects = self.object_manager.domain().sprites()
+        objects = self.domain.domain().sprites()
         for object in objects:
             # same, done once on its own line because it's an expensive operation
-            other_objects = pygame.sprite.spritecollide(object, self.object_manager.domain(), False)
+            other_objects = pygame.sprite.spritecollide(object, self.domain.domain(), False)
             for other_object in other_objects:
                 if not (other_object is object):
                     # right here for finer-collisions:
@@ -237,7 +237,7 @@ class Main:
                     object.overlap(other_object)
                     other_object.overlap(object)
         # update all mapobjects and their subclasses in the domain group
-        self.object_manager.domain().update(elapsed_time)
+        self.domain.domain().update(elapsed_time)
 
     def pick_cell(self, x, y):
         # normalize x and y mouse position to the screen coordinates of the surface
@@ -295,7 +295,7 @@ class Main:
         # reupdate the viewport, viewport is updated here in case the bounds were modified
         self.renderer.center(self.main_viewport)
         # draw map and group objects to surface
-        self.object_manager.domain().draw(self.view_surface)
+        self.domain.domain().draw(self.view_surface)
 
     def draw_info_panel(self, total_time, fps):
         # text layout helper function
