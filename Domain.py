@@ -143,7 +143,10 @@ class Main:
             self.draw_mouse()
             # check for winning conditions
             if self.check_win('pickup'):
+                # display winning screen here
                 pass
+                # application exit
+                self.running = False
             # limit frames-per-second
             clock.tick(fps)
             # swap screen buffers
