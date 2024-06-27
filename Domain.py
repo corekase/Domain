@@ -100,7 +100,7 @@ class Main:
         MapObject.gui = self.gui
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
-        button_rect = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom -h - 10, w, h)
+        button_rect = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom - h - 10, w, h)
         # pickup button context
         self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up', 16))
         # putdown button context
