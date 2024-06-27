@@ -1,3 +1,15 @@
 Pygame is the only required dependency.
 
-This project aims to be a complete game of some kind in the end, mainly about showcasing systems that work well together.  It is not a library and is instead a reference implementation of the said systems.  Then, this code, for your project, is meant to be cannibalized to suit your specific needs.  As a reference, you are completely free to reimplement the systems in another language or project.  If you do so then the GPL-3.0 license doesn't apply to that code.  Reference implementation.
+This project aims to be a complete game of some kind in the end, mainly about showcasing systems that work well together.  It is not a library and is instead a reference implementation of the said systems.  Then, this code, for your project, is meant to be cannibalized to suit your specific needs.  As a reference, you are completely free to reimplement the systems in another language or project.  If you do so then the GPL-3.0 license doesn't apply to that code.
+
+Controls:
+
+left-click on map moves the avatar to that location
+mouse-wheel controls zooming
+while zoomed, holding right-mouse-button scrolls around the map
+
+Winning:
+
+The game is won by gathering the items you can pick up and putting them all down into the same square.
+
+If you can pick up a item a button will appear when you are on the same square.
