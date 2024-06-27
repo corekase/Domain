@@ -29,16 +29,17 @@ class MapObject(Sprite):
 
     def __init__(self):
         super().__init__()
-        # values that must be filled in by subclasses in their init and before any calls to process()
+        # values filled in by subclasses
         self.normal_image = None
         self.overlap_image = None
         self.image = None
+        # values updated by either sync_position or sync_cell
         self.rect = None
         self.centre_xpos, self.centre_ypos = None, None
         self.x_coord, self.y_coord = None, None
         # speed variable, world pixels per second
         self.speed = 0.0
-        # list of agents currently overlapping this one
+        # list of mapobjects currently overlapping this one
         self.overlap_mapobjects = []
         # command queue
         self.command_queue = []
