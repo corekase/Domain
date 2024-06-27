@@ -2,13 +2,13 @@
 from pygame import Rect
 
 class Widget:
-    def __init__(self, surface, id, position):
+    def __init__(self, surface, id, rect):
         # surface to draw the widget on
         self.surface = surface
         # identifier for widget, can be any kind like int or string
         self.id = id
         # rect for widget position and size on the surface
-        self.rect = Rect(position)
+        self.rect = Rect(rect)
 
     def handle_event(self, event):
         # implement in subclasses

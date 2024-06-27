@@ -14,9 +14,9 @@ black_colour = (0, 0, 0)
 
 # button subclasses widget
 class Button(Widget):
-    def __init__(self, surface, id, position, text, font_size):
+    def __init__(self, surface, id, rect, text, font_size):
         # initialize common widget values
-        super().__init__(surface, id, position)
+        super().__init__(surface, id, rect)
         # font object
         font = pygame.font.Font(pygame.font.get_default_font(), font_size)
         # text bitmap
@@ -33,7 +33,7 @@ class Button(Widget):
         self.state = State.IDLE
 
     def handle_event(self, event):
-        if event.type not in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN):
+        if not (event.type in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN)):
             # no matching events for button logic
             return False
         # is the mouse position within the button rect
