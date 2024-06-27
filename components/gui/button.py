@@ -2,12 +2,10 @@ import pygame
 from enum import Enum
 from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
 from .widget import Widget
+from .widget import gui_colours as colour
 
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
 
-from .widget import gui_colours as colour
-
-# button subclasses widget
 class Button(Widget):
     def __init__(self, surface, id, rect, text, font_size):
         # initialize common widget values
