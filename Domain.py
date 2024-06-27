@@ -378,18 +378,14 @@ class Main:
             self.screen.set_clip(None)
         else:
             x, y = pygame.mouse.get_pos()
-            if not self.won:
-                # is the mouse in the view rect?
-                if self.view_surface_rect.collidepoint(x, y):
-                    # draw normal cursor
-                    self.screen.set_clip(self.view_surface_rect)
-                    self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
-                    self.screen.set_clip(None)
-                else:
-                    # outside of view, draw interface cursor
-                    self.screen.blit(self.cursor_interface_image, (x - 6, y))
+            # is the mouse in the view rect and the game hasn't been won?
+            if self.view_surface_rect.collidepoint(x, y) and (not self.won):
+                # draw normal cursor
+                self.screen.set_clip(self.view_surface_rect)
+                self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
+                self.screen.set_clip(None)
             else:
-                # won game, show interface cursor or panning cursor but not normal
+                # outside of view, draw interface cursor
                 self.screen.blit(self.cursor_interface_image, (x - 6, y))
 
 if __name__ == '__main__':
