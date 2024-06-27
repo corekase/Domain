@@ -160,6 +160,8 @@ class Main:
         if self.avatar.inventory != None:
             objects.append(self.avatar.inventory)
         # compare cell coordinates for all items, if any don't match then the check fails
+        # the last item in the avatar inventory doesn't count until it's placed on the map
+        # because it's coordinates aren't updated until then
         for item in objects:
             if last_item == None:
                 last_item = item
