@@ -257,7 +257,7 @@ class Main:
         self.domain.domain().update(elapsed_time)
 
     def check_win(self):
-        # if all the items in name are in the same cell then the game is won
+        # if all the pickup items are in the same cell then the game is won
         matched = True
         last_item = None
         objects = self.domain.objects('pickups')
