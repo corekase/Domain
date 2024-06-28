@@ -15,7 +15,7 @@ from components.object.avatarobject import AvatarObject
 from components.gui.guimanager import GuiManager
 from components.gui.button import Button
 from components.gui.frame import Frame
-from components.gui.widget import gui_colours as colour
+from components.gui.widget import colours
 from components import utility
 
 class Main:
@@ -142,7 +142,7 @@ class Main:
             if not self.won:
                 self.update_domain(elapsed_time)
             # clear screen
-            self.screen.fill(colour['background'])
+            self.screen.fill(colours['background'])
             # draw the main viewport to the viewport surface
             self.draw_domain()
             # and copy that surface into the main screen surface

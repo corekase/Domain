@@ -1,5 +1,5 @@
 import os, pygame
-from .gui.widget import gui_colours as colour
+from .gui.widget import colours
 
 # these are filled in during the initializer of Main()
 font_size = None
@@ -20,7 +20,7 @@ def padding(line):
 
 def render(text):
     # render helper function so same values aren't repeated
-    return font_object.render(text, colour['text'], (200, 200, 255))
+    return font_object.render(text, colours['text'], (200, 200, 255))
 
 def centre(bigger, smaller):
     # helper function that returns a centred position
