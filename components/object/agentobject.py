@@ -1,8 +1,8 @@
-from .mapobject import MapObject
+from .domainobject import DomainObject
 from .genericobject import GenericObject
 from ..utility import image_alpha_resource
 
-class AgentObject(MapObject):
+class AgentObject(DomainObject):
     def __init__(self):
         super().__init__()
         # load images for the agents
@@ -15,7 +15,7 @@ class AgentObject(MapObject):
         # speed variable, world pixels per second
         self.speed = 64.0
         # get random starting position
-        position = self.find_random_position(MapObject.FLOOR)
+        position = self.find_random_position(DomainObject.FLOOR)
         self.sync_cell(position)
         # agent memory
         self.destination_object = None
@@ -26,18 +26,18 @@ class AgentObject(MapObject):
                 # find the nearest item
                 path, self.destination_object = self.find_nearest(
                                                 (self.x_coord, self.y_coord),
-                                                MapObject.domain.objects('generic'))
+                                                DomainObject.domain.objects('generic'))
                 if path != None:
-                    MapObject.domain.object_remove('generic', self.destination_object)
+                    DomainObject.domain.object_remove('generic', self.destination_object)
                     self.follow_path(path)
         else:
             # remove reference to old object
-            MapObject.domain.delete('generic', self.destination_object)
+            DomainObject.domain.delete('generic', self.destination_object)
             # create a new generic object
             item_object = GenericObject()
             item_object.layer = 1
             # track the generic item
-            MapObject.domain.object_add('generic', item_object)
+            DomainObject.domain.object_add('generic', item_object)
             # set collision image to normal
             self.image = self.normal_image
             # reset destination to none

@@ -7,7 +7,7 @@ from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.data import TiledMapData
 from components.object.objectmanager import ObjectManager
-from components.object.mapobject import MapObject
+from components.object.domainobject import DomainObject
 from components.object.genericobject import GenericObject
 from components.object.pickupobject import PickupObject
 from components.object.agentobject import AgentObject
@@ -45,7 +45,7 @@ class Main:
         # load the map
         self.map = load_pygame(file_resource('domains', 'domain.tmx'))
         # give MapObject subclasses a common reference to the map
-        MapObject.map = self.map
+        DomainObject.map = self.map
         # calculate view size at 1.0 zoom
         map_graphical_width = self.map.width * self.map.tilewidth
         map_graphical_height = self.map.height * self.map.tileheight
@@ -73,7 +73,7 @@ class Main:
         # create an object manager
         self.domain = ObjectManager(self.renderer)
         # share that domain with map objects
-        MapObject.domain = self.domain
+        DomainObject.domain = self.domain
         # helper function to create objects
         def populate(number, cls, layer, group):
             for _ in range(number):
@@ -100,7 +100,7 @@ class Main:
         # instantiate a GUI manager
         self.gui = GuiManager()
         # give the map object access to gui switch context
-        MapObject.gui = self.gui
+        DomainObject.gui = self.gui
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)

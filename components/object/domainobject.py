@@ -17,7 +17,7 @@ class Position:
     def __init__(self, position):
         self.x_coord, self.y_coord = position
 
-class MapObject(Sprite):
+class DomainObject(Sprite):
     # reference for the map
     map = None
     # reference for domain objects
@@ -217,21 +217,21 @@ class MapObject(Sprite):
         # clear the current tile so it isn't included in neighbours
         adjacents[4] = None
         # with the layout order, block out invalid orthographic moves due to walls
-        if adjacents[1] == MapObject.WALL:
+        if adjacents[1] == DomainObject.WALL:
             adjacents[0] = None
             adjacents[2] = None
-        if adjacents[5] == MapObject.WALL:
+        if adjacents[5] == DomainObject.WALL:
             adjacents[2] = None
             adjacents[8] = None
-        if adjacents[7] == MapObject.WALL:
+        if adjacents[7] == DomainObject.WALL:
             adjacents[6] = None
             adjacents[8] = None
-        if adjacents[3] == MapObject.WALL:
+        if adjacents[3] == DomainObject.WALL:
             adjacents[0] = None
             adjacents[6] = None
         valid_neighbours = []
         for num, value in enumerate(adjacents):
-            if value == MapObject.FLOOR:
+            if value == DomainObject.FLOOR:
                 valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours
@@ -239,16 +239,16 @@ class MapObject(Sprite):
     def find_random_position(self, gid):
         # return a random cell position which contains a specific tile gid
         while True:
-            x, y = randint(0, MapObject.map.width - 1), randint(0, MapObject.map.height - 1)
+            x, y = randint(0, DomainObject.map.width - 1), randint(0, DomainObject.map.height - 1)
             if self.find_cell_gid((x, y)) == gid:
                 return x, y
 
     def find_cell_gid(self, position):
         # get the tile gid for a cell position
         x, y = position
-        if x < 0 or y < 0 or x >= MapObject.map.width or y >= MapObject.map.height:
+        if x < 0 or y < 0 or x >= DomainObject.map.width or y >= DomainObject.map.height:
             return None
-        return MapObject.map.get_tile_gid(x, y, 0)
+        return DomainObject.map.get_tile_gid(x, y, 0)
 
     def find_cell_objects(self, position, objects):
         # return a list of objects which match the position coordinate
@@ -263,7 +263,7 @@ class MapObject(Sprite):
         # update position state in pixels
         self.centre_xpos, self.centre_ypos = position
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
-        self.x_coord, self.y_coord = int(self.rect.centerx / MapObject.map.tilewidth), int(self.rect.centery / MapObject.map.tileheight)
+        self.x_coord, self.y_coord = int(self.rect.centerx / DomainObject.map.tilewidth), int(self.rect.centery / DomainObject.map.tileheight)
 
     def sync_cell(self, position):
         # update position state in cells
