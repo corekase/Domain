@@ -1,7 +1,7 @@
+from enum import Enum
+from pygame.draw import rect, line
 from .widget import Widget
 from .widget import gui_colours as colour
-from pygame.draw import rect, line
-from enum import Enum
 
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
 

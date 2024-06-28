@@ -1,11 +1,6 @@
-import pygame
-from enum import Enum
 from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
-from .widget import gui_colours as colour
 from ..utility import render, centre
-
-from .frame import State
-from .frame import Frame
+from .frame import State, Frame
 
 class Button(Frame):
     def __init__(self, surface, id, rect, text):
