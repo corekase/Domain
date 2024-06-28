@@ -359,7 +359,7 @@ class Main:
         self.screen.blit(render(cycle), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
         self.screen.blit(render(fps), (x_pos + 3, y_pos + padding(2)))
-        # xy_status is constantly updated in the event handler
+        # status is constantly updated in the event handler
         self.screen.blit(render(self.status), (x_pos + 3, y_pos + padding(3)))
 
     def draw_mouse(self):
