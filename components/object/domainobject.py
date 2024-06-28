@@ -67,7 +67,7 @@ class DomainObject(Sprite):
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0:
                     # arrived at destination
-                    self.sync_position(destination)
+                    self.sync_coordinate(destination)
                     # remove this command item from the queue
                     self.command_queue.pop(0)
                 else:
@@ -130,8 +130,8 @@ class DomainObject(Sprite):
     def move(self, degree, elapsed_time):
         # move in the direction of degree
         degree %= 360
-        self.sync_position((self.centre_xpos + (cos(radians(degree)) * self.speed) * elapsed_time,
-                        self.centre_ypos + (sin(radians(degree)) * self.speed) * elapsed_time))
+        self.sync_coordinate((self.centre_xpos + (cos(radians(degree)) * self.speed) * elapsed_time,
+                              self.centre_ypos + (sin(radians(degree)) * self.speed) * elapsed_time))
 
     def find_bearing_angle(self, position):
         # find bearing angle on position
@@ -259,7 +259,7 @@ class DomainObject(Sprite):
                 results.append(item)
         return results
 
-    def sync_position(self, position):
+    def sync_coordinate(self, position):
         # update position state in pixels
         self.centre_xpos, self.centre_ypos = position
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
