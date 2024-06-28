@@ -20,7 +20,7 @@ def padding(line):
 
 def render(text):
     # render helper function so same values aren't repeated
-    return font_object.render(text, colour['full'], (200, 200, 255))
+    return font_object.render(text, colour['text'], (200, 200, 255))
 
 def centre(bigger, smaller):
     # helper function that returns a centred position

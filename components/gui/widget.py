@@ -6,6 +6,7 @@ gui_colours = {'full': (255, 255, 255),
                'medium': (0, 140, 140),
                'dark': (0, 80, 80),
                'none': (0, 0, 0),
+               'text': (255, 255, 255),
                'background': (0, 100, 100)}
 
 class Widget:
