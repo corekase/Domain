@@ -16,7 +16,7 @@ def file_resource(*names):
 def padding(line):
     # text layout helper function
     # return = base + line height + spacer size
-    return 1 + (line * font_size) + (line * 1)
+    return 1 + (line * font_size) + (line * 2)
 
 def render(text):
     # render helper function so same values aren't repeated
