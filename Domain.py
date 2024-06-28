@@ -103,7 +103,7 @@ class Main:
         MapObject.gui = self.gui
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
-        self.information_frame = Frame(self.screen, information_frame_rect)
+        self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
         button_rect = (self.screen.get_rect().right - w - 10, self.screen.get_rect().bottom - h - 10, w, h)
