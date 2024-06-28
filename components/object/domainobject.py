@@ -40,17 +40,17 @@ class DomainObject(Sprite):
         # speed variable, world pixels per second
         self.speed = 0.0
         # list of mapobjects currently overlapping this one
-        self.overlap_mapobjects = []
+        self.overlaps = []
         # command queue
         self.command_queue = []
         # subclasess must call either sync_position or sync_cell before they exit their __init__
 
     def update(self, elapsed_time):
         # filter overlapped mapobjects so that only objects still overlapping are kept
-        self.overlap_mapobjects = [mapobject for mapobject in self.overlap_mapobjects \
-                                   if pygame.sprite.collide_rect(self, mapobject)]
+        self.overlaps = [domainobject for domainobject in self.overlaps \
+                         if pygame.sprite.collide_rect(self, domainobject)]
         # if this agent isn't overlapping other agents return its image to normal
-        if len(self.overlap_mapobjects) == 0:
+        if len(self.overlaps) == 0:
             self.image = self.normal_image
         # check the command queue for any commands
         if len(self.command_queue) > 0:
@@ -271,10 +271,10 @@ class DomainObject(Sprite):
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
         self.x_coord, self.y_coord = position
 
-    def overlap(self, other_mapobject):
+    def overlap(self, other_object):
         # other_mapobject is overlapping rects with this mapobject, if it's not already in overlap_mapobjects then add it
-        if not (other_mapobject in self.overlap_mapobjects):
+        if not (other_object in self.overlaps):
             # set visual sprite to overlap image
             self.image = self.overlap_image
             # remember the agent
-            self.overlap_mapobjects.append(other_mapobject)
+            self.overlaps.append(other_object)
