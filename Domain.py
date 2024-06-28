@@ -343,9 +343,9 @@ class Main:
     def draw_info_panel(self, total_time, fps):
         # calculate divisions of total_time
         seconds = total_time % (24 * 3600)
-        hours = int(seconds // 3600)
+        hours = int(seconds / 3600)
         seconds %= 3600
-        minutes = int(seconds // 60)
+        minutes = int(seconds / 60)
         seconds = int(seconds % 60)
         # gather information into text strings
         cycle = f'Cycle: {self.cycle}'
