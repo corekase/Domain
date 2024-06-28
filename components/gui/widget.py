@@ -18,7 +18,7 @@ class Widget:
         # rect for widget position and size on the surface
         self.rect = Rect(rect)
 
-    def handle_event(self, event):
+    def handle_event(self, _):
         # implement in subclasses
         pass
 
