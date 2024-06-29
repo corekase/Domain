@@ -59,11 +59,11 @@ class MapManager:
         # floors is a list of rects which are the map pixel boundaries for each
         self.floors = []
         for floor in range(floor_size):
-            x_base = floor_tiles * floor * self.map.tilewidth
+            x_base = floor_tiles * floor * self.map.tilewidth - (self.map.tilewidth / 2)
             visible = floor_tiles * self.map.tilewidth
-            x_upper = x_base + visible
-            y_upper = self.map.tileheight * floor_tiles
-            self.floors.append(Rect(x_base, 0, x_upper, y_upper))
+            x_upper = x_base + visible + (self.map.tilewidth)
+            y_upper = self.map.tileheight * floor_tiles + (self.map.tileheight)
+            self.floors.append(Rect(x_base, 0 - (self.map.tileheight / 2), x_upper, y_upper))
         self.floor_port = None
         self.floor = 0
         self.switch_floor(self.floor)
@@ -119,8 +119,8 @@ class MapManager:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
 
     def draw_domain(self):
-        width = int((self.map.tilewidth * 32) / self.renderer.zoom)
-        height = int((self.map.tileheight * 32) / self.renderer.zoom)
+        width = (self.map.tilewidth * 32) / self.renderer.zoom
+        height = (self.map.tileheight * 32) / self.renderer.zoom
         main_rect = Rect(0, 0, width, height)
         main_rect.center = self.main_viewport
         base_x = self.floor * self.map.tilewidth
