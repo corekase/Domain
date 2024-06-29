@@ -53,18 +53,23 @@ class MapManager:
         self.domain.object_add('avatar', self.avatar)
         # set main viewport to avatar center, within map view bounds
         self.main_viewport = list(self.avatar.rect.center)
-        # build border left, right, and up, down, for each floor
+        # map constants
         floor_tiles = 30
         floor_size = int(self.map.width / floor_tiles)
-        # floors is a list of rects which are the map pixel boundaries for each
+        # each floor_ports is a rect which has the boundaries for the floor
         self.floor_ports = []
+        # these values stay the same for each floor_port
+        width = floor_tiles * self.map.tilewidth
         y_size = self.map.tileheight * floor_tiles
+        # find a rect for each floor
         for floor in range(floor_size):
             x_base = floor * (floor_tiles * self.map.tilewidth)
-            width = floor_tiles * self.map.tilewidth
             self.floor_ports.append(Rect(x_base, 0, width, y_size))
+        # initial floor_port is none
         self.floor_port = None
+        # initial floor is 0
         self.floor = 0
+        # switch to that floor
         self.switch_floor(self.floor)
 
     def switch_floor(self, floor):
