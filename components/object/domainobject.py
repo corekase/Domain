@@ -26,7 +26,8 @@ class DomainObject(Sprite):
     # reference for the map manager
     map_manager = None
     # tile gid's for empty, wall, and floor in tilesheet
-    FLOOR, EMPTY, WALL = 1, 2, 3
+    FLOOR, EMPTY, WALL = 2, 3, 1
+
     def __init__(self):
         super().__init__()
         # values filled in by subclasses

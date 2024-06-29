@@ -17,7 +17,7 @@ class MapManager:
     # reference to the gui manager
     gui = None
     domain = None
-    FLOOR, EMPTY, WALL = 1, 2, 3
+    FLOOR, EMPTY, WALL = 2, 3, 1
 
     def __init__(self, view_surface):
         # load the map
