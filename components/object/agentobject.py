@@ -2,9 +2,6 @@ from .domainobject import DomainObject
 from .genericobject import GenericObject
 from ..utility import image_alpha_resource
 
-# tile gid's for empty, wall, and floor in tilesheet
-FLOOR, EMPTY, WALL = 2, 3, 1
-
 class AgentObject(DomainObject):
     def __init__(self, floor, position):
         super().__init__()
@@ -37,7 +34,7 @@ class AgentObject(DomainObject):
             # remove reference to old object
             DomainObject.domain.delete('generic', self.destination_object)
             # create a new generic object
-            position = self.map_manager.find_random_position_floor(FLOOR, floor, 30)
+            position = self.map_manager.find_random_position_floor(DomainObject.tiles[0], floor, 30)
             item_object = GenericObject(floor, position)
             item_object.layer = 1
             # track the generic item

@@ -4,9 +4,6 @@ from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
 from pygame.sprite import Sprite
 
-## tile gid's for empty, wall, and floor in tilesheet
-FLOOR, EMPTY, WALL = 2, 3, 1
-
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
@@ -28,6 +25,9 @@ class DomainObject(Sprite):
     gui = None
     # reference for the map manager
     map_manager = None
+    # tile GID's
+    # FLOOR, EMPTY, WALL
+    tiles = None
 
     def __init__(self):
         super().__init__()
@@ -69,7 +69,7 @@ class DomainObject(Sprite):
                 # move straight line to the destination world pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
-                if self.find_distance_from_self(destination) <= 1.0:
+                if self.find_distance_from_self(destination) <= 2.0:
                     # arrived at destination
                     teleporters = self.map_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
                     if len(teleporters) > 0:
@@ -230,21 +230,21 @@ class DomainObject(Sprite):
         # clear the current tile so it isn't included in neighbours
         adjacents[4] = None
         # with the layout order, block out invalid orthographic moves due to walls
-        if adjacents[1] == WALL:
+        if adjacents[1] == self.tiles[2]:
             adjacents[0] = None
             adjacents[2] = None
-        if adjacents[5] == WALL:
+        if adjacents[5] == self.tiles[2]:
             adjacents[2] = None
             adjacents[8] = None
-        if adjacents[7] == WALL:
+        if adjacents[7] == self.tiles[2]:
             adjacents[6] = None
             adjacents[8] = None
-        if adjacents[3] == WALL:
+        if adjacents[3] == self.tiles[2]:
             adjacents[0] = None
             adjacents[6] = None
         valid_neighbours = []
         for num, value in enumerate(adjacents):
-            if value == FLOOR:
+            if value == self.tiles[0]:
                 valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours

@@ -42,6 +42,10 @@ class Main:
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.status = None
+        #FLOOR, EMPTY, WALL
+        tiles = (2, 3, 1)
+        MapManager.tiles = tiles
+        DomainObject.tiles = tiles
         # view window size, should not be greater than pixel sizes at 1.0 zoom for map
         view_width = 960
         view_height = 960
@@ -64,6 +68,7 @@ class Main:
         DomainObject.gui = self.gui
         # give domain objects a reference to the map manager
         DomainObject.map_manager = self.map_manager
+        # give domain objects access to tile gid's
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
