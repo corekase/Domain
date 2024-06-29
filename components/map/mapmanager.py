@@ -107,21 +107,11 @@ class MapManager:
             self.main_viewport[0] = self.renderer.view_rect.width / 2.0
         elif self.renderer.view_rect.right > self.renderer.map_rect.right:
             self.main_viewport[0] = self.renderer.map_rect.right - (self.renderer.view_rect.width / 2.0)
-        # if smaller than horizontal screen size then centre
-        if self.view_surface.get_width() <= self.renderer.view_rect.width:
-            screen_centre_x = self.view_surface.get_rect().centerx
-            map_centre_x = self.renderer.map_rect.centerx
-            self.main_viewport[0] = screen_centre_x - (screen_centre_x - map_centre_x)
         # if vertical out-of-bounds limit them
         if self.renderer.view_rect.top < self.renderer.map_rect.top:
             self.main_viewport[1] = self.renderer.view_rect.height / 2.0
         elif self.renderer.view_rect.bottom > self.renderer.map_rect.bottom:
             self.main_viewport[1] = self.renderer.map_rect.bottom - (self.renderer.view_rect.height / 2.0)
-        # if smaller than vertical screensize then centre
-        if self.view_surface.get_height() <= self.renderer.view_rect.height:
-            screen_centre_y = self.view_surface.get_rect().centery
-            map_centre_y = self.renderer.map_rect.centery
-            self.main_viewport[1] = screen_centre_y - (screen_centre_y - map_centre_y)
         # align view centre to pixel coordinates by converting them to ints
         self.main_viewport[0], self.main_viewport[1] = int(self.main_viewport[0]), int(self.main_viewport[1])
         # reupdate the viewport, viewport is updated here in case the bounds were modified

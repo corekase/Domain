@@ -44,17 +44,17 @@ class Main:
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.status = None
         # calculate view size at 1.0 zoom
-        map_graphical_width = 960
-        map_graphical_height = 960
+        view_width = 600
+        view_height = 600
         # create a surface of that size for rendering
-        self.view_surface = pygame.Surface((map_graphical_width, map_graphical_height)).convert()
+        self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # for that surface, centre both the x and y axis relative to the screen surface
-        view_xpos = (self.screen.get_rect().width - map_graphical_width) // 2
-        view_ypos = (self.screen.get_rect().height - map_graphical_height) // 2
+        view_xpos = (self.screen.get_rect().width - view_width) // 2
+        view_ypos = (self.screen.get_rect().height - view_height) // 2
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = Rect(view_xpos, view_ypos, 960, 960)
         # create a rect for a border colour around the view surface
-        self.view_surface_border_rect = Rect(view_xpos - 1, view_ypos - 1, map_graphical_width + 2, map_graphical_height + 2)
+        self.view_surface_border_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
         # create renderer
         self.map_manager = MapManager(self.view_surface)
         # instantiate a GUI manager
@@ -157,10 +157,9 @@ class Main:
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 3:
-                            # right button down, begin panning state if not fully zoomed out
-                            if self.map_manager.zoom_amounts_index > 0:
-                                self.panning = True
-                                self.pan_hold_position = x, y
+                            # right button down, begin panning state
+                            self.panning = True
+                            self.pan_hold_position = x, y
                         elif event.button == 4:
                             # wheel scroll up, increase zoom index
                             self.map_manager.set_zoom_index(1)
@@ -171,10 +170,6 @@ class Main:
                         elif event.button == 5:
                             # wheel scroll down, decrease zoom index
                             self.map_manager.set_zoom_index(-1)
-                            # if panning is active end panning if fully zoomed out
-                            if self.panning:
-                                if self.map_manager.zoom_amounts_index == 0:
-                                    self.panning = False
                 elif event.type == MOUSEBUTTONUP:
                     if event.button == 1:
                         # left button up, which is destination point for avatar
