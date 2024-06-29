@@ -1,9 +1,8 @@
+import pygame
 from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.data import TiledMapData
 from components.bundled.pytmx.util_pygame import load_pygame
 from components.utility import file_resource
-import pygame
-from pygame import Rect
 from components.object.objectmanager import ObjectManager
 from components.object.domainobject import DomainObject
 from components.object.genericobject import GenericObject

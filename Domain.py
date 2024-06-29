@@ -1,15 +1,15 @@
 import time, pygame
 from pygame import Rect
-from components.utility import image_alpha_resource, padding, render
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
+from components.utility import image_alpha_resource, padding, render
 from components.gui.button import Button
 from components.gui.frame import Frame
 from components.gui.widget import colours
-from components import utility
 from components.gui.guimanager import GuiManager
 from components.map.mapmanager import MapManager
 from components.object.domainobject import DomainObject
+from components import utility
 
 class Main:
     def __init__(self):
