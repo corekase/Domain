@@ -59,11 +59,11 @@ class MapManager:
         # floors is a list of rects which are the map pixel boundaries for each
         self.floors = []
         for floor in range(floor_size):
-            x_base = floor_tiles * floor * self.map.tilewidth - (self.map.tilewidth / 2)
-            visible = floor_tiles * self.map.tilewidth
-            x_upper = x_base + visible + (self.map.tilewidth)
-            y_upper = self.map.tileheight * floor_tiles + (self.map.tileheight)
-            self.floors.append(Rect(x_base, 0 - (self.map.tileheight / 2), x_upper, y_upper))
+            x_base = floor * (floor_tiles * 32)
+            visible = floor_tiles * 32
+            x_upper = x_base + visible
+            y_upper = self.map.tileheight * floor_tiles
+            self.floors.append(Rect(x_base, 0, x_upper, y_upper))
         self.floor_port = None
         self.floor = 0
         self.switch_floor(self.floor)
@@ -119,17 +119,13 @@ class MapManager:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
 
     def draw_domain(self):
-        width = (self.map.tilewidth * 32) / self.renderer.zoom
-        height = (self.map.tileheight * 32) / self.renderer.zoom
-        main_rect = Rect(0, 0, width, height)
-        main_rect.center = self.main_viewport
-        base_x = self.floor * self.map.tilewidth
-        max_x = self.floor_port.width
+        self.renderer.center(self.main_viewport)
+        main_rect = self.renderer.view_rect
         # if horizontal out-of-bounds limit them
         if main_rect.left < self.floor_port.left:
             main_rect.left = self.floor_port.left
-        elif main_rect.right > base_x + max_x:
-            main_rect.right = base_x + max_x
+        elif main_rect.right > self.floor_port.width:
+            main_rect.right = self.floor_port.width
         # if vertical out-of-bounds limit them
         if main_rect.top < self.floor_port.top:
             main_rect.top = self.floor_port.top
