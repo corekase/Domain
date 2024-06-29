@@ -119,8 +119,6 @@ class MapManager:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
 
     def draw_domain(self):
-        # update the desired centre of the viewport
-        self.renderer.center(self.main_viewport)
         main_rect = Rect(self.viewport.left, self.viewport.top,
                          int(self.viewport.width / 2), int(self.viewport.height / 2))
         main_rect.center = self.main_viewport
