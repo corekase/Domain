@@ -1,7 +1,7 @@
 import time, pygame
 from pygame import Rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
-from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
+from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_3
 from components.utility import image_alpha_resource, padding, render
 from components.gui.button import Button
 from components.gui.frame import Frame
@@ -151,6 +151,12 @@ class Main:
                     if event.key == K_ESCAPE:
                         # escape key, also quits
                         self.running = False
+                    if event.key == K_1:
+                        self.map_manager.switch_floor(0)
+                    elif event.key == K_2:
+                        self.map_manager.switch_floor(1)
+                    elif event.key == K_3:
+                        self.map_manager.switch_floor(2)
                 # mouse buttons
                 elif event.type == MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()

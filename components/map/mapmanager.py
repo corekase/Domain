@@ -64,14 +64,14 @@ class MapManager:
             x_upper = x_base + visible
             y_upper = self.map.tileheight * floor_tiles
             self.floors.append(Rect(x_base, 0, x_upper, y_upper))
-        self.viewport = None
+        self.floor_port = None
         self.floor = 0
         self.switch_floor(self.floor)
 
     def switch_floor(self, floor):
         if floor >= 0 and floor < len(self.floors):
             self.floor = floor
-            self.viewport = self.floors[self.floor]
+            self.floor_port = self.floors[self.floor]
 
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
@@ -119,19 +119,22 @@ class MapManager:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
 
     def draw_domain(self):
-        main_rect = Rect(self.viewport.left, self.viewport.top,
-                         int(self.viewport.width / 2), int(self.viewport.height / 2))
+        width = int((self.map.tilewidth * 32) / self.renderer.zoom) +  int(int(self.map.tilewidth / 2) / self.renderer.zoom)
+        height = int((self.map.tileheight * 32) / self.renderer.zoom) + int(int(self.map.tileheight / 2)  / self.renderer.zoom)
+        main_rect = Rect(0, 0, width, height)
         main_rect.center = self.main_viewport
+
+        max_x = self.floor_port.width
         # if horizontal out-of-bounds limit them
-        if main_rect.left < self.viewport.left:
-            main_rect.left = self.viewport.left
-        elif main_rect.right > self.viewport.right:
-            main_rect.right = self.viewport.right
+        if main_rect.left < self.floor_port.left:
+            main_rect.left = self.floor_port.left
+        elif main_rect.right > self.floor_port.right:
+            main_rect.right = self.floor_port.left + max_x
         # if vertical out-of-bounds limit them
-        if main_rect.top < self.viewport.top:
-            main_rect.top = self.viewport.top
-        elif main_rect.bottom > self.viewport.bottom:
-            main_rect.bottom = self.viewport.bottom
+        if main_rect.top < self.floor_port.top:
+            main_rect.top = self.floor_port.top
+        elif main_rect.bottom > self.floor_port.bottom:
+            main_rect.bottom = self.floor_port.bottom
         # align view centre to pixel coordinates by converting them to ints
         self.main_viewport[0], self.main_viewport[1] = list(main_rect.center)
         # reupdate the viewport, viewport is updated here in case the bounds were modified
