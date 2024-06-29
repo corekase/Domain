@@ -4,6 +4,9 @@ from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
 from pygame.sprite import Sprite
 
+## tile gid's for empty, wall, and floor in tilesheet
+FLOOR, EMPTY, WALL = 2, 3, 1
+
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
@@ -25,8 +28,6 @@ class DomainObject(Sprite):
     gui = None
     # reference for the map manager
     map_manager = None
-    # tile gid's for empty, wall, and floor in tilesheet
-    FLOOR, EMPTY, WALL = 2, 3, 1
 
     def __init__(self):
         super().__init__()
@@ -229,21 +230,21 @@ class DomainObject(Sprite):
         # clear the current tile so it isn't included in neighbours
         adjacents[4] = None
         # with the layout order, block out invalid orthographic moves due to walls
-        if adjacents[1] == DomainObject.WALL:
+        if adjacents[1] == WALL:
             adjacents[0] = None
             adjacents[2] = None
-        if adjacents[5] == DomainObject.WALL:
+        if adjacents[5] == WALL:
             adjacents[2] = None
             adjacents[8] = None
-        if adjacents[7] == DomainObject.WALL:
+        if adjacents[7] == WALL:
             adjacents[6] = None
             adjacents[8] = None
-        if adjacents[3] == DomainObject.WALL:
+        if adjacents[3] == WALL:
             adjacents[0] = None
             adjacents[6] = None
         valid_neighbours = []
         for num, value in enumerate(adjacents):
-            if value == DomainObject.FLOOR:
+            if value == FLOOR:
                 valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours

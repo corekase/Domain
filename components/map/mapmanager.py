@@ -13,11 +13,13 @@ from components.object.avatarobject import AvatarObject
 from components.object.teleporterobject import TeleporterObject
 from random import randint
 
+# tile gid's for empty, wall, and floor in tilesheet
+FLOOR, EMPTY, WALL = 2, 3, 1
+
 class MapManager:
     # reference to the gui manager
     gui = None
     domain = None
-    FLOOR, EMPTY, WALL = 2, 3, 1
 
     def __init__(self, view_surface):
         # load the map
@@ -47,7 +49,7 @@ class MapManager:
         def populate(number, cls, layer, group):
             for floor in range(3):
                 for _ in range(number):
-                    position = self.find_random_position_floor(MapManager.FLOOR, floor, 30)
+                    position = self.find_random_position_floor(FLOOR, floor, 30)
                     # instantiate from the class
                     instance = cls(floor, position)
                     # set the layer, higher takes priority
@@ -62,7 +64,7 @@ class MapManager:
         # create agents
         populate(2, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
-        position = self.find_random_position_floor(MapManager.FLOOR, 0, 30)
+        position = self.find_random_position_floor(FLOOR, 0, 30)
         self.avatar = AvatarObject(0, position)
         self.avatar.map_manager = self
         self.avatar.layer = 5
