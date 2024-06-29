@@ -25,8 +25,7 @@ class DomainObject(Sprite):
     # reference for gui manager
     gui = None
     # tile gid's for wall and floor in tilesheet
-    FLOOR, WALL = 1, 2
-
+    FLOOR, EMPTY, WALL = 1, 2, 3
     def __init__(self):
         super().__init__()
         # values filled in by subclasses
