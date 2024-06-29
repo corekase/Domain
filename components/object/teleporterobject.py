@@ -3,9 +3,12 @@ from .domainobject import DomainObject, Stall
 from ..utility import image_alpha_resource
 
 class TeleporterObject(DomainObject):
-    def __init__(self, position, destination):
+    def __init__(self, graphic, position, destination):
         super().__init__()
-        self.normal_image = image_alpha_resource('sprites', 'item', 'teleporter.png')
+        if graphic == 'up':
+            self.normal_image = image_alpha_resource('sprites', 'item', 'teleporter_up.png')
+        else:
+            self.normal_image = image_alpha_resource('sprites', 'item', 'teleporter_down.png')
         self.overlap_image = self.normal_image
         self.image = self.normal_image
         self.rect = self.image.get_rect()
