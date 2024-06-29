@@ -252,6 +252,13 @@ class DomainObject(Sprite):
         # return a random cell position which contains a specific tile gid
         while True:
             x, y = randint(0, DomainObject.map.width - 1), randint(0, DomainObject.map.height - 1)
+            hit = False
+            for item in self.domain.domain():
+                if item.x_coord == x and item.y_coord == y:
+                    hit = True
+                    continue
+            if hit:
+                continue
             if self.find_cell_gid((x, y)) == gid:
                 return x, y
 
