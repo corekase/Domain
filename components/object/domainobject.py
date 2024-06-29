@@ -65,8 +65,12 @@ class DomainObject(Sprite):
                 destination = command.destination
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0:
+                    teleporter = self.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
+                    if len(teleporter) > 0:
+                        self.sync_cell(teleporter[0].destination)
                     # arrived at destination
-                    self.sync_coordinate(destination)
+                    else:
+                        self.sync_coordinate(destination)
                     # remove this command item from the queue
                     self.command_queue.pop(0)
                 else:
