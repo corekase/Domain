@@ -45,7 +45,7 @@ class MapManager:
         # create pickup items
         populate(3, PickupObject, 2, 'pickups')
         # create agents
-        populate(4, AgentObject, 3, 'agents')
+        populate(0, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
         self.avatar.layer = 4
