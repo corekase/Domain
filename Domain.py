@@ -32,8 +32,7 @@ class Main:
         utility.font_size = 16
         utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # load images for custom mouse pointers
-        self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
-        self.cursor_panning_image = image_alpha_resource('cursors', 'cursor_pan_x7_y7.png')
+        self.cursor_domain_image = image_alpha_resource('cursors', 'cursor_domain_x7_y7.png')
         self.cursor_interface_image = image_alpha_resource('cursors', 'cursor_interface_x6_y0.png')
         # state for whether or not panning the view
         self.panning = False
@@ -246,23 +245,20 @@ class Main:
 
     def draw_mouse(self):
         # draw mouse cursor
-        if self.panning:
-            # draw the panning cursor
+        x, y = pygame.mouse.get_pos()
+        # is the mouse in the view rect?
+        if self.view_surface_rect.collidepoint(x, y):
+            # draw domain cursor
             self.screen.set_clip(self.view_surface_rect)
-            self.screen.blit(self.cursor_panning_image,
-                             (self.pan_hold_position[0] - 7, self.pan_hold_position[1] - 7))
+            if self.panning:
+                self.screen.blit(self.cursor_domain_image,
+                                (self.pan_hold_position[0] - 7, self.pan_hold_position[1] - 7))
+            else:
+                self.screen.blit(self.cursor_domain_image, (x - 7, y - 7))
             self.screen.set_clip(None)
         else:
-            x, y = pygame.mouse.get_pos()
-            # is the mouse in the view rect?
-            if self.view_surface_rect.collidepoint(x, y):
-                # draw normal cursor
-                self.screen.set_clip(self.view_surface_rect)
-                self.screen.blit(self.cursor_normal_image, (x - 7, y - 7))
-                self.screen.set_clip(None)
-            else:
-                # outside of view surface rect, draw interface cursor
-                self.screen.blit(self.cursor_interface_image, (x - 6, y))
+            # outside of view surface rect, draw interface cursor
+            self.screen.blit(self.cursor_interface_image, (x - 6, y))
 
 if __name__ == '__main__':
     Main().run()
