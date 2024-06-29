@@ -57,21 +57,21 @@ class MapManager:
         floor_tiles = 30
         floor_size = int(self.map.width / floor_tiles)
         # floors is a list of rects which are the map pixel boundaries for each
-        self.floors = []
+        self.floor_ports = []
         for floor in range(floor_size):
             x_base = floor * (floor_tiles * self.map.tilewidth)
             visible = floor_tiles * self.map.tilewidth
             x_upper = x_base + visible
             y_upper = self.map.tileheight * floor_tiles
-            self.floors.append(Rect(x_base, 0, x_upper, y_upper))
+            self.floor_ports.append(Rect(x_base, 0, x_upper, y_upper))
         self.floor_port = None
         self.floor = 0
         self.switch_floor(self.floor)
 
     def switch_floor(self, floor):
-        if floor >= 0 and floor < len(self.floors):
+        if floor >= 0 and floor < len(self.floor_ports):
             self.floor = floor
-            self.floor_port = self.floors[self.floor]
+            self.floor_port = self.floor_ports[self.floor]
 
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
