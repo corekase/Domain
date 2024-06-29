@@ -10,6 +10,7 @@ from components.object.genericobject import GenericObject
 from components.object.pickupobject import PickupObject
 from components.object.agentobject import AgentObject
 from components.object.avatarobject import AvatarObject
+from components.object.teleporterobject import TeleporterObject
 
 class MapManager:
     # reference to the gui manager
@@ -32,6 +33,10 @@ class MapManager:
         self.domain = ObjectManager(self.renderer)
         # share that domain with map objects
         DomainObject.domain = self.domain
+        # add in teleporters
+        for tele in [(27, 2), (57, 2), (32, 27), (62, 27)]:
+            instance = TeleporterObject(tele)
+            self.domain.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
             for _ in range(number):
