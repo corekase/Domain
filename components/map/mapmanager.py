@@ -59,8 +59,8 @@ class MapManager:
         # floors is a list of rects which are the map pixel boundaries for each
         self.floors = []
         for floor in range(floor_size):
-            x_base = floor * (floor_tiles * 32)
-            visible = floor_tiles * 32
+            x_base = floor * (floor_tiles * self.map.tilewidth)
+            visible = floor_tiles * self.map.tilewidth
             x_upper = x_base + visible
             y_upper = self.map.tileheight * floor_tiles
             self.floors.append(Rect(x_base, 0, x_upper, y_upper))
