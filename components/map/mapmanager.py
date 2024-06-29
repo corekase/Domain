@@ -58,12 +58,11 @@ class MapManager:
         floor_size = int(self.map.width / floor_tiles)
         # floors is a list of rects which are the map pixel boundaries for each
         self.floor_ports = []
+        y_size = self.map.tileheight * floor_tiles
         for floor in range(floor_size):
             x_base = floor * (floor_tiles * self.map.tilewidth)
-            visible = floor_tiles * self.map.tilewidth
-            x_upper = x_base + visible
-            y_upper = self.map.tileheight * floor_tiles
-            self.floor_ports.append(Rect(x_base, 0, x_upper, y_upper))
+            width = floor_tiles * self.map.tilewidth
+            self.floor_ports.append(Rect(x_base, 0, width, y_size))
         self.floor_port = None
         self.floor = 0
         self.switch_floor(self.floor)
@@ -124,8 +123,8 @@ class MapManager:
         # if horizontal out-of-bounds limit them
         if main_rect.left < self.floor_port.left:
             main_rect.left = self.floor_port.left
-        elif main_rect.right > self.floor_port.width:
-            main_rect.right = self.floor_port.width
+        elif main_rect.right > self.floor_ports[self.floor].x + self.floor_port.width:
+            main_rect.right = self.floor_ports[self.floor].x + self.floor_port.width
         # if vertical out-of-bounds limit them
         if main_rect.top < self.floor_port.top:
             main_rect.top = self.floor_port.top
