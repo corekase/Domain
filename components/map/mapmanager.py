@@ -54,28 +54,31 @@ class MapManager:
         # set main viewport to avatar center, within map view bounds
         self.main_viewport = list(self.avatar.rect.center)
         # map constants
-        floor_tiles = 30
-        floor_size = int(self.map.width / floor_tiles)
+        self.floor_tiles = 30
+        floor_size = int(self.map.width / self.floor_tiles)
         # each floor_ports is a rect which has the boundaries for the floor
         self.floor_ports = []
         # these values stay the same for each floor_port
-        width = floor_tiles * self.map.tilewidth
-        y_size = self.map.tileheight * floor_tiles
+        width = self.floor_tiles * self.map.tilewidth
+        y_size = self.map.tileheight * self.floor_tiles
         # find a rect for each floor
         for floor in range(floor_size):
-            x_base = floor * (floor_tiles * self.map.tilewidth)
+            x_base = floor * (self.floor_tiles * self.map.tilewidth)
             self.floor_ports.append(Rect(x_base, 0, width, y_size))
         # initial floor_port is none
         self.floor_port = None
-        # initial floor is 0
-        self.floor = 0
-        # switch to that floor
-        self.switch_floor(self.floor)
+        # initial floor is none
+        self.floor = None
+        # switch to avatar floor and location
+        self.switch_floor(self.get_floor(self.avatar.x_coord))
+        self.main_viewport = list(self.avatar.rect.center)
 
     def switch_floor(self, floor):
-        if floor >= 0 and floor < len(self.floor_ports):
-            self.floor = floor
-            self.floor_port = self.floor_ports[self.floor]
+        self.floor = floor
+        self.floor_port = self.floor_ports[self.floor]
+
+    def get_floor(self, x_cell):
+        return int(x_cell / self.floor_tiles)
 
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
