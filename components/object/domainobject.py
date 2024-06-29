@@ -24,6 +24,8 @@ class DomainObject(Sprite):
     domain = None
     # reference for gui manager
     gui = None
+    # reference for the map manager
+    map_manager = None
     # tile gid's for empty, wall, and floor in tilesheet
     FLOOR, EMPTY, WALL = 1, 2, 3
     def __init__(self):
@@ -42,6 +44,8 @@ class DomainObject(Sprite):
         self.overlaps = []
         # command queue
         self.command_queue = []
+        # did a teleport happen?
+        self.teleport = False
         # subclasess must call either sync_position or sync_cell before they exit their __init__
 
     def update(self, elapsed_time):
@@ -65,10 +69,15 @@ class DomainObject(Sprite):
                 destination = command.destination
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0:
-                    teleporter = self.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
-                    if len(teleporter) > 0:
-                        self.sync_cell(teleporter[0].destination)
                     # arrived at destination
+                    teleporters = self.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
+                    if len(teleporters) > 0:
+                        self.sync_cell(teleporters[0].destination)
+                        avatar = DomainObject.domain.objects('avatar')[0]
+                        if self is avatar:
+                            # switch to avatar floor and location
+                            self.map_manager.switch_floor(self.map_manager.get_floor(avatar.x_coord))
+                            self.main_viewport = list(avatar.rect.center)
                     else:
                         self.sync_coordinate(destination)
                     # remove this command item from the queue

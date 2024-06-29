@@ -62,6 +62,8 @@ class Main:
         MapManager.gui = self.gui
         # give domain objects a reference to the gui
         DomainObject.gui = self.gui
+        # give domain objects a reference to the map manager
+        DomainObject.map_manager = self.map_manager
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
