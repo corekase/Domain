@@ -1,4 +1,5 @@
 import pygame
+from pygame import Rect
 from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.data import TiledMapData
 from components.bundled.pytmx.util_pygame import load_pygame
@@ -52,6 +53,25 @@ class MapManager:
         self.domain.object_add('avatar', self.avatar)
         # set main viewport to avatar center, within map view bounds
         self.main_viewport = list(self.avatar.rect.center)
+        # build border left, right, and up, down, for each floor
+        floor_tiles = 30
+        floor_size = int(self.map.width / floor_tiles)
+        # floors is a list of rects which are the map pixel boundaries for each
+        self.floors = []
+        for floor in range(floor_size):
+            x_base = floor_tiles * floor * self.map.tilewidth
+            visible = floor_tiles * self.map.tilewidth
+            x_upper = x_base + visible
+            y_upper = self.map.tileheight * floor_tiles
+            self.floors.append(Rect(x_base, 0, x_upper, y_upper))
+        self.viewport = None
+        self.floor = 0
+        self.switch_floor(self.floor)
+
+    def switch_floor(self, floor):
+        if floor >= 0 and floor < len(self.floors):
+            self.floor = floor
+            self.viewport = self.floors[self.floor]
 
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
@@ -101,18 +121,21 @@ class MapManager:
     def draw_domain(self):
         # update the desired centre of the viewport
         self.renderer.center(self.main_viewport)
+        main_rect = Rect(self.viewport.left, self.viewport.top,
+                         int(self.viewport.width / 2), int(self.viewport.height / 2))
+        main_rect.center = self.main_viewport
         # if horizontal out-of-bounds limit them
-        if self.renderer.view_rect.left < self.renderer.map_rect.left:
-            self.main_viewport[0] = self.renderer.view_rect.width / 2.0
-        elif self.renderer.view_rect.right > self.renderer.map_rect.right:
-            self.main_viewport[0] = self.renderer.map_rect.right - (self.renderer.view_rect.width / 2.0)
+        if main_rect.left < self.viewport.left:
+            main_rect.left = self.viewport.left
+        elif main_rect.right > self.viewport.right:
+            main_rect.right = self.viewport.right
         # if vertical out-of-bounds limit them
-        if self.renderer.view_rect.top < self.renderer.map_rect.top:
-            self.main_viewport[1] = self.renderer.view_rect.height / 2.0
-        elif self.renderer.view_rect.bottom > self.renderer.map_rect.bottom:
-            self.main_viewport[1] = self.renderer.map_rect.bottom - (self.renderer.view_rect.height / 2.0)
+        if main_rect.top < self.viewport.top:
+            main_rect.top = self.viewport.top
+        elif main_rect.bottom > self.viewport.bottom:
+            main_rect.bottom = self.viewport.bottom
         # align view centre to pixel coordinates by converting them to ints
-        self.main_viewport[0], self.main_viewport[1] = int(self.main_viewport[0]), int(self.main_viewport[1])
+        self.main_viewport[0], self.main_viewport[1] = list(main_rect.center)
         # reupdate the viewport, viewport is updated here in case the bounds were modified
         self.renderer.center(self.main_viewport)
         # draw map and group objects to surface
