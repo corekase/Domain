@@ -11,10 +11,13 @@ from components.object.pickupobject import PickupObject
 from components.object.agentobject import AgentObject
 from components.object.avatarobject import AvatarObject
 from components.object.teleporterobject import TeleporterObject
+from random import randint
 
 class MapManager:
     # reference to the gui manager
     gui = None
+    domain = None
+    FLOOR, EMPTY, WALL = 1, 2, 3
 
     def __init__(self, view_surface):
         # load the map
@@ -42,21 +45,26 @@ class MapManager:
             self.domain.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
-            for _ in range(number):
-                # instantiate from the class
-                instance = cls()
-                # set the layer, higher takes priority
-                instance.layer = layer
-                # add the instance to the group
-                self.domain.object_add(group, instance)
+            for floor in range(3):
+                for _ in range(number):
+                    position = self.find_random_position_floor(MapManager.FLOOR, floor, 30)
+                    # instantiate from the class
+                    instance = cls(floor, position)
+                    # set the layer, higher takes priority
+                    instance.layer = layer
+                    # add the instance to the group
+                    self.domain.object_add(group, instance)
+
         # create generic items
-        populate(30, GenericObject, 1, 'generic')
+        populate(10, GenericObject, 1, 'generic')
         # create pickup items
-        populate(3, PickupObject, 2, 'pickups')
+        populate(1, PickupObject, 2, 'pickups')
         # create agents
-        populate(0, AgentObject, 3, 'agents')
+        populate(2, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
-        self.avatar = AvatarObject()
+        position = self.find_random_position_floor(MapManager.FLOOR, 0, 30)
+        self.avatar = AvatarObject(0, position)
+        self.avatar.map_manager = self
         self.avatar.layer = 5
         self.domain.object_add('avatar', self.avatar)
         # set main viewport to avatar center, within map view bounds
@@ -80,6 +88,42 @@ class MapManager:
         # switch to avatar floor and location
         self.switch_floor(self.get_floor(self.avatar.x_coord))
         self.main_viewport = list(self.avatar.rect.center)
+
+
+    def find_random_position_floor(self, gid, floor, floor_size):
+        return self.find_random_position(gid, floor * floor_size, floor_size, 0, floor_size)
+
+    def find_random_position(self, gid, x_min, width, y_min, height):
+        # return a random cell position which contains a specific tile gid
+        while True:
+            x, y = randint(x_min, x_min + width - 1), randint(y_min, y_min + height - 1)
+            hit = False
+            for item in self.domain.domain():
+                if item.x_coord == x and item.y_coord == y:
+                    hit = True
+                    continue
+            if hit:
+                continue
+            if self.find_cell_gid((x, y)) == gid:
+                return x, y
+
+    def find_cell_gid(self, position):
+        # get the tile gid for a cell position
+        x, y = position
+        if x < 0 or y < 0 or x >= DomainObject.map.width or y >= DomainObject.map.height:
+            return None
+        return DomainObject.map.get_tile_gid(x, y, 0)
+
+    def find_cell_objects(self, position, objects):
+        # return a list of objects which match the position coordinate
+        results = []
+        x, y = position
+        for item in objects:
+            if (item.x_coord == x) and (item.y_coord == y):
+                results.append(item)
+        return results
+
+
 
     def switch_floor(self, floor):
         self.floor = floor

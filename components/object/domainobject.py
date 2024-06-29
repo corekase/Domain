@@ -3,7 +3,6 @@ from queue import Queue
 from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
 from pygame.sprite import Sprite
-from random import randint
 
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
@@ -44,6 +43,8 @@ class DomainObject(Sprite):
         self.overlaps = []
         # command queue
         self.command_queue = []
+        # floor domain object belongs to
+        self.floor = None
         # subclasess must call either sync_position or sync_cell before they exit their __init__
 
     def update(self, elapsed_time):
@@ -68,7 +69,7 @@ class DomainObject(Sprite):
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0:
                     # arrived at destination
-                    teleporters = self.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
+                    teleporters = self.map_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
                     if len(teleporters) > 0:
                         self.sync_cell(teleporters[0].destination)
                         avatar = DomainObject.domain.objects('avatar')[0]
@@ -219,7 +220,7 @@ class DomainObject(Sprite):
         adjacents = []
         # fill in ordered list with cell positions by adding neighbour deltas to each axis
         for neighbour in neighbours:
-            adjacents.append(self.find_cell_gid((x + neighbour[0], y + neighbour[1])))
+            adjacents.append(self.map_manager.find_cell_gid((x + neighbour[0], y + neighbour[1])))
         # the list indexes map by the neighbour deltas as given in this diagram:
         # 0 1 2
         # 3 4 5
@@ -245,36 +246,6 @@ class DomainObject(Sprite):
                 valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours
-
-    def find_random_position(self, gid):
-        # return a random cell position which contains a specific tile gid
-        while True:
-            x, y = randint(0, DomainObject.map.width - 1), randint(0, DomainObject.map.height - 1)
-            hit = False
-            for item in self.domain.domain():
-                if item.x_coord == x and item.y_coord == y:
-                    hit = True
-                    continue
-            if hit:
-                continue
-            if self.find_cell_gid((x, y)) == gid:
-                return x, y
-
-    def find_cell_gid(self, position):
-        # get the tile gid for a cell position
-        x, y = position
-        if x < 0 or y < 0 or x >= DomainObject.map.width or y >= DomainObject.map.height:
-            return None
-        return DomainObject.map.get_tile_gid(x, y, 0)
-
-    def find_cell_objects(self, position, objects):
-        # return a list of objects which match the position coordinate
-        results = []
-        x, y = position
-        for item in objects:
-            if (item.x_coord == x) and (item.y_coord == y):
-                results.append(item)
-        return results
 
     def sync_coordinate(self, position):
         # update position state in pixels
