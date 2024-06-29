@@ -119,17 +119,17 @@ class MapManager:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
 
     def draw_domain(self):
-        width = int((self.map.tilewidth * 32) / self.renderer.zoom) +  int(int(self.map.tilewidth / 2) / self.renderer.zoom)
-        height = int((self.map.tileheight * 32) / self.renderer.zoom) + int(int(self.map.tileheight / 2)  / self.renderer.zoom)
+        width = int((self.map.tilewidth * 32) / self.renderer.zoom)
+        height = int((self.map.tileheight * 32) / self.renderer.zoom)
         main_rect = Rect(0, 0, width, height)
         main_rect.center = self.main_viewport
-
+        base_x = self.floor * self.map.tilewidth
         max_x = self.floor_port.width
         # if horizontal out-of-bounds limit them
         if main_rect.left < self.floor_port.left:
             main_rect.left = self.floor_port.left
-        elif main_rect.right > self.floor_port.right:
-            main_rect.right = self.floor_port.left + max_x
+        elif main_rect.right > base_x + max_x:
+            main_rect.right = base_x + max_x
         # if vertical out-of-bounds limit them
         if main_rect.top < self.floor_port.top:
             main_rect.top = self.floor_port.top
