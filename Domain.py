@@ -1,22 +1,15 @@
 import time, pygame
 from pygame import Rect
-from components.utility import image_alpha_resource, file_resource, padding, render
-from components.bundled.pytmx.util_pygame import load_pygame
+from components.utility import image_alpha_resource, padding, render
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
-from components.bundled.pyscroll.orthographic import BufferedRenderer
-from components.bundled.pyscroll.data import TiledMapData
-from components.object.objectmanager import ObjectManager
-from components.object.domainobject import DomainObject
-from components.object.genericobject import GenericObject
-from components.object.pickupobject import PickupObject
-from components.object.agentobject import AgentObject
-from components.object.avatarobject import AvatarObject
-from components.gui.guimanager import GuiManager
 from components.gui.button import Button
 from components.gui.frame import Frame
 from components.gui.widget import colours
 from components import utility
+from components.gui.guimanager import GuiManager
+from components.map.mapmanager import MapManager
+from components.object.domainobject import DomainObject
 
 class Main:
     def __init__(self):
@@ -42,64 +35,32 @@ class Main:
         self.cursor_normal_image = image_alpha_resource('cursors', 'cursor_normal_x7_y7.png')
         self.cursor_panning_image = image_alpha_resource('cursors', 'cursor_pan_x7_y7.png')
         self.cursor_interface_image = image_alpha_resource('cursors', 'cursor_interface_x6_y0.png')
-        # load the map
-        self.map = load_pygame(file_resource('domains', 'domain.tmx'))
-        # give MapObject subclasses a common reference to the map
-        DomainObject.map = self.map
+        # state for whether or not panning the view
+        self.panning = False
+        # when panning lock mouse position to this position
+        self.pan_hold_position = None
+        # cycle counter, to be used for demo recording, marking, and playback later
+        self.cycle = -1
+        # text status containing the x and y map indexes of the mouse position, updated in the event handler
+        self.status = None
         # calculate view size at 1.0 zoom
-        map_graphical_width = self.map.width * self.map.tilewidth
-        map_graphical_height = self.map.height * self.map.tileheight
+        map_graphical_width = 960
+        map_graphical_height = 960
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((map_graphical_width, map_graphical_height)).convert()
         # for that surface, centre both the x and y axis relative to the screen surface
         view_xpos = (self.screen.get_rect().width - map_graphical_width) // 2
         view_ypos = (self.screen.get_rect().height - map_graphical_height) // 2
         # create a collision rect for the surface size for interface logic
-        self.view_surface_rect = Rect(view_xpos, view_ypos, map_graphical_width, map_graphical_height)
+        self.view_surface_rect = Rect(view_xpos, view_ypos, 960, 960)
         # create a rect for a border colour around the view surface
         self.view_surface_border_rect = Rect(view_xpos - 1, view_ypos - 1, map_graphical_width + 2, map_graphical_height + 2)
         # create renderer
-        self.renderer = BufferedRenderer(TiledMapData(self.map), self.view_surface.get_size(), False)
-        # set initial viewport in the renderer to the center of the map, as [x, y]
-        self.main_viewport = list(self.renderer.map_rect.center)
-        # set the zoom levels for the renderer
-        self.zoom_amounts_index = 0
-        self.zoom_amounts = [1.0, 2.0, 3.0, 4.0]
-        self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
-        # state for whether or not panning the view
-        self.panning = False
-        # when panning lock mouse position to this position
-        self.pan_hold_position = None
-        # create an object manager
-        self.domain = ObjectManager(self.renderer)
-        # share that domain with map objects
-        DomainObject.domain = self.domain
-        # helper function to create objects
-        def populate(number, cls, layer, group):
-            for _ in range(number):
-                # instantiate from the class
-                instance = cls()
-                # set the layer, higher takes priority
-                instance.layer = layer
-                # add the instance to the group
-                self.domain.object_add(group, instance)
-        # create generic items
-        populate(30, GenericObject, 1, 'generic')
-        # create pickup items
-        populate(3, PickupObject, 2, 'pickups')
-        # create agents
-        populate(4, AgentObject, 3, 'agents')
-        # create a player avatar and add it to the domain
-        self.avatar = AvatarObject()
-        self.avatar.layer = 4
-        self.domain.object_add('avatar', self.avatar)
-        # cycle counter, to be used for demo recording, marking, and playback later
-        self.cycle = -1
-        # text status containing the x and y map indexes of the mouse position, updated in the event handler
-        self.status = None
+        self.map_manager = MapManager(self.view_surface)
         # instantiate a GUI manager
         self.gui = GuiManager()
         # give the map object access to gui switch context
+        MapManager.gui = self.gui
         DomainObject.gui = self.gui
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
@@ -140,11 +101,11 @@ class Main:
             self.handle_events()
             # update domain state
             if not self.won:
-                self.update_domain(elapsed_time)
+                self.map_manager.update_domain(elapsed_time)
             # clear screen
             self.screen.fill(colours['background'])
             # draw the main viewport to the viewport surface
-            self.draw_domain()
+            self.map_manager.draw_domain()
             # and copy that surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
@@ -175,9 +136,9 @@ class Main:
             if gui_event != None:
                 # handle gui events
                 if gui_event == 'pick_up':
-                    self.avatar.pick_up()
+                    self.map_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
-                    self.avatar.put_down()
+                    self.map_manager.avatar.put_down()
                 elif gui_event == 'won':
                     self.running = False
             else:
@@ -197,22 +158,22 @@ class Main:
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 3:
                             # right button down, begin panning state if not fully zoomed out
-                            if self.zoom_amounts_index > 0:
+                            if self.map_manager.zoom_amounts_index > 0:
                                 self.panning = True
                                 self.pan_hold_position = x, y
                         elif event.button == 4:
                             # wheel scroll up, increase zoom index
-                            self.set_zoom_index(1)
+                            self.map_manager.set_zoom_index(1)
                             # if right-mouse button is also pressed begin panning
                             if pygame.mouse.get_pressed()[2]:
                                 self.panning = True
                                 self.pan_hold_position = x, y
                         elif event.button == 5:
                             # wheel scroll down, decrease zoom index
-                            self.set_zoom_index(-1)
+                            self.map_manager.set_zoom_index(-1)
                             # if panning is active end panning if fully zoomed out
                             if self.panning:
-                                if self.zoom_amounts_index == 0:
+                                if self.map_manager.zoom_amounts_index == 0:
                                     self.panning = False
                 elif event.type == MOUSEBUTTONUP:
                     if event.button == 1:
@@ -220,8 +181,8 @@ class Main:
                         x, y = event.pos
                         # if mouse is inside the view rect
                         if self.view_surface_rect.collidepoint(x, y):
-                            position = self.pick_cell(x, y)
-                            self.avatar.move_to(position)
+                            position = self.map_manager.pick_cell(x -self.view_surface_rect.x, y - self.view_surface_rect.y)
+                            self.map_manager.avatar.move_to(position)
                     if event.button == 3:
                         # right button up, end panning state
                         self.panning = False
@@ -231,44 +192,27 @@ class Main:
                     if event.type == MOUSEMOTION:
                         # move the centre of the viewport
                         x, y = event.pos
-                        self.main_viewport[0] += x - self.pan_hold_position[0]
-                        self.main_viewport[1] += y - self.pan_hold_position[1]
+                        self.map_manager.main_viewport[0] += x - self.pan_hold_position[0]
+                        self.map_manager.main_viewport[1] += y - self.pan_hold_position[1]
                         pygame.mouse.set_pos(self.pan_hold_position)
         # update the x and y map indexes for the information panel
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
-            x_coord, y_coord = self.pick_cell(x, y)
+            x_coord, y_coord = self.map_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
             # update the status for the information panel
             self.status = f'X:{x_coord}, Y:{y_coord}'
         else:
             # not inside the surface rect
             self.status = "N/A"
 
-    def update_domain(self, elapsed_time):
-        # check for other mapobject collision, the sprites group is an expensive operation
-        # so is done once on its own line here
-        objects = self.domain.domain().sprites()
-        for object in objects:
-            # same, done once on its own line because it's an expensive operation
-            other_objects = pygame.sprite.spritecollide(object, self.domain.domain(), False)
-            for other_object in other_objects:
-                if not (other_object is object):
-                    # right here for finer-collisions:
-                    #     "if overlapped then per-pixel (mask-based) comparison"
-                    # for overall fast collisions and then accuracy only when overlapped
-                    object.overlap(other_object)
-                    other_object.overlap(object)
-        # update all mapobjects and their subclasses in the domain group
-        self.domain.domain().update(elapsed_time)
-
     def check_win(self):
         # if all the pickup items are in the same cell then the game is won
         matched = True
         last_item = None
-        objects = self.domain.objects('pickups')
+        objects = self.map_manager.domain.objects('pickups')
         # if the avatar has an item in their inventory then include it
-        if self.avatar.inventory != None:
-            objects.append(self.avatar.inventory)
+        if self.map_manager.avatar.inventory != None:
+            objects.append(self.map_manager.avatar.inventory)
         # compare cell coordinates for all items, if any don't match then the check fails
         # the last item in the avatar inventory doesn't count until it's placed on the map
         # because its coordinates aren't updated until then
@@ -281,64 +225,6 @@ class Main:
                 break
         # if true then won
         return matched
-
-    def pick_cell(self, x, y):
-        # normalize x and y mouse position to the screen coordinates of the surface
-        x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
-        # get all the needed information from the map and renderer
-        x_tile_size = self.map.tilewidth * self.renderer.zoom
-        y_tile_size = self.map.tileheight * self.renderer.zoom
-        map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
-        map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
-        view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
-        view_centre_y = self.renderer.view_rect.centery * self.renderer.zoom
-        # go through each geometry frame ending at the x and y mouse position
-        relative_x = map_centre_x - view_centre_x - x_pos
-        relative_y = map_centre_y - view_centre_y - y_pos
-        # divide those into tile sizes to get a coordinate
-        x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
-        # convert that screen coordinate into an array coordinate for programming
-        x_coord = int(-x_coord + self.map.width / 2)
-        y_coord = int(-y_coord + self.map.height / 2)
-        # coordinates are now in map array indexes
-        return x_coord, y_coord
-
-    def set_zoom_index(self, index_delta):
-        # clamp index inside zoom_amounts list.
-        self.zoom_amounts_index = max(0, min(self.zoom_amounts_index + index_delta,
-                                             len(self.zoom_amounts) - 1))
-        # update state information inside the renderer
-        self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
-
-    def draw_domain(self):
-        # update the desired centre of the viewport
-        self.renderer.center(self.main_viewport)
-        # if horizontal out-of-bounds limit them
-        if self.renderer.view_rect.left < self.renderer.map_rect.left:
-            self.main_viewport[0] = self.renderer.view_rect.width / 2.0
-        elif self.renderer.view_rect.right > self.renderer.map_rect.right:
-            self.main_viewport[0] = self.renderer.map_rect.right - (self.renderer.view_rect.width / 2.0)
-        # if smaller than horizontal screen size then centre
-        if self.view_surface.get_width() <= self.renderer.view_rect.width:
-            screen_centre_x = self.view_surface.get_rect().centerx
-            map_centre_x = self.renderer.map_rect.centerx
-            self.main_viewport[0] = screen_centre_x - (screen_centre_x - map_centre_x)
-        # if vertical out-of-bounds limit them
-        if self.renderer.view_rect.top < self.renderer.map_rect.top:
-            self.main_viewport[1] = self.renderer.view_rect.height / 2.0
-        elif self.renderer.view_rect.bottom > self.renderer.map_rect.bottom:
-            self.main_viewport[1] = self.renderer.map_rect.bottom - (self.renderer.view_rect.height / 2.0)
-        # if smaller than vertical screensize then centre
-        if self.view_surface.get_height() <= self.renderer.view_rect.height:
-            screen_centre_y = self.view_surface.get_rect().centery
-            map_centre_y = self.renderer.map_rect.centery
-            self.main_viewport[1] = screen_centre_y - (screen_centre_y - map_centre_y)
-        # align view centre to pixel coordinates by converting them to ints
-        self.main_viewport[0], self.main_viewport[1] = int(self.main_viewport[0]), int(self.main_viewport[1])
-        # reupdate the viewport, viewport is updated here in case the bounds were modified
-        self.renderer.center(self.main_viewport)
-        # draw map and group objects to surface
-        self.domain.domain().draw(self.view_surface)
 
     def draw_info_panel(self, total_time, fps):
         # calculate divisions of total_time
