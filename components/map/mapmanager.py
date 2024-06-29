@@ -34,8 +34,10 @@ class MapManager:
         # share that domain with map objects
         DomainObject.domain = self.domain
         # add in teleporters
-        for tele in [(27, 2), (57, 2), (32, 27), (62, 27)]:
-            instance = TeleporterObject(tele)
+        teleporters = {(27, 2): (57, 2), (57, 2): (27, 2),
+                       (32, 27): (62, 27), (62, 27): (32, 27)}
+        for teleporter, destination in teleporters.items():
+            instance = TeleporterObject(teleporter, destination)
             self.domain.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
