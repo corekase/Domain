@@ -38,6 +38,7 @@ class MapManager:
                        (32, 27): (62, 27), (62, 27): (32, 27)}
         for teleporter, destination in teleporters.items():
             instance = TeleporterObject(teleporter, destination)
+            instance.layer = 4
             self.domain.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
@@ -56,7 +57,7 @@ class MapManager:
         populate(0, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
         self.avatar = AvatarObject()
-        self.avatar.layer = 4
+        self.avatar.layer = 5
         self.domain.object_add('avatar', self.avatar)
         # set main viewport to avatar center, within map view bounds
         self.main_viewport = list(self.avatar.rect.center)
