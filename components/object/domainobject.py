@@ -72,13 +72,13 @@ class DomainObject(Sprite):
                 if self.find_distance_from_self(destination) <= 2.0:
                     # arrived at destination
                     teleporters = self.map_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
-                    if len(teleporters) > 0:
+                    avatar = DomainObject.domain.objects('avatar')[0]
+                    if len(teleporters) > 0 and (self is avatar):
+                        # only teleport the avatar, not other moving domain objects
                         self.sync_cell(teleporters[0].destination)
-                        avatar = DomainObject.domain.objects('avatar')[0]
-                        if self is avatar:
-                            # switch to avatar floor and location
-                            self.map_manager.switch_floor(self.map_manager.get_floor(avatar.x_coord))
-                            self.main_viewport = list(avatar.rect.center)
+                        # switch to avatar floor and location
+                        self.map_manager.switch_floor(self.map_manager.get_floor(avatar.x_coord))
+                        self.main_viewport = list(avatar.rect.center)
                     else:
                         self.sync_coordinate(destination)
                     # remove this command item from the queue
