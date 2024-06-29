@@ -32,8 +32,8 @@ class Main:
         utility.font_size = 16
         utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # load images for custom mouse pointers
-        self.cursor_domain_image = image_alpha_resource('cursors', 'cursor_domain_x7_y7.png')
-        self.cursor_interface_image = image_alpha_resource('cursors', 'cursor_interface_x6_y0.png')
+        self.cursor_domain_image = image_alpha_resource('cursors', 'cursor_domain.png')
+        self.cursor_interface_image = image_alpha_resource('cursors', 'cursor_interface.png')
         # state for whether or not panning the view
         self.panning = False
         # when panning lock mouse position to this position
