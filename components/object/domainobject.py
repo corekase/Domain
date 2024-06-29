@@ -24,7 +24,7 @@ class DomainObject(Sprite):
     domain = None
     # reference for gui manager
     gui = None
-    # tile gid's for wall and floor in tilesheet
+    # tile gid's for empty, wall, and floor in tilesheet
     FLOOR, EMPTY, WALL = 1, 2, 3
     def __init__(self):
         super().__init__()
