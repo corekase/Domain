@@ -43,9 +43,9 @@ class Main:
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.status = None
-        # calculate view size at 1.0 zoom
-        view_width = 600
-        view_height = 600
+        # view window size, should not be greater than pixel sizes at 1.0 zoom for map
+        view_width = 960
+        view_height = 960
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # for that surface, centre both the x and y axis relative to the screen surface
@@ -59,8 +59,9 @@ class Main:
         self.map_manager = MapManager(self.view_surface)
         # instantiate a GUI manager
         self.gui = GuiManager()
-        # give the map object access to gui switch context
+        # give the map object a reference to the gui
         MapManager.gui = self.gui
+        # give domain objects a reference to the gui
         DomainObject.gui = self.gui
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))

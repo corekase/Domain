@@ -24,11 +24,9 @@ class MapManager:
         self.view_surface_rect = view_surface.get_rect()
         size = self.view_surface.get_rect().width, self.view_surface.get_rect().height
         self.renderer = BufferedRenderer(TiledMapData(self.map), size, False)
-        # set initial viewport in the renderer to the center of the map, as [x, y]
-        self.main_viewport = list(self.renderer.map_rect.center)
         # set the zoom levels for the renderer
         self.zoom_amounts_index = 0
-        self.zoom_amounts = [1.0, 2.0, 3.0, 4.0]
+        self.zoom_amounts = [1.0, 2.0, 4.0]
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
         # create an object manager
         self.domain = ObjectManager(self.renderer)
@@ -53,6 +51,8 @@ class MapManager:
         self.avatar = AvatarObject()
         self.avatar.layer = 4
         self.domain.object_add('avatar', self.avatar)
+        # set main viewport to avatar center, within map view bounds
+        self.main_viewport = list(self.avatar.rect.center)
 
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
