@@ -58,7 +58,7 @@ class Main:
         self.map_manager = MapManager(self.view_surface)
         # instantiate a GUI manager
         self.gui = GuiManager()
-        # give the map object a reference to the gui
+        # give the map manager a reference to the gui
         MapManager.gui = self.gui
         # give domain objects a reference to the gui
         DomainObject.gui = self.gui
