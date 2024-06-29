@@ -8,6 +8,8 @@ left-click on map moves the avatar to that location
 mouse-wheel controls zooming
 while zoomed, holding right-mouse-button scrolls around the map
 
+There are three floors, pressing the number keys 1, 2, and 3 show them.
+
 Winning:
 
 The game is won by gathering the items you can pick up and putting them all down into the same square.
