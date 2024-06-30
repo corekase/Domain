@@ -1,4 +1,4 @@
-import pygame
+import sys, pygame
 from queue import Queue
 from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
@@ -6,6 +6,8 @@ from pygame.sprite import Sprite
 
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
+# machine epsilon for distance calculation in move_to
+eps = sys.float_info.epsilon
 
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
@@ -72,7 +74,7 @@ class DomainObject(Sprite):
                 # move straight line to the destination world pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
-                if self.find_distance_from_self(destination) <= 1.0:
+                if self.find_distance_from_self(destination) <= 1.0 + eps:
                     # arrived at destination
                     teleporters = DomainObject.domain_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
                     avatar = DomainObject.domain.objects('avatar')[0]
