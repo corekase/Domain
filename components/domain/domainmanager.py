@@ -27,7 +27,7 @@ class DomainManager:
     def __init__(self, view_surface):
         # load the map
         self.map = load_pygame(file_resource('domains', 'domain.tmx'))
-        # give MapObject subclasses a common reference to the map
+        # give DomainObject subclasses a common reference to the map
         DomainObject.map = self.map
         self.view_surface = view_surface
         self.view_surface_rect = view_surface.get_rect()
@@ -150,7 +150,6 @@ class DomainManager:
         # add the difference to new center of floor
         x, y = self.floor_port.center
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
-        self.draw_domain()
 
     def get_floor(self, x_cell):
         return int(x_cell / self.floor_tiles)
