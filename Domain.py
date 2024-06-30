@@ -1,7 +1,7 @@
 import time, pygame
 from pygame import Rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
-from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_3
+from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_3, K_F1
 from components.utility import image_alpha_resource, padding, render
 from components.gui.button import Button
 from components.gui.frame import Frame
@@ -85,6 +85,8 @@ class Main:
         self.won = False
         # Set the state of the application to "running"
         self.running = True
+        # whether to show absolute x and y, or x and y relative to floor
+        self.coordinate_toggle = True
 
     def run(self):
         # maximum frames-per-second, 0 for unlimited
@@ -164,6 +166,8 @@ class Main:
                         self.map_manager.switch_floor(1)
                     elif event.key == K_3:
                         self.map_manager.switch_floor(2)
+                    elif event.key == K_F1:
+                        self.coordinate_toggle = not self.coordinate_toggle
                 # mouse buttons
                 elif event.type == MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
@@ -207,8 +211,9 @@ class Main:
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
             x_coord, y_coord = self.map_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
-            x_coord %= 30
-            y_coord %= 30
+            if self.coordinate_toggle:
+                x_coord %= 30
+                y_coord %= 30
             # update the status for the information panel
             self.status = f'X:{x_coord}, Y:{y_coord}'
         else:
