@@ -107,11 +107,11 @@ class DomainObject(Sprite):
                 # call the datagram callback function with the argument
                 callback(argument)
             elif command_name == 'Teleport':
-                # this queue item is for agents to use a teleport. On a floor, path find to the
-                # teleport, in their queue this command uses it, then path find again to next
-                # destination on next floor.  Will be part of directing agents around, Move_To
-                # automatically teleports the avatar, and this command is to teleport agents in
-                # their logic
+                # this command is so that moveable domain objects are able to build an overall
+                # path out of smaller segments.  If an agent wanted to go to a room on a different
+                # floor they would pathfind to the teleport, use the teleport, and then pathfind
+                # to the room on the other floor.  moving an agent using multiple results from
+                # pathfinding, traversing to destinations as segments of those path finds and teleports
                 pass
             elif command_name == 'Chase':
                 # get the cell coordinate of a target and do a find_nearest to it
