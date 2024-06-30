@@ -68,11 +68,11 @@ class MapManager:
                     # add the instance to the group
                     self.domain.object_add(group, instance)
         # create generic items
-        populate(10, GenericObject, 1, 'generic')
+        populate(20, GenericObject, 1, 'generic')
         # create pickup items
         populate(1, PickupObject, 2, 'pickups')
         # create agents
-        populate(2, AgentObject, 3, 'agents')
+        populate(4, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
         position = self.find_random_position_floor(MapManager.tiles[FLOOR], 0, 30)
         self.avatar = AvatarObject(0, position)
