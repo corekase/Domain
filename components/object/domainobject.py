@@ -6,6 +6,7 @@ from pygame.sprite import Sprite
 
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
+
 # machine epsilon for distance calculation in move_to
 eps = sys.float_info.epsilon
 
