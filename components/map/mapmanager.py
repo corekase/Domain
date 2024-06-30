@@ -67,7 +67,6 @@ class MapManager:
                     instance.layer = layer
                     # add the instance to the group
                     self.domain.object_add(group, instance)
-
         # create generic items
         populate(10, GenericObject, 1, 'generic')
         # create pickup items
