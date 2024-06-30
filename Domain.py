@@ -120,7 +120,7 @@ class Main:
             # and copy that surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
-            pygame.draw.rect(self.screen, (255, 255, 255), self.view_surface_border_rect, 1)
+            pygame.draw.rect(self.screen, colours['light'], self.view_surface_border_rect, 1)
             # draw gui widgets
             self.gui.draw_widgets()
             # draw information panel
