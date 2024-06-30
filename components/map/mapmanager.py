@@ -102,7 +102,6 @@ class MapManager:
         self.switch_floor(self.get_floor(self.avatar.x_coord))
         self.main_viewport = list(self.avatar.rect.center)
 
-
     def find_random_position_floor(self, gid, floor, floor_size):
         return self.find_random_position(gid, floor * floor_size, floor_size, 0, floor_size)
 
