@@ -49,8 +49,8 @@ class Main:
         # give both the domain manager and domain objects tiles gid tuple
         DomainManager.tiles = tiles
         DomainObject.tiles = tiles
-        # view window size, not greater in either axis than map pixel sizes. if greater, pick_cell() in
-        # domain manager gives invalid results
+        # viewport size in pixels, must not be greater in either axis than map pixel sizes.
+        # if greater, pick_cell() in domain manager gives invalid results
         view_width = 960
         view_height = 960
         # create a surface of that size for rendering
