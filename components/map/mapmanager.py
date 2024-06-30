@@ -40,15 +40,21 @@ class MapManager:
         # share that domain with map objects
         DomainObject.domain = self.domain
         # add in teleporters
-        teleporters = {(27, 2): ['up', (57, 2)],
-                       (57, 2): ['down', (27, 2)],
-                       (32, 27): ['up', (62, 27)],
-                       (62, 27): ['down', (32, 27)]}
+        teleporters = {(27, 2): [1, 'up', (57, 2)],
+                       (57, 2): [0, 'down', (27, 2)],
+                       (32, 27): [2, 'up', (62, 27)],
+                       (62, 27): [1, 'down', (32, 27)]}
         for teleporter, info in teleporters.items():
-            up_down = info[0]
-            destination = info[1]
-            instance = TeleporterObject(up_down, teleporter, destination)
+            # destination floor the teleport leads to
+            dest_floor = info[0]
+            # whether to show an up or down graphic
+            up_down = info[1]
+            # destination coordinate for the teleport in cells
+            destination = info[2]
+            # instantiate the teleport
+            instance = TeleporterObject(dest_floor, up_down, teleporter, destination)
             instance.layer = 4
+            # add it to the domain
             self.domain.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
