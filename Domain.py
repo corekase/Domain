@@ -61,7 +61,7 @@ class Main:
         self.view_surface_rect = Rect(view_xpos, view_ypos, 960, 960)
         # create a rect for a border colour around the view surface
         self.view_surface_border_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
-        # create renderer
+        # create domain manager
         self.domain_manager = DomainManager(self.view_surface)
         # instantiate a GUI manager
         self.gui = GuiManager()
@@ -71,7 +71,6 @@ class Main:
         DomainObject.gui = self.gui
         # give domain objects a reference to the map manager
         DomainObject.domain_manager = self.domain_manager
-        # give domain objects access to tile gid's
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(5))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)

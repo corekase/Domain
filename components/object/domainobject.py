@@ -29,8 +29,7 @@ class DomainObject(Sprite):
     gui = None
     # reference for the domain manager
     domain_manager = None
-    # tile GID's
-    # FLOOR, EMPTY, WALL
+    # tile gid tuple
     tiles = None
 
     def __init__(self):
