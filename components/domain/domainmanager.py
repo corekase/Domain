@@ -16,10 +16,12 @@ from random import randint
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
 
-class MapManager:
+class DomainManager:
     # reference to the gui manager
     gui = None
+    # reference to domain object manager
     domain = None
+    # reference to tiles gid tuple
     tiles = None
 
     def __init__(self, view_surface):
@@ -60,7 +62,7 @@ class MapManager:
         def populate(number, cls, layer, group):
             for floor in range(3):
                 for _ in range(number):
-                    position = self.find_random_position_floor(MapManager.tiles[FLOOR], floor, 30)
+                    position = self.find_random_position_floor(DomainManager.tiles[FLOOR], floor, 30)
                     # instantiate from the class
                     instance = cls(floor, position)
                     # set the layer, higher takes priority
@@ -74,9 +76,9 @@ class MapManager:
         # create agents
         populate(4, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
-        position = self.find_random_position_floor(MapManager.tiles[FLOOR], 0, 30)
+        position = self.find_random_position_floor(DomainManager.tiles[FLOOR], 0, 30)
         self.avatar = AvatarObject(0, position)
-        self.avatar.map_manager = self
+        self.avatar.domain_manager = self
         self.avatar.layer = 5
         self.domain.object_add('avatar', self.avatar)
         # set main viewport to avatar center, within map view bounds

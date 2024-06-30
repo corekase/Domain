@@ -7,7 +7,7 @@ from components.gui.button import Button
 from components.gui.frame import Frame
 from components.gui.widget import colours
 from components.gui.guimanager import GuiManager
-from components.map.mapmanager import MapManager
+from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
 from components import utility
 
@@ -47,7 +47,7 @@ class Main:
         # EMPTY, FLOOR, WALL = 0, 1, 2
         tiles = (3, 2, 1)
         # give both the map manager and domain objects tiles gid tuple
-        MapManager.tiles = tiles
+        DomainManager.tiles = tiles
         DomainObject.tiles = tiles
         # view window size, should not be greater than pixel sizes at 1.0 zoom for map
         view_width = 960
@@ -62,15 +62,15 @@ class Main:
         # create a rect for a border colour around the view surface
         self.view_surface_border_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
         # create renderer
-        self.map_manager = MapManager(self.view_surface)
+        self.domain_manager = DomainManager(self.view_surface)
         # instantiate a GUI manager
         self.gui = GuiManager()
         # give the map manager a reference to the gui
-        MapManager.gui = self.gui
+        DomainManager.gui = self.gui
         # give domain objects a reference to the gui
         DomainObject.gui = self.gui
         # give domain objects a reference to the map manager
-        DomainObject.map_manager = self.map_manager
+        DomainObject.domain_manager = self.domain_manager
         # give domain objects access to tile gid's
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(5))
@@ -113,11 +113,11 @@ class Main:
             self.handle_events()
             # update domain state
             if not self.won:
-                self.map_manager.update_domain(elapsed_time)
+                self.domain_manager.update_domain(elapsed_time)
             # clear screen
             self.screen.fill(colours['background'])
             # draw the main viewport to the viewport surface
-            self.map_manager.draw_domain()
+            self.domain_manager.draw_domain()
             # and copy that surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw a rectangle colour around it
@@ -148,9 +148,9 @@ class Main:
             if gui_event != None:
                 # handle gui events
                 if gui_event == 'pick_up':
-                    self.map_manager.avatar.pick_up()
+                    self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
-                    self.map_manager.avatar.put_down()
+                    self.domain_manager.avatar.put_down()
                 elif gui_event == 'won':
                     self.running = False
             else:
@@ -164,11 +164,11 @@ class Main:
                         # escape key, also quits
                         self.running = False
                     if event.key == K_1:
-                        self.map_manager.switch_floor(0)
+                        self.domain_manager.switch_floor(0)
                     elif event.key == K_2:
-                        self.map_manager.switch_floor(1)
+                        self.domain_manager.switch_floor(1)
                     elif event.key == K_3:
-                        self.map_manager.switch_floor(2)
+                        self.domain_manager.switch_floor(2)
                     elif event.key == K_F1:
                         self.coordinate_toggle = not self.coordinate_toggle
                 # mouse buttons
@@ -182,22 +182,22 @@ class Main:
                             self.pan_hold_position = x, y
                         elif event.button == 4:
                             # wheel scroll up, increase zoom index
-                            self.map_manager.set_zoom_index(1)
+                            self.domain_manager.set_zoom_index(1)
                             # if right-mouse button is also pressed begin panning
                             if pygame.mouse.get_pressed()[2]:
                                 self.panning = True
                                 self.pan_hold_position = x, y
                         elif event.button == 5:
                             # wheel scroll down, decrease zoom index
-                            self.map_manager.set_zoom_index(-1)
+                            self.domain_manager.set_zoom_index(-1)
                 elif event.type == MOUSEBUTTONUP:
                     if event.button == 1:
                         # left button up, which is destination point for avatar
                         x, y = event.pos
                         # if mouse is inside the view rect
                         if self.view_surface_rect.collidepoint(x, y):
-                            position = self.map_manager.pick_cell(x -self.view_surface_rect.x, y - self.view_surface_rect.y)
-                            self.map_manager.avatar.move_to(position)
+                            position = self.domain_manager.pick_cell(x -self.view_surface_rect.x, y - self.view_surface_rect.y)
+                            self.domain_manager.avatar.move_to(position)
                     if event.button == 3:
                         # right button up, end panning state
                         self.panning = False
@@ -207,13 +207,13 @@ class Main:
                     if event.type == MOUSEMOTION:
                         # move the centre of the viewport
                         x, y = event.pos
-                        self.map_manager.main_viewport[0] += x - self.pan_hold_position[0]
-                        self.map_manager.main_viewport[1] += y - self.pan_hold_position[1]
+                        self.domain_manager.main_viewport[0] += x - self.pan_hold_position[0]
+                        self.domain_manager.main_viewport[1] += y - self.pan_hold_position[1]
                         pygame.mouse.set_pos(self.pan_hold_position)
         # update the x and y map indexes for the information panel
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
-            x_coord, y_coord = self.map_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
+            x_coord, y_coord = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
             if self.coordinate_toggle:
                 x_coord %= 30
                 y_coord %= 30
@@ -227,10 +227,10 @@ class Main:
         # if all the pickup items are in the same cell then the game is won
         matched = True
         last_item = None
-        objects = self.map_manager.domain.objects('pickups')
+        objects = self.domain_manager.domain.objects('pickups')
         # if the avatar has an item in their inventory then include it
-        if self.map_manager.avatar.inventory != None:
-            objects.append(self.map_manager.avatar.inventory)
+        if self.domain_manager.avatar.inventory != None:
+            objects.append(self.domain_manager.avatar.inventory)
         # compare cell coordinates for all items, if any don't match then the check fails
         # the last item in the avatar inventory doesn't count until it's placed on the map
         # because its coordinates aren't updated until then
@@ -255,7 +255,7 @@ class Main:
         cycle = f'Cycle: {self.cycle}'
         time = f'Time: {hours}h {minutes}m {seconds}s'
         fps = f'FPS: {int(round(fps))}'
-        floor = f'Floor: {self.map_manager.floor + 1}'
+        floor = f'Floor: {self.domain_manager.floor + 1}'
         # draw frame
         self.information_frame.draw()
         # layout coordinates

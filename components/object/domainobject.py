@@ -27,8 +27,8 @@ class DomainObject(Sprite):
     domain = None
     # reference for gui manager
     gui = None
-    # reference for the map manager
-    map_manager = None
+    # reference for the domain manager
+    domain_manager = None
     # tile GID's
     # FLOOR, EMPTY, WALL
     tiles = None
@@ -75,14 +75,14 @@ class DomainObject(Sprite):
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0:
                     # arrived at destination
-                    teleporters = self.map_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
+                    teleporters = DomainObject.domain_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
                     avatar = DomainObject.domain.objects('avatar')[0]
                     if len(teleporters) > 0 and (self is avatar):
                         # only teleport the avatar, not other moving domain objects
                         self.sync_cell(teleporters[0].destination)
                         # switch to avatar floor and location
-                        self.map_manager.switch_floor(self.map_manager.get_floor(avatar.x_coord))
-                        self.map_manager.main_viewport = list(avatar.rect.center)
+                        self.domain_manager.switch_floor(self.domain_manager.get_floor(avatar.x_coord))
+                        self.domain_manager.main_viewport = list(avatar.rect.center)
                     else:
                         self.sync_coordinate(destination)
                     # remove this command item from the queue
@@ -233,7 +233,7 @@ class DomainObject(Sprite):
         adjacents = []
         # fill in ordered list with cell positions by adding neighbour deltas to each axis
         for neighbour in neighbours:
-            adjacents.append(self.map_manager.find_cell_gid((x + neighbour[0], y + neighbour[1])))
+            adjacents.append(self.domain_manager.find_cell_gid((x + neighbour[0], y + neighbour[1])))
         # the list indexes map by the neighbour deltas as given in this diagram:
         # 0 1 2
         # 3 4 5

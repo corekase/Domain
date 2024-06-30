@@ -13,12 +13,11 @@ class AvatarObject(DomainObject):
         self.sync_cell(position)
         # avatar inventory
         self.inventory = None
-        self.map_manager = None
 
     def process(self):
         # check current cell for a pickup object
         if self.inventory == None:
-            pickups = self.map_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))
+            pickups = DomainObject.domain_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))
             if len(pickups) > 0:
                     # enable pick up button
                     DomainObject.gui.switch_context('pickup_context')
@@ -46,7 +45,7 @@ class AvatarObject(DomainObject):
 
     def pick_up(self):
         # pick up inventory
-        pickup = self.map_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))[0]
+        pickup = DomainObject.domain_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))[0]
         self.inventory = pickup
         # delete pickup object from the domain
         DomainObject.domain.delete('pickups', pickup)
