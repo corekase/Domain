@@ -66,7 +66,7 @@ class Main:
         self.domain_manager = DomainManager(self.view_surface)
         # instantiate a GUI manager
         self.gui = GuiManager()
-        # give the map manager a reference to the gui
+        # give the domain manager a reference to the gui
         DomainManager.gui = self.gui
         # give domain objects a reference to the gui
         DomainObject.gui = self.gui
