@@ -2,6 +2,7 @@ from .domainobject import DomainObject
 from .genericobject import GenericObject
 from ..utility import image_alpha_resource
 
+# named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
 
 class AgentObject(DomainObject):

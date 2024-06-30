@@ -46,6 +46,7 @@ class Main:
         # in other class components, define these at the top and use them as named indexes:
         # EMPTY, FLOOR, WALL = 0, 1, 2
         tiles = (3, 2, 1)
+        # give both the map manager and domain objects tiles gid tuple
         MapManager.tiles = tiles
         DomainObject.tiles = tiles
         # view window size, should not be greater than pixel sizes at 1.0 zoom for map

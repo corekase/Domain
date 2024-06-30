@@ -13,6 +13,7 @@ from components.object.avatarobject import AvatarObject
 from components.object.teleporterobject import TeleporterObject
 from random import randint
 
+# named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
 
 class MapManager:

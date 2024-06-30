@@ -4,6 +4,7 @@ from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
 from pygame.sprite import Sprite
 
+# named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
 
 # commands and their parameters for the command queue
