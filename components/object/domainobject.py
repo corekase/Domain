@@ -78,7 +78,7 @@ class DomainObject(Sprite):
                         self.sync_cell(teleporters[0].destination)
                         # switch to avatar floor and location
                         self.map_manager.switch_floor(self.map_manager.get_floor(avatar.x_coord))
-                        self.main_viewport = list(avatar.rect.center)
+                        self.map_manager.main_viewport = list(avatar.rect.center)
                     else:
                         self.sync_coordinate(destination)
                     # remove this command item from the queue
