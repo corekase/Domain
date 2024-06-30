@@ -137,8 +137,20 @@ class MapManager:
         return results
 
     def switch_floor(self, floor):
+        # get distance from center of current floor
+        if self.floor != None:
+            x, y = self.floor_ports[self.floor].center
+            difx = self.main_viewport[0] - x
+            dify = self.main_viewport[1] - y
+        else:
+            difx, dify = 0, 0
+        # load new floor
         self.floor = floor
         self.floor_port = self.floor_ports[self.floor]
+        # add the difference to new center of floor
+        x, y = self.floor_port.center
+        self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
+        self.draw_domain()
 
     def get_floor(self, x_cell):
         return int(x_cell / self.floor_tiles)
