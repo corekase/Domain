@@ -70,7 +70,7 @@ class Main:
         DomainManager.gui = self.gui
         # give domain objects a reference to the gui
         DomainObject.gui = self.gui
-        # give domain objects a reference to the map manager
+        # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
         # create a frame
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(5))
