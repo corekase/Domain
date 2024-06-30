@@ -43,6 +43,8 @@ class Main:
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.status = None
         # index into tiles is: 0 empty, 1 floor, and 2 wall. the value of the index is the tile gid
+        # in other class components, define these at the top and use them as named indexes:
+        # EMPTY, FLOOR, WALL = 0, 1, 2
         tiles = (3, 2, 1)
         MapManager.tiles = tiles
         DomainObject.tiles = tiles

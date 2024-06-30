@@ -4,6 +4,8 @@ from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
 from pygame.sprite import Sprite
 
+EMPTY, FLOOR, WALL = 0, 1, 2
+
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
@@ -238,21 +240,21 @@ class DomainObject(Sprite):
         # clear the current tile so it isn't included in neighbours
         adjacents[4] = None
         # with the layout order, block out invalid orthographic moves due to walls
-        if adjacents[1] == self.tiles[2]:
+        if adjacents[1] == self.tiles[WALL]:
             adjacents[0] = None
             adjacents[2] = None
-        if adjacents[5] == self.tiles[2]:
+        if adjacents[5] == self.tiles[WALL]:
             adjacents[2] = None
             adjacents[8] = None
-        if adjacents[7] == self.tiles[2]:
+        if adjacents[7] == self.tiles[WALL]:
             adjacents[6] = None
             adjacents[8] = None
-        if adjacents[3] == self.tiles[2]:
+        if adjacents[3] == self.tiles[WALL]:
             adjacents[0] = None
             adjacents[6] = None
         valid_neighbours = []
         for num, value in enumerate(adjacents):
-            if value == self.tiles[1]:
+            if value == self.tiles[FLOOR]:
                 valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours

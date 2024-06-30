@@ -2,6 +2,8 @@ from .domainobject import DomainObject
 from .genericobject import GenericObject
 from ..utility import image_alpha_resource
 
+EMPTY, FLOOR, WALL = 0, 1, 2
+
 class AgentObject(DomainObject):
     def __init__(self, floor, position):
         super().__init__()
@@ -34,7 +36,7 @@ class AgentObject(DomainObject):
             # remove reference to old object
             DomainObject.domain.delete('generic', self.destination_object)
             # create a new generic object
-            position = self.map_manager.find_random_position_floor(DomainObject.tiles[1], floor, 30)
+            position = self.map_manager.find_random_position_floor(DomainObject.tiles[FLOOR], floor, 30)
             item_object = GenericObject(floor, position)
             item_object.layer = 1
             # track the generic item
