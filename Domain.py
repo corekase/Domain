@@ -70,7 +70,7 @@ class Main:
         DomainObject.map_manager = self.map_manager
         # give domain objects access to tile gid's
         # create a frame
-        information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
+        information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(5))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
@@ -207,6 +207,8 @@ class Main:
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
             x_coord, y_coord = self.map_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
+            x_coord %= 30
+            y_coord %= 30
             # update the status for the information panel
             self.status = f'X:{x_coord}, Y:{y_coord}'
         else:
@@ -245,6 +247,7 @@ class Main:
         cycle = f'Cycle: {self.cycle}'
         time = f'Time: {hours}h {minutes}m {seconds}s'
         fps = f'FPS: {int(round(fps))}'
+        floor = f'Floor: {self.map_manager.floor + 1}'
         # draw frame
         self.information_frame.draw()
         # layout coordinates
@@ -253,8 +256,9 @@ class Main:
         self.screen.blit(render(cycle), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
         self.screen.blit(render(fps), (x_pos + 3, y_pos + padding(2)))
+        self.screen.blit(render(floor), (x_pos + 3, y_pos + padding(3)))
         # status is constantly updated in the event handler
-        self.screen.blit(render(self.status), (x_pos + 3, y_pos + padding(3)))
+        self.screen.blit(render(self.status), (x_pos + 3, y_pos + padding(4)))
 
     def draw_mouse(self):
         # draw mouse cursor
