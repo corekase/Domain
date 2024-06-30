@@ -244,7 +244,7 @@ class DomainObject(Sprite):
             adjacents[6] = None
         valid_neighbours = []
         for num, value in enumerate(adjacents):
-            if value == self.tiles[0]:
+            if value == self.tiles[1]:
                 valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours

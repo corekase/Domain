@@ -42,8 +42,8 @@ class Main:
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.status = None
-        #FLOOR, EMPTY, WALL
-        tiles = (2, 3, 1)
+        # index into tiles is: 0 empty, 1 floor, and 2 wall. the value of the index is the tile gid
+        tiles = (3, 2, 1)
         MapManager.tiles = tiles
         DomainObject.tiles = tiles
         # view window size, should not be greater than pixel sizes at 1.0 zoom for map
