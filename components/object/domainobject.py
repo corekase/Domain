@@ -9,6 +9,7 @@ Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
 Path_To = namedtuple('Path_To', 'position')
 Datagram = namedtuple('Datagram', 'callback argument')
+Teleport = namedtuple('Teleport', 'destination')
 Chase = namedtuple('Chase', 'target')
 Cool_Down = namedtuple('Cool_Down', 'duration')
 
@@ -102,6 +103,13 @@ class DomainObject(Sprite):
                 self.command_queue.pop(0)
                 # call the datagram callback function with the argument
                 callback(argument)
+            elif command_name == 'Teleport':
+                # this queue item is for agents to use a teleport. On a floor, path find to the
+                # teleport, in their queue this command uses it, then path find again to next
+                # destination on next floor.  Will be part of directing agents around, Move_To
+                # automatically teleports the avatar, and this command is to teleport agents in
+                # their logic
+                pass
             elif command_name == 'Chase':
                 # get the cell coordinate of a target and do a find_nearest to it
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
