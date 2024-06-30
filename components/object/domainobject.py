@@ -73,7 +73,7 @@ class DomainObject(Sprite):
                 # move straight line to the destination world pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
-                if self.find_distance_from_self(destination) <= 2.0:
+                if self.find_distance_from_self(destination) <= 1.0:
                     # arrived at destination
                     teleporters = self.map_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
                     avatar = DomainObject.domain.objects('avatar')[0]
