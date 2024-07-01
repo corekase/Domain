@@ -93,8 +93,8 @@ class DomainObject(Sprite):
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
                     for position in path:
-                        # tile_graphical_centre converts to renderer map rect pixel coordinates for each position in the path
-                        self.command_queue.insert(0, Move_To(self.tile_graphical_centre(position)))
+                        # convert to renderer map rect pixel coordinates for each position in the path
+                        self.command_queue.insert(0, Move_To(self.pixel_centre(position)))
             elif command_name == 'Datagram':
                 # call a method with an argument parameter.  If you need more than one value
                 # then make it a tuple of values
@@ -174,7 +174,7 @@ class DomainObject(Sprite):
         return self.find_distance((self.centre_xpos, self.centre_ypos),
                                   (position[0], position[1]))
 
-    def tile_graphical_centre(self, location):
+    def pixel_centre(self, location):
         # given a tile x and y cell coordinate return the graphical x and y center point in renderer map rect pixels
         x_width, y_height = self.map_object.tilewidth, self.map_object.tileheight
         x_centre, y_centre = int(x_width / 2), int(y_height / 2)
@@ -263,7 +263,7 @@ class DomainObject(Sprite):
 
     def sync_cell(self, position):
         # update position state in cells
-        self.centre_xpos, self.centre_ypos = self.tile_graphical_centre(position)
+        self.centre_xpos, self.centre_ypos = self.pixel_centre(position)
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
         self.x_coord, self.y_coord = position
 
