@@ -24,15 +24,15 @@ class DomainManager:
 
     def __init__(self, view_surface):
         # load the map
-        self.map = load_pygame(file_resource('domains', 'domain.tmx'))
+        self.map_object = load_pygame(file_resource('domains', 'domain.tmx'))
         # give DomainObject subclasses a common reference to the map
-        DomainObject.map = self.map
+        DomainObject.map_object = self.map_object
         # surface to draw on
         self.view_surface = view_surface
         self.view_surface_rect = view_surface.get_rect()
         size = self.view_surface.get_rect().width, self.view_surface.get_rect().height
         # reference to the renderer
-        self.renderer = BufferedRenderer(TiledMapData(self.map), size, False)
+        self.renderer = BufferedRenderer(TiledMapData(self.map_object), size, False)
         # set the zoom levels for the renderer
         self.zoom_amounts_index = 0
         self.zoom_amounts = [1.0, 2.0, 4.0]
@@ -40,14 +40,14 @@ class DomainManager:
         # create an object manager
         self.domain = ObjectManager(self.renderer)
         # share the domain with domain objects
-        DomainObject.domain = self.domain
+        DomainObject.domain_objects = self.domain
         # map constants
         self.floor_tiles = 30
-        floors = int(self.map.width / self.floor_tiles)
+        floors = int(self.map_object.width / self.floor_tiles)
         # each floor_ports is a rect which has the boundaries for the floor
         self.floor_ports = []
         # size of the floor port, is a square and the tiles used must also be square
-        floor_size = self.floor_tiles * self.map.tilewidth
+        floor_size = self.floor_tiles * self.map_object.tilewidth
         # define a rect for each floor port
         for floor in range(floors):
             x_base = floor * floor_size
@@ -121,9 +121,9 @@ class DomainManager:
     def cell_gid(self, position):
         # get the tile gid for a cell position
         x, y = position
-        if x < 0 or y < 0 or x >= DomainObject.map.width or y >= DomainObject.map.height:
+        if x < 0 or y < 0 or x >= DomainObject.map_object.width or y >= DomainObject.map_object.height:
             return None
-        return DomainObject.map.get_tile_gid(x, y, 0)
+        return DomainObject.map_object.get_tile_gid(x, y, 0)
 
     def cell_objects(self, position, objects):
         # return a list of objects which match the position coordinate
@@ -173,8 +173,8 @@ class DomainManager:
         # normalize x and y mouse position to the screen coordinates of the surface
         x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
         # get all the needed information from the map and renderer
-        x_tile_size = self.map.tilewidth * self.renderer.zoom
-        y_tile_size = self.map.tileheight * self.renderer.zoom
+        x_tile_size = self.map_object.tilewidth * self.renderer.zoom
+        y_tile_size = self.map_object.tileheight * self.renderer.zoom
         map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
         map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
         view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
@@ -185,8 +185,8 @@ class DomainManager:
         # divide those into tile sizes to get a coordinate
         x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
         # convert that screen coordinate into an array coordinate for programming
-        x_coord = int(-x_coord + self.map.width / 2)
-        y_coord = int(-y_coord + self.map.height / 2)
+        x_coord = int(-x_coord + self.map_object.width / 2)
+        y_coord = int(-y_coord + self.map_object.height / 2)
         # coordinates are now in map array indexes
         return x_coord, y_coord
 

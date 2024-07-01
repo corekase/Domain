@@ -25,9 +25,9 @@ class Position:
 
 class DomainObject(Sprite):
     # reference for the map
-    map = None
+    map_object = None
     # reference for domain objects
-    domain = None
+    domain_objects = None
     # reference for gui manager
     gui = None
     # reference for the domain manager
@@ -75,8 +75,8 @@ class DomainObject(Sprite):
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0 + eps:
                     # arrived at destination
-                    teleporters = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
-                    avatar = DomainObject.domain.objects('avatar')[0]
+                    teleporters = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain_objects.objects('teleporters'))
+                    avatar = DomainObject.domain_objects.objects('avatar')[0]
                     if len(teleporters) > 0 and (self is avatar):
                         # only teleport the avatar, not other moving domain objects
                         self.sync_cell(teleporters[0].destination)
@@ -172,7 +172,7 @@ class DomainObject(Sprite):
 
     def tile_graphical_centre(self, location):
         # given a tile x and y coordinate return the graphical x and y center point in map pixels
-        x_width, y_height = self.map.tilewidth, self.map.tileheight
+        x_width, y_height = self.map_object.tilewidth, self.map_object.tileheight
         x_centre, y_centre = int(x_width / 2), int(y_height / 2)
         return (location[0] * x_width) + x_centre, (location[1] * y_height) + y_centre
 
@@ -264,7 +264,7 @@ class DomainObject(Sprite):
         # update position state in pixels
         self.centre_xpos, self.centre_ypos = position
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
-        self.x_coord, self.y_coord = int(self.rect.centerx / DomainObject.map.tilewidth), int(self.rect.centery / DomainObject.map.tileheight)
+        self.x_coord, self.y_coord = int(self.rect.centerx / DomainObject.map_object.tilewidth), int(self.rect.centery / DomainObject.map_object.tileheight)
 
     def sync_cell(self, position):
         # update position state in cells
