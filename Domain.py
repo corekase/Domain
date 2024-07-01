@@ -46,7 +46,7 @@ class Main:
         # in other class components, define these at the top and use them as named indexes:
         # EMPTY, FLOOR, WALL = 0, 1, 2
         tiles = (3, 2, 1)
-        # give both the domain manager and domain objects tiles gid tuple
+        # give both the domain manager and domain objects the tiles gid tuple
         DomainManager.tiles = tiles
         DomainObject.tiles = tiles
         # viewport size in pixels, must not be greater in either axis than map pixel sizes.
