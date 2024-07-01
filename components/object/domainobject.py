@@ -111,7 +111,7 @@ class DomainObject(Sprite):
                 self.command_queue.pop(0)
             elif command_name == 'Centre_View':
                 domain_object = command.domain_object
-                # centre the main viewport on this domain object
+                # centre the main viewport on domain_object
                 self.command_queue.pop(0)
                 self.domain_manager.main_viewport = list(domain_object.rect.center)
             elif command_name == 'Chase':
