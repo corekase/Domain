@@ -105,16 +105,19 @@ class DomainManager:
         return self.find_random_position(gid, floor * self.floor_tiles, self.floor_tiles, 0, self.floor_tiles)
 
     def find_random_position(self, gid, x_min, width, y_min, height):
-        # return a random cell position which contains a specific tile gid
+        # return a random empty cell position which is a specific tile gid
         while True:
+            # random position
             x, y = randint(x_min, x_min + width - 1), randint(y_min, y_min + height - 1)
+            # is it already occupied by something
             hit = False
             for item in self.domain.domain():
                 if item.x_coord == x and item.y_coord == y:
                     hit = True
-                    continue
+                    break
             if hit:
                 continue
+            # with empty cell, is it the correct gid
             if self.find_cell_gid((x, y)) == gid:
                 return x, y
 
