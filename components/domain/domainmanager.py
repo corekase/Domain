@@ -19,8 +19,6 @@ EMPTY, FLOOR, WALL = 0, 1, 2
 class DomainManager:
     # reference to the gui manager
     gui = None
-    # reference to domain object manager
-    domain = None
     # reference to tiles gid tuple
     tiles = None
 
@@ -29,9 +27,11 @@ class DomainManager:
         self.map = load_pygame(file_resource('domains', 'domain.tmx'))
         # give DomainObject subclasses a common reference to the map
         DomainObject.map = self.map
+        # surface to draw on
         self.view_surface = view_surface
         self.view_surface_rect = view_surface.get_rect()
         size = self.view_surface.get_rect().width, self.view_surface.get_rect().height
+        # reference to the renderer
         self.renderer = BufferedRenderer(TiledMapData(self.map), size, False)
         # set the zoom levels for the renderer
         self.zoom_amounts_index = 0
@@ -39,6 +39,8 @@ class DomainManager:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
         # create an object manager
         self.domain = ObjectManager(self.renderer)
+        # share the domain with domain objects
+        DomainObject.domain = self.domain
         # map constants
         self.floor_tiles = 30
         # each floor_ports is a rect which has the boundaries for the floor
@@ -54,8 +56,6 @@ class DomainManager:
         self.floor_port = None
         # initial floor is none
         self.floor = None
-        # share that domain with map objects
-        DomainObject.domain = self.domain
         # add in teleporters
         teleporters = {(27, 2): [1, 'up', (57, 2)],
                        (57, 2): [0, 'down', (27, 2)],
