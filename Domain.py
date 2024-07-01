@@ -59,7 +59,7 @@ class Main:
         view_xpos = (self.screen.get_rect().width - view_width) // 2
         view_ypos = (self.screen.get_rect().height - view_height) // 2
         # create a collision rect for the surface size for interface logic
-        self.view_surface_rect = Rect(view_xpos, view_ypos, 960, 960)
+        self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect for a border colour around the view surface
         self.view_surface_border_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
         # create domain manager
