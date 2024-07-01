@@ -6,7 +6,7 @@ from ..utility import image_alpha_resource
 EMPTY, FLOOR, WALL = 0, 1, 2
 
 class AgentObject(DomainObject):
-    def __init__(self, floor, position):
+    def __init__(self, position):
         super().__init__()
         # load images for the agents
         self.normal_image = image_alpha_resource('sprites', 'agent', 'agent_normal.png')
@@ -17,7 +17,6 @@ class AgentObject(DomainObject):
         self.rect = self.image.get_rect()
         # speed variable, world pixels per second
         self.speed = 64.0
-        self.floor = floor
         self.sync_cell(position)
         # agent memory
         self.destination_object = None
@@ -33,12 +32,12 @@ class AgentObject(DomainObject):
                     DomainObject.domain.object_remove('generic', self.destination_object)
                     self.follow_path(path)
         else:
-            floor = self.destination_object.floor
+            floor = DomainObject.domain_manager.get_floor(self.destination_object.x_coord)
             # remove reference to old object
             DomainObject.domain.delete('generic', self.destination_object)
             # create a new generic object
             position = DomainObject.domain_manager.find_random_position_floor(DomainObject.tiles[FLOOR], floor)
-            item_object = GenericObject(floor, position)
+            item_object = GenericObject(position)
             item_object.layer = 1
             # track the generic item
             DomainObject.domain.object_add('generic', item_object)

@@ -2,14 +2,13 @@ from .domainobject import DomainObject, Path_To, Datagram
 from ..utility import image_alpha_resource
 
 class AvatarObject(DomainObject):
-    def __init__(self, floor, position):
+    def __init__(self, position):
         super().__init__()
         self.normal_image = image_alpha_resource('sprites', 'avatar', 'avatar_normal.png')
         self.overlap_image = self.normal_image
         self.image = self.normal_image
         self.rect = self.image.get_rect()
         self.speed = 64.0
-        self.floor = floor
         self.sync_cell(position)
         # avatar inventory
         self.inventory = None

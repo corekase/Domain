@@ -79,7 +79,7 @@ class DomainManager:
                 for _ in range(number):
                     position = self.find_random_position_floor(DomainManager.tiles[FLOOR], floor)
                     # instantiate from the class
-                    instance = cls(floor, position)
+                    instance = cls(position)
                     # set the layer, higher takes priority
                     instance.layer = layer
                     # add the instance to the group
@@ -92,7 +92,7 @@ class DomainManager:
         populate(4, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
         position = self.find_random_position_floor(DomainManager.tiles[FLOOR], 0)
-        self.avatar = AvatarObject(0, position)
+        self.avatar = AvatarObject(position)
         self.avatar.domain_manager = self
         self.avatar.layer = 5
         self.domain.object_add('avatar', self.avatar)
