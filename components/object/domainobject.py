@@ -43,23 +43,23 @@ class DomainObject(Sprite):
         self.normal_image = None
         self.overlap_image = None
         self.image = None
-        # values updated by either sync_position or sync_cell
+        # values updated by either sync_coordinate or sync_cell
         self.rect = None
         self.centre_xpos, self.centre_ypos = None, None
         self.x_coord, self.y_coord = None, None
         # speed variable, world pixels per second
         self.speed = 0.0
-        # list of mapobjects currently overlapping this one
+        # list of domain objects currently overlapping this one
         self.overlaps = []
         # command queue
         self.command_queue = []
         # subclasess must call either sync_coordinate or sync_cell before they exit their __init__
 
     def update(self, elapsed_time):
-        # filter overlapped mapobjects so that only objects still overlapping are kept
+        # filter overlapped domain objects so that only objects still overlapping are kept
         self.overlaps = [domainobject for domainobject in self.overlaps \
                          if pygame.sprite.collide_rect(self, domainobject)]
-        # if this agent isn't overlapping other agents return its image to normal
+        # if this domain object isn't overlapping other objects return its image to normal
         if len(self.overlaps) == 0:
             self.image = self.normal_image
         # check the command queue for any commands
