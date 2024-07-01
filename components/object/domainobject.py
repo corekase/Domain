@@ -245,6 +245,15 @@ class DomainObject(Sprite):
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours
 
+    def teleporters(self, position):
+        # if there is a teleporter at position then return its destination otherwise return None
+        teleporters = DomainObject.domain_manager.cell_objects(position, DomainObject.domain_objects.objects('teleporters'))
+        if len(teleporters) > 0:
+            # there is a teleporter here
+            return teleporters[0].destination
+        else:
+            return None
+
     def sync_coordinate(self, position):
         # update position state in pixels
         self.centre_xpos, self.centre_ypos = position

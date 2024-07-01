@@ -30,28 +30,22 @@ class AvatarObject(DomainObject):
     def move_to(self, position):
         # hide gui while moving
         DomainObject.gui.switch_context(None)
-        teleporters = DomainObject.domain_manager.cell_objects(position, DomainObject.domain_objects.objects('teleporters'))
-        if len(teleporters) > 0:
-            # there is a teleporter here
-            teleport_destination = teleporters[0].destination
-        else:
-            teleport_destination = None
         # perform move
         if self.reset_queue():
             # no move_to in the queue so just go there directly
-            self.move_to_guarded((position, teleport_destination))
+            self.move_to_guarded(position)
         else:
             # do after existing move_to
-            self.command(Datagram(self.move_to_guarded, (position, teleport_destination)))
+            self.command(Datagram(self.move_to_guarded, position))
 
-    def move_to_guarded(self, parameters):
-        new_position, teleport_destination = parameters
+    def move_to_guarded(self, new_position):
         # from current position go to new_position
         self.command(Path_To(new_position))
-        if teleport_destination != None:
+        teleport = self.teleporters(new_position)
+        if teleport != None:
             # there is a teleporter at the new position
-            self.command(Teleport(teleport_destination))
-            self.command(Switch_Floor(DomainObject.domain_manager.get_floor(teleport_destination[0])))
+            self.command(Teleport(teleport))
+            self.command(Switch_Floor(DomainObject.domain_manager.get_floor(teleport[0])))
             self.command(Centre_View(self))
 
     def pick_up(self):
