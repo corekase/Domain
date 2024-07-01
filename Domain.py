@@ -215,8 +215,8 @@ class Main:
         if self.view_surface_rect.collidepoint(x, y):
             x_coord, y_coord = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
             if self.coordinate_toggle:
-                x_coord %= 30
-                y_coord %= 30
+                x_coord %= self.domain_manager.floor_tiles
+                y_coord %= self.domain_manager.floor_tiles
             # update the status for the information panel
             self.status = f'X:{x_coord}, Y:{y_coord}'
         else:
