@@ -93,7 +93,7 @@ class DomainObject(Sprite):
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
                     for position in path:
-                        # tile_graphical_centre converts to map pixel coordinates for each position in the path
+                        # tile_graphical_centre converts to renderer map rect pixel coordinates for each position in the path
                         self.command_queue.insert(0, Move_To(self.tile_graphical_centre(position)))
             elif command_name == 'Datagram':
                 # call a method with an argument parameter.  If you need more than one value
