@@ -2,7 +2,7 @@ import time, pygame
 from pygame import Rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_3, K_F1
-from components.utility import image_alpha_resource, padding, render
+from components.utility import image_alpha_resource, padding, render_text
 from components.gui.button import Button
 from components.gui.frame import Frame
 from components.gui.widget import colours
@@ -261,12 +261,12 @@ class Main:
         # layout coordinates
         x_pos, y_pos, _, _ = self.information_frame.rect
         # draw each text line onto the screen
-        self.screen.blit(render(cycle), (x_pos + 3, y_pos + padding(0)))
-        self.screen.blit(render(time), (x_pos + 3, y_pos + padding(1)))
-        self.screen.blit(render(fps), (x_pos + 3, y_pos + padding(2)))
-        self.screen.blit(render(floor), (x_pos + 3, y_pos + padding(3)))
+        self.screen.blit(render_text(cycle), (x_pos + 3, y_pos + padding(0)))
+        self.screen.blit(render_text(time), (x_pos + 3, y_pos + padding(1)))
+        self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(2)))
+        self.screen.blit(render_text(floor), (x_pos + 3, y_pos + padding(3)))
         # status is constantly updated in the event handler
-        self.screen.blit(render(self.status), (x_pos + 3, y_pos + padding(4)))
+        self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(4)))
 
     def draw_mouse(self):
         # draw mouse cursor

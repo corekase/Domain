@@ -1,5 +1,5 @@
 from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
-from ..utility import render, centre
+from ..utility import render_text, centre
 from .frame import State, Frame
 
 class Button(Frame):
@@ -9,7 +9,7 @@ class Button(Frame):
         # button state
         self.state = State.IDLE
         # text bitmap
-        self.text_bitmap = render(text)
+        self.text_bitmap = render_text(text)
         # get centred dimensions for both x and y ranges
         text_x = self.rect.x + centre(self.rect.width, self.text_bitmap.get_rect().width)
         text_y = self.rect.y + centre(self.rect.height, self.text_bitmap.get_rect().height)

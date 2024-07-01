@@ -18,7 +18,7 @@ def padding(line):
     # return = base + line height + spacer size
     return 1 + (line * font_size) + (line * 2)
 
-def render(text):
+def render_text(text):
     # render helper function so same values aren't repeated
     return font_object.render(text, colours['text'], (200, 200, 255))
 
