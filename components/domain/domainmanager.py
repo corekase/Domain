@@ -43,15 +43,15 @@ class DomainManager:
         DomainObject.domain = self.domain
         # map constants
         self.floor_tiles = 30
+        floors = int(self.map.width / self.floor_tiles)
         # each floor_ports is a rect which has the boundaries for the floor
         self.floor_ports = []
-        # these values stay the same for each floor_port
-        width = self.floor_tiles * self.map.tilewidth
-        y_size = self.map.tileheight * self.floor_tiles
-        # find a rect for each floor
-        for floor in range(self.floor_tiles):
-            x_base = floor * (self.floor_tiles * self.map.tilewidth)
-            self.floor_ports.append(Rect(x_base, 0, width, y_size))
+        # size of the floor port, is a square and the tiles used must also be square
+        floor_size = self.floor_tiles * self.map.tilewidth
+        # define a rect for each floor port
+        for floor in range(floors):
+            x_base = floor * floor_size
+            self.floor_ports.append(Rect(x_base, 0, floor_size, floor_size))
         # initial floor_port is none
         self.floor_port = None
         # initial floor is none
