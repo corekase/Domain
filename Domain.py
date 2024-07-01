@@ -73,7 +73,7 @@ class Main:
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
         # create a frame
-        information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(5))
+        information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
@@ -98,8 +98,6 @@ class Main:
         clock = pygame.time.Clock()
         # track elapsed_time with more accurate os clock
         previous_time = time.time()
-        # total time for information panel
-        total_time = 0.0
         # continue while the running flag is true
         while self.running:
             # main loop
@@ -108,7 +106,6 @@ class Main:
             now_time = time.time()
             elapsed_time = now_time - previous_time
             previous_time = now_time
-            total_time += elapsed_time
             # handle events
             self.handle_events()
             # update domain state
@@ -125,7 +122,7 @@ class Main:
             # draw gui widgets
             self.gui.draw_widgets()
             # draw information panel
-            self.draw_info_panel(total_time, clock.get_fps())
+            self.draw_info_panel(clock.get_fps())
             # draw mouse cursor
             self.draw_mouse()
             # check for winning conditions
@@ -244,16 +241,9 @@ class Main:
         # if true then won
         return matched
 
-    def draw_info_panel(self, total_time, fps):
-        # calculate divisions of total_time
-        seconds = total_time % (24 * 3600)
-        hours = int(seconds / 3600)
-        seconds %= 3600
-        minutes = int(seconds / 60)
-        seconds = int(seconds % 60)
+    def draw_info_panel(self, fps):
         # gather information into text strings
         cycle = f'Cycle: {self.cycle}'
-        time = f'Time: {hours}h {minutes}m {seconds}s'
         fps = f'FPS: {int(round(fps))}'
         floor = f'Floor: {self.domain_manager.floor + 1}'
         # draw frame
@@ -262,11 +252,10 @@ class Main:
         x_pos, y_pos, _, _ = self.information_frame.rect
         # draw each text line onto the screen
         self.screen.blit(render_text(cycle), (x_pos + 3, y_pos + padding(0)))
-        self.screen.blit(render_text(time), (x_pos + 3, y_pos + padding(1)))
-        self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(2)))
-        self.screen.blit(render_text(floor), (x_pos + 3, y_pos + padding(3)))
+        self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(1)))
+        self.screen.blit(render_text(floor), (x_pos + 3, y_pos + padding(2)))
         # status is constantly updated in the event handler
-        self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(4)))
+        self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(3)))
 
     def draw_mouse(self):
         # draw mouse cursor
