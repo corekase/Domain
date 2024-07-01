@@ -126,7 +126,7 @@ class DomainObject(Sprite):
                 # track and wait a number of seconds and then remove the cool_down command from the queue
                 pass
             else:
-                raise(f'Command: {command_name} not implemented')
+                raise Exception(f'Command: {command_name} not implemented')
         else:
             # no commands in command queue, generate some more
             self.process()
