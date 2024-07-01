@@ -110,7 +110,7 @@ class DomainManager:
             # random position
             x, y = randint(x_min, x_min + width - 1), randint(y_min, y_min + height - 1)
             # is it the correct gid
-            if self.find_cell_gid((x, y)) == gid:
+            if self.cell_gid((x, y)) == gid:
                 # is it already occupied by something
                 hit = False
                 for item in self.domain.domain():
@@ -122,14 +122,14 @@ class DomainManager:
                 # is correct gid and is empty
                 return x, y
 
-    def find_cell_gid(self, position):
+    def cell_gid(self, position):
         # get the tile gid for a cell position
         x, y = position
         if x < 0 or y < 0 or x >= DomainObject.map.width or y >= DomainObject.map.height:
             return None
         return DomainObject.map.get_tile_gid(x, y, 0)
 
-    def find_cell_objects(self, position, objects):
+    def cell_objects(self, position, objects):
         # return a list of objects which match the position coordinate
         results = []
         x, y = position

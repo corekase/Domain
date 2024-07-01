@@ -75,7 +75,7 @@ class DomainObject(Sprite):
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0 + eps:
                     # arrived at destination
-                    teleporters = DomainObject.domain_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
+                    teleporters = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
                     avatar = DomainObject.domain.objects('avatar')[0]
                     if len(teleporters) > 0 and (self is avatar):
                         # only teleport the avatar, not other moving domain objects
@@ -233,7 +233,7 @@ class DomainObject(Sprite):
         adjacents = []
         # fill in ordered list with cell positions by adding neighbour deltas to each axis
         for neighbour in neighbours:
-            adjacents.append(self.domain_manager.find_cell_gid((x + neighbour[0], y + neighbour[1])))
+            adjacents.append(self.domain_manager.cell_gid((x + neighbour[0], y + neighbour[1])))
         # the list indexes map by the neighbour deltas as given in this diagram:
         # 0 1 2
         # 3 4 5

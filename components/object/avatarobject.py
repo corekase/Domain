@@ -16,7 +16,7 @@ class AvatarObject(DomainObject):
     def process(self):
         # check current cell for a pickup object
         if self.inventory == None:
-            pickups = DomainObject.domain_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))
+            pickups = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))
             if len(pickups) > 0:
                     # enable pick up button
                     DomainObject.gui.switch_context('pickup_context')
@@ -44,7 +44,7 @@ class AvatarObject(DomainObject):
 
     def pick_up(self):
         # pick up inventory
-        pickup = DomainObject.domain_manager.find_cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))[0]
+        pickup = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))[0]
         self.inventory = pickup
         # delete pickup object from the domain
         DomainObject.domain.delete('pickups', pickup)
