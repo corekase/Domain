@@ -175,7 +175,7 @@ class DomainObject(Sprite):
                                   (position[0], position[1]))
 
     def tile_graphical_centre(self, location):
-        # given a tile x and y coordinate return the graphical x and y center point in map pixels
+        # given a tile x and y cell coordinate return the graphical x and y center point in renderer map rect pixels
         x_width, y_height = self.map_object.tilewidth, self.map_object.tileheight
         x_centre, y_centre = int(x_width / 2), int(y_height / 2)
         return (location[0] * x_width) + x_centre, (location[1] * y_height) + y_centre
