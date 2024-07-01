@@ -53,7 +53,7 @@ class AvatarObject(DomainObject):
             # there is a teleporter at the new position
             self.command(Teleport(teleport_destination))
             self.command(Switch_Floor(DomainObject.domain_manager.get_floor(teleport_destination[0])))
-            self.command(Centre_View(None))
+            self.command(Centre_View(self))
 
     def pick_up(self):
         # pick up inventory

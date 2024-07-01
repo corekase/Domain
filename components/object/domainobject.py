@@ -17,7 +17,7 @@ Path_To = namedtuple('Path_To', 'position')
 Datagram = namedtuple('Datagram', 'callback argument')
 Teleport = namedtuple('Teleport', 'destination')
 Switch_Floor = namedtuple('Switch_Floor', 'floor')
-Centre_View = namedtuple('Centre_View', 'none')
+Centre_View = namedtuple('Centre_View', 'domain_object')
 Chase = namedtuple('Chase', 'target')
 Cool_Down = namedtuple('Cool_Down', 'duration')
 
@@ -110,9 +110,10 @@ class DomainObject(Sprite):
                 DomainObject.domain_manager.switch_floor(floor)
                 self.command_queue.pop(0)
             elif command_name == 'Centre_View':
+                domain_object = command.domain_object
                 # centre the main viewport on this domain object
                 self.command_queue.pop(0)
-                self.domain_manager.main_viewport = [self.rect.centerx, self.rect.centery]
+                self.domain_manager.main_viewport = list(domain_object.rect.center)
             elif command_name == 'Chase':
                 # get the cell coordinate of a target and do a find_nearest to it
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
