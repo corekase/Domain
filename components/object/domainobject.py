@@ -89,10 +89,10 @@ class DomainObject(Sprite):
                 # remove this command from the queue
                 self.command_queue.pop(0)
                 # find valid path, if no valid path do nothing
-                path = self.find_path((self.x_coord, self.y_coord), destination)
+                path = self.find_nearest((self.x_coord, self.y_coord), [Position(destination)])[0]
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
-                    for position in path[::-1]:
+                    for position in path:
                         # tile_graphical_centre converts to map pixel coordinates for each position in the path
                         self.command_queue.insert(0, Move_To(self.tile_graphical_centre(position)))
             elif command_name == 'Datagram':
@@ -180,10 +180,6 @@ class DomainObject(Sprite):
         x_centre, y_centre = int(x_width / 2), int(y_height / 2)
         return (location[0] * x_width) + x_centre, (location[1] * y_height) + y_centre
 
-    def find_path(self, position1, position2):
-        # call find nearest with a destination list of one position and return just the path
-        return self.find_nearest(position1, [Position(position2)])[0]
-
     def find_nearest(self, start_position, destination_objects):
         # data structure for objects for find_nearest
         destination_list = []
@@ -215,8 +211,9 @@ class DomainObject(Sprite):
         if found:
             path = []
             while goal != start_position:
-                path.insert(0, goal)
+                path.append(goal)
                 goal = came_from[goal]
+            # path is in reverse order, goal to start
             return path, goal_object
         else:
             return None, None
