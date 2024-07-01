@@ -102,9 +102,9 @@ class DomainManager:
         self.switch_floor(self.get_floor(self.avatar.x_coord))
 
     def random_position_floor(self, gid, floor):
-        return self.random_position(gid, floor * self.floor_tiles, self.floor_tiles, 0, self.floor_tiles)
+        return self.random_position(gid, floor * self.floor_tiles, 0, self.floor_tiles, self.floor_tiles)
 
-    def random_position(self, gid, x_min, width, y_min, height):
+    def random_position(self, gid, x_min, y_min, width, height):
         # return a random empty cell position which is a specific tile gid
         while True:
             # random position
