@@ -53,7 +53,7 @@ class DomainObject(Sprite):
         self.overlaps = []
         # command queue
         self.command_queue = []
-        # subclasess must call either sync_position or sync_cell before they exit their __init__
+        # subclasess must call either sync_coordinate or sync_cell before they exit their __init__
 
     def update(self, elapsed_time):
         # filter overlapped mapobjects so that only objects still overlapping are kept
