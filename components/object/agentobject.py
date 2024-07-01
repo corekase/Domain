@@ -1,4 +1,4 @@
-from .domainobject import DomainObject
+from .domainobject import DomainObject, Path_To
 from .genericobject import GenericObject
 from ..utility import image_alpha_resource
 
@@ -30,7 +30,7 @@ class AgentObject(DomainObject):
                                                 DomainObject.domain_objects.objects('generic'))
                 if path != None:
                     DomainObject.domain_objects.object_remove('generic', self.destination_object)
-                    self.follow_path(path)
+                    self.command(Path_To((self.destination_object.x_coord, self.destination_object.y_coord)))
         else:
             floor = DomainObject.domain_manager.get_floor(self.destination_object.x_coord)
             # remove reference to old object

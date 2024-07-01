@@ -91,7 +91,10 @@ class DomainObject(Sprite):
                 # find valid path, if no valid path do nothing
                 path = self.find_path((self.x_coord, self.y_coord), destination)
                 if path != None:
-                    self.follow_path(path)
+                    # replaces a path_to with move_to commands without affecting items in the queue after it
+                    for position in path[::-1]:
+                        # tile_graphical_centre converts to map pixel coordinates for each position in the path
+                        self.command_queue.insert(0, Move_To(self.tile_graphical_centre(position)))
             elif command_name == 'Datagram':
                 # call a method with an argument parameter.  If you need more than one value
                 # then make it a tuple of values
@@ -176,12 +179,6 @@ class DomainObject(Sprite):
         x_width, y_height = self.map_object.tilewidth, self.map_object.tileheight
         x_centre, y_centre = int(x_width / 2), int(y_height / 2)
         return (location[0] * x_width) + x_centre, (location[1] * y_height) + y_centre
-
-    def follow_path(self, path):
-        # replaces a path_to with move_to commands without affecting items in the queue after it
-        for position in path[::-1]:
-            # tile_graphical_centre converts to map pixel coordinates for each position in the path
-            self.command_queue.insert(0, Move_To(self.tile_graphical_centre(position)))
 
     def find_path(self, position1, position2):
         # call find nearest with a destination list of one position and return just the path
