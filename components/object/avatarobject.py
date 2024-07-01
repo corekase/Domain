@@ -1,4 +1,4 @@
-from .domainobject import DomainObject, Path_To, Datagram
+from .domainobject import DomainObject, Path_To, Datagram, Teleport, Switch_Floor
 from ..utility import image_alpha_resource
 
 class AvatarObject(DomainObject):
@@ -31,17 +31,28 @@ class AvatarObject(DomainObject):
     def move_to(self, position):
         # hide gui while moving
         DomainObject.gui.switch_context(None)
+        teleporters = DomainObject.domain_manager.cell_objects(position, DomainObject.domain_objects.objects('teleporters'))
+        teleport = None
+        if len(teleporters) > 0:
+            # there is a teleporter here
+            teleport = teleporters[0].destination
         # perform move
         if self.reset_queue():
             # no move_to in the queue so just go there directly
-            self.move_to_guarded(position)
+            self.move_to_guarded((position, teleport))
         else:
             # do after existing move_to
-            self.command(Datagram(self.move_to_guarded, position))
+            self.command(Datagram(self.move_to_guarded, (position, teleport)))
 
-    def move_to_guarded(self, new_position):
+    def move_to_guarded(self, parameters):
+        new_position, teleport = parameters
         # from current position go to new_position
         self.command(Path_To(new_position))
+        if teleport != None:
+            x = self.command_queue
+            # there is a teleporter at the new position
+            self.command(Teleport(teleport))
+            self.command(Switch_Floor(DomainObject.domain_manager.get_floor(teleport[0])))
 
     def pick_up(self):
         # pick up inventory

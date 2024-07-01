@@ -16,6 +16,7 @@ Move_To = namedtuple('Move_To', 'destination')
 Path_To = namedtuple('Path_To', 'position')
 Datagram = namedtuple('Datagram', 'callback argument')
 Teleport = namedtuple('Teleport', 'destination')
+Switch_Floor = namedtuple('Switch_Floor', 'floor')
 Chase = namedtuple('Chase', 'target')
 Cool_Down = namedtuple('Cool_Down', 'duration')
 
@@ -75,16 +76,7 @@ class DomainObject(Sprite):
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0 + eps:
                     # arrived at destination
-                    teleporters = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain_objects.objects('teleporters'))
-                    avatar = DomainObject.domain_objects.objects('avatar')[0]
-                    if len(teleporters) > 0 and (self is avatar):
-                        # only teleport the avatar, not other moving domain objects
-                        self.sync_cell(teleporters[0].destination)
-                        # switch to avatar floor and location
-                        self.domain_manager.switch_floor(self.domain_manager.get_floor(avatar.x_coord))
-                        self.domain_manager.main_viewport = list(avatar.rect.center)
-                    else:
-                        self.sync_coordinate(destination)
+                    self.sync_coordinate(destination)
                     # remove this command item from the queue
                     self.command_queue.pop(0)
                 else:
@@ -107,12 +99,14 @@ class DomainObject(Sprite):
                 # call the datagram callback function with the argument
                 callback(argument)
             elif command_name == 'Teleport':
-                # this command is so that moveable domain objects are able to build an overall
-                # path out of smaller segments.  If an agent wanted to go to a room on a different
-                # floor they would pathfind to the teleport, use the teleport, and then pathfind
-                # to the room on the other floor.  moving an agent using multiple results from
-                # pathfinding, traversing to destinations as segments of those path finds and teleports
-                pass
+                destination = command.destination
+                self.sync_cell(destination)
+                self.command_queue.pop(0)
+            elif command_name == 'Switch_Floor':
+                # switch to a floor
+                floor = command.floor
+                DomainObject.domain_manager.switch_floor(floor)
+                self.command_queue.pop(0)
             elif command_name == 'Chase':
                 # get the cell coordinate of a target and do a find_nearest to it
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
@@ -177,10 +171,10 @@ class DomainObject(Sprite):
         return (location[0] * x_width) + x_centre, (location[1] * y_height) + y_centre
 
     def follow_path(self, path):
-        # translate cell coordinates to world pixel coordinate movements for the overall path
-        for position in path:
+        # replaces a path_to with move_to commands without affecting items in the queue after it
+        for position in path[::-1]:
             # tile_graphical_centre does that for each position in the path
-            self.command(Move_To(self.tile_graphical_centre(position)))
+            self.command_queue.insert(0, Move_To(self.tile_graphical_centre(position)))
 
     def find_path(self, position1, position2):
         # call find nearest with a destination list of one position and return just the path
