@@ -19,7 +19,7 @@ Teleport = namedtuple('Teleport', 'destination')
 Switch_Floor = namedtuple('Switch_Floor', 'floor')
 Centre_View = namedtuple('Centre_View', 'domain_object')
 
-class Position:
+class Coordinate:
     def __init__(self, position):
         self.x_coord, self.y_coord = position
 
@@ -87,7 +87,7 @@ class DomainObject(Sprite):
                 # remove this command from the queue
                 self.command_queue.pop(0)
                 # find valid path, if no valid path do nothing
-                path = self.find_nearest((self.x_coord, self.y_coord), [Position(destination)])[0]
+                path = self.find_nearest((self.x_coord, self.y_coord), [Coordinate(destination)])[0]
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
                     for position in path:
