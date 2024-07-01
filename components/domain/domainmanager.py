@@ -89,7 +89,6 @@ class DomainManager:
         # create a player avatar and add it to the domain
         position = self.random_position_floor(DomainManager.tiles[FLOOR], 0)
         self.avatar = AvatarObject(position)
-        self.avatar.domain_manager = self
         self.avatar.layer = 5
         self.domain.object_add('avatar', self.avatar)
         # initialize the main viewport with any value, the avatar centre is fine
