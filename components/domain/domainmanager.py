@@ -192,13 +192,16 @@ class DomainManager:
 
     def set_zoom_index(self, index_delta):
         # clamp index inside zoom_amounts list.
+        old_index = self.zoom_amounts_index
         self.zoom_amounts_index = max(0, min(self.zoom_amounts_index + index_delta,
                                              len(self.zoom_amounts) - 1))
-        # update state information inside the renderer
-        self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
-        if self.get_floor(self.avatar.x_coord) == self.floor:
-            # centre on the avatar after a zoom change
-            self.main_viewport = list(self.avatar.rect.center)
+        # only adjust the renderer if the zoom changed to prevent flickering
+        if self.zoom_amounts_index != old_index:
+            # update state information inside the renderer
+            self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
+            if self.get_floor(self.avatar.x_coord) == self.floor:
+                # centre on the avatar after a zoom change
+                self.main_viewport = list(self.avatar.rect.center)
 
     def draw_domain(self):
         # centre on desired viewport
