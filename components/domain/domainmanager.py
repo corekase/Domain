@@ -149,8 +149,8 @@ class DomainManager:
         x, y = self.floor_port.center
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
 
-    def get_floor(self, x_cell):
-        return int(x_cell / self.floor_tiles)
+    def get_floor(self, x_coord):
+        return int(x_coord / self.floor_tiles)
 
     def update_domain(self, elapsed_time):
         # check for other mapobject collision, the sprites group is an expensive operation
