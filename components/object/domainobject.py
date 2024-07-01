@@ -51,8 +51,6 @@ class DomainObject(Sprite):
         self.overlaps = []
         # command queue
         self.command_queue = []
-        # floor domain object belongs to
-        self.floor = None
         # subclasess must call either sync_position or sync_cell before they exit their __init__
 
     def update(self, elapsed_time):

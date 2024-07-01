@@ -39,6 +39,21 @@ class DomainManager:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
         # create an object manager
         self.domain = ObjectManager(self.renderer)
+        # map constants
+        self.floor_tiles = 30
+        # each floor_ports is a rect which has the boundaries for the floor
+        self.floor_ports = []
+        # these values stay the same for each floor_port
+        width = self.floor_tiles * self.map.tilewidth
+        y_size = self.map.tileheight * self.floor_tiles
+        # find a rect for each floor
+        for floor in range(self.floor_tiles):
+            x_base = floor * (self.floor_tiles * self.map.tilewidth)
+            self.floor_ports.append(Rect(x_base, 0, width, y_size))
+        # initial floor_port is none
+        self.floor_port = None
+        # initial floor is none
+        self.floor = None
         # share that domain with map objects
         DomainObject.domain = self.domain
         # add in teleporters
@@ -62,7 +77,7 @@ class DomainManager:
         def populate(number, cls, layer, group):
             for floor in range(3):
                 for _ in range(number):
-                    position = self.find_random_position_floor(DomainManager.tiles[FLOOR], floor, 30)
+                    position = self.find_random_position_floor(DomainManager.tiles[FLOOR], floor)
                     # instantiate from the class
                     instance = cls(floor, position)
                     # set the layer, higher takes priority
@@ -76,35 +91,18 @@ class DomainManager:
         # create agents
         populate(4, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
-        position = self.find_random_position_floor(DomainManager.tiles[FLOOR], 0, 30)
+        position = self.find_random_position_floor(DomainManager.tiles[FLOOR], 0)
         self.avatar = AvatarObject(0, position)
         self.avatar.domain_manager = self
         self.avatar.layer = 5
         self.domain.object_add('avatar', self.avatar)
-        # set main viewport to avatar center, within map view bounds
+        # initialize the main viewport with any value, the avatar centre is fine
         self.main_viewport = list(self.avatar.rect.center)
-        # map constants
-        self.floor_tiles = 30
-        floor_size = int(self.map.width / self.floor_tiles)
-        # each floor_ports is a rect which has the boundaries for the floor
-        self.floor_ports = []
-        # these values stay the same for each floor_port
-        width = self.floor_tiles * self.map.tilewidth
-        y_size = self.map.tileheight * self.floor_tiles
-        # find a rect for each floor
-        for floor in range(floor_size):
-            x_base = floor * (self.floor_tiles * self.map.tilewidth)
-            self.floor_ports.append(Rect(x_base, 0, width, y_size))
-        # initial floor_port is none
-        self.floor_port = None
-        # initial floor is none
-        self.floor = None
-        # switch to avatar floor and location
+        # switch to the avatar floor
         self.switch_floor(self.get_floor(self.avatar.x_coord))
-        self.main_viewport = list(self.avatar.rect.center)
 
-    def find_random_position_floor(self, gid, floor, floor_size):
-        return self.find_random_position(gid, floor * floor_size, floor_size, 0, floor_size)
+    def find_random_position_floor(self, gid, floor):
+        return self.find_random_position(gid, floor * self.floor_tiles, self.floor_tiles, 0, self.floor_tiles)
 
     def find_random_position(self, gid, x_min, width, y_min, height):
         # return a random cell position which contains a specific tile gid
