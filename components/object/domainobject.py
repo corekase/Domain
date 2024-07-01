@@ -18,8 +18,6 @@ Datagram = namedtuple('Datagram', 'callback argument')
 Teleport = namedtuple('Teleport', 'destination')
 Switch_Floor = namedtuple('Switch_Floor', 'floor')
 Centre_View = namedtuple('Centre_View', 'domain_object')
-Chase = namedtuple('Chase', 'target')
-Cool_Down = namedtuple('Cool_Down', 'duration')
 
 class Position:
     def __init__(self, position):
@@ -117,14 +115,6 @@ class DomainObject(Sprite):
                 # centre the main viewport on domain_object
                 self.domain_manager.main_viewport = list(domain_object.rect.center)
                 self.command_queue.pop(0)
-            elif command_name == 'Chase':
-                # get the cell coordinate of a target and do a find_nearest to it
-                # then do one Move_To, then add Chase again so after the Move_To it comes back
-                # to get a new chase coordinate each process update
-                pass
-            elif command_name == 'Cool_Down':
-                # track and wait a number of seconds and then remove the cool_down command from the queue
-                pass
             else:
                 raise Exception(f'Command: {command_name} not implemented')
         else:
