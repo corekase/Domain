@@ -72,7 +72,7 @@ class DomainObject(Sprite):
                 # stall does nothing and doesn't remove itself so it effectively suspends the object
                 pass
             elif command_name == 'Move_To':
-                # move straight line to the destination world pixel coordinates
+                # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
                 if self.find_distance_from_self(destination) <= 1.0 + eps:
