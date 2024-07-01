@@ -8,8 +8,9 @@ class Button(Frame):
         super().__init__(surface, id, rect)
         # button state
         self.state = State.IDLE
-        # text bitmap
+        # text bitmaps
         self.text_bitmap = render_text(text)
+        self.text_highlight_bitmap = render_text(text, True)
         # get centred dimensions for both x and y ranges
         text_x = self.rect.x + centre(self.rect.width, self.text_bitmap.get_rect().width)
         text_y = self.rect.y + centre(self.rect.height, self.text_bitmap.get_rect().height)
@@ -46,4 +47,8 @@ class Button(Frame):
         # draw the button frame
         super().draw()
         # draw the button text
-        self.surface.blit(self.text_bitmap, self.position)
+        if self.state == State.ARMED:
+            bitmap = self.text_highlight_bitmap
+        else:
+            bitmap = self.text_bitmap
+        self.surface.blit(bitmap, self.position)

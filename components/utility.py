@@ -18,9 +18,14 @@ def padding(line):
     # return = base + line height + spacer size
     return 1 + (line * font_size) + (line * 2)
 
-def render_text(text):
+def render_text(text, highlight=False):
     # render helper function so same values aren't repeated
-    return font_object.render(text, colours['text'], (200, 200, 255))
+    if highlight:
+        colour = colours['highlight']
+    else:
+        colour = colours['text']
+    # return a bitmap of the chosen colour
+    return font_object.render(text, True, colour)
 
 def centre(bigger, smaller):
     # helper function that returns a centred position
