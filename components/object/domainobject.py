@@ -112,8 +112,8 @@ class DomainObject(Sprite):
             elif command_name == 'Centre_View':
                 domain_object = command.domain_object
                 # centre the main viewport on domain_object
-                self.command_queue.pop(0)
                 self.domain_manager.main_viewport = list(domain_object.rect.center)
+                self.command_queue.pop(0)
             elif command_name == 'Chase':
                 # get the cell coordinate of a target and do a find_nearest to it
                 # then do one Move_To, then add Chase again so after the Move_To it comes back
@@ -180,7 +180,7 @@ class DomainObject(Sprite):
     def follow_path(self, path):
         # replaces a path_to with move_to commands without affecting items in the queue after it
         for position in path[::-1]:
-            # tile_graphical_centre does that for each position in the path
+            # tile_graphical_centre converts to map pixel coordinates for each position in the path
             self.command_queue.insert(0, Move_To(self.tile_graphical_centre(position)))
 
     def find_path(self, position1, position2):
