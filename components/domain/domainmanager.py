@@ -77,7 +77,7 @@ class DomainManager:
         def populate(number, cls, layer, group):
             for floor in range(3):
                 for _ in range(number):
-                    position = self.find_random_position_floor(DomainManager.tiles[FLOOR], floor)
+                    position = self.random_position_floor(DomainManager.tiles[FLOOR], floor)
                     # instantiate from the class
                     instance = cls(position)
                     # set the layer, higher takes priority
@@ -91,7 +91,7 @@ class DomainManager:
         # create agents
         populate(4, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
-        position = self.find_random_position_floor(DomainManager.tiles[FLOOR], 0)
+        position = self.random_position_floor(DomainManager.tiles[FLOOR], 0)
         self.avatar = AvatarObject(position)
         self.avatar.domain_manager = self
         self.avatar.layer = 5
@@ -101,24 +101,25 @@ class DomainManager:
         # switch to the avatar floor, which will adjust main_viewport
         self.switch_floor(self.get_floor(self.avatar.x_coord))
 
-    def find_random_position_floor(self, gid, floor):
-        return self.find_random_position(gid, floor * self.floor_tiles, self.floor_tiles, 0, self.floor_tiles)
+    def random_position_floor(self, gid, floor):
+        return self.random_position(gid, floor * self.floor_tiles, self.floor_tiles, 0, self.floor_tiles)
 
-    def find_random_position(self, gid, x_min, width, y_min, height):
+    def random_position(self, gid, x_min, width, y_min, height):
         # return a random empty cell position which is a specific tile gid
         while True:
             # random position
             x, y = randint(x_min, x_min + width - 1), randint(y_min, y_min + height - 1)
-            # is it already occupied by something
-            hit = False
-            for item in self.domain.domain():
-                if item.x_coord == x and item.y_coord == y:
-                    hit = True
-                    break
-            if hit:
-                continue
-            # with empty cell, is it the correct gid
+            # is it the correct gid
             if self.find_cell_gid((x, y)) == gid:
+                # is it already occupied by something
+                hit = False
+                for item in self.domain.domain():
+                    if item.x_coord == x and item.y_coord == y:
+                        hit = True
+                        break
+                if hit:
+                    continue
+                # is correct gid and is empty
                 return x, y
 
     def find_cell_gid(self, position):
