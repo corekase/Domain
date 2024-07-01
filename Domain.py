@@ -38,7 +38,7 @@ class Main:
         self.panning = False
         # when panning lock mouse position to this position
         self.pan_hold_position = None
-        # cycle counter, to be used for demo recording, marking, and playback later
+        # cycle counter
         self.cycle = -1
         # text status containing the x and y map indexes of the mouse position, updated in the event handler
         self.status = None
