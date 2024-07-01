@@ -99,6 +99,7 @@ class DomainObject(Sprite):
                 # call the datagram callback function with the argument
                 callback(argument)
             elif command_name == 'Teleport':
+                # teleport to a new position
                 destination = command.destination
                 self.sync_cell(destination)
                 self.command_queue.pop(0)

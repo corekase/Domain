@@ -49,7 +49,6 @@ class AvatarObject(DomainObject):
         # from current position go to new_position
         self.command(Path_To(new_position))
         if teleport != None:
-            x = self.command_queue
             # there is a teleporter at the new position
             self.command(Teleport(teleport))
             self.command(Switch_Floor(DomainObject.domain_manager.get_floor(teleport[0])))
