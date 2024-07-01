@@ -34,12 +34,12 @@ class AvatarObject(DomainObject):
         # perform move
         if self.reset_queue():
             # no move_to in the queue so just go there directly
-            self.move_to_stub(position)
+            self.move_to_guarded(position)
         else:
             # do after existing move_to
-            self.command(Datagram(self.move_to_stub, position))
+            self.command(Datagram(self.move_to_guarded, position))
 
-    def move_to_stub(self, new_position):
+    def move_to_guarded(self, new_position):
         # from current position go to new_position
         self.command(Path_To(new_position))
 
