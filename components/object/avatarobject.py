@@ -41,7 +41,7 @@ class AvatarObject(DomainObject):
     def move_to_guarded(self, new_position):
         # from current position go to new_position
         self.command(Path_To(new_position))
-        teleport = self.teleporters(new_position)
+        teleport = DomainObject.domain_manager.teleporters(new_position)
         if teleport != None:
             # there is a teleporter at the new position
             self.command(Teleport(teleport))

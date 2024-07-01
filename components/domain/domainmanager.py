@@ -117,6 +117,15 @@ class DomainManager:
                 # is correct gid and is empty
                 return x, y
 
+    def teleporters(self, position):
+        # if there is a teleporter at position then return its destination otherwise return None
+        teleporters = self.cell_objects(position, DomainObject.domain_objects.objects('teleporters'))
+        if len(teleporters) > 0:
+            # there is a teleporter here
+            return teleporters[0].destination
+        else:
+            return None
+
     def cell_gid(self, position):
         # get the tile gid for a cell position
         x, y = position
