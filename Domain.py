@@ -72,7 +72,7 @@ class Main:
         DomainObject.gui = self.gui
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
-        # create a frame
+        # create a frame for the information panel
         information_frame_rect = (self.screen.get_rect().right - 170, 10, 160, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
