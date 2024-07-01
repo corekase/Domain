@@ -14,18 +14,18 @@ class AvatarObject(DomainObject):
         self.inventory = None
 
     def process(self):
+        DomainObject.gui.switch_context(None)
         # check current cell for a pickup object
         if self.inventory == None:
             pickups = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))
             if len(pickups) > 0:
-                    # enable pick up button
-                    DomainObject.gui.switch_context('pickup_context')
-            else:
-                # no pickups at location and no inventory, disable both contexts
-                DomainObject.gui.switch_context(None)
+                # enable pick up button
+                DomainObject.gui.switch_context('pickup_context')
         else:
-            # enable put down button
-            DomainObject.gui.switch_context('putdown_context')
+            teleporters = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
+            if len(teleporters) == 0:
+                # enable put down button
+                DomainObject.gui.switch_context('putdown_context')
 
     def move_to(self, position):
         # hide gui while moving

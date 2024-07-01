@@ -62,10 +62,8 @@ class DomainManager:
                        (32, 27): ['up', (62, 27)],
                        (62, 27): ['down', (32, 27)]}
         for position, info in teleporters.items():
-            # whether to show an up or down graphic
-            up_down = info[0]
-            # destination coordinate for the teleport in cells
-            destination = info[1]
+            # whether to show an up or down graphic and destination coordinate for the teleport in cells
+            up_down, destination = info
             # instantiate the teleport
             instance = TeleporterObject(up_down, position, destination)
             instance.layer = 4
