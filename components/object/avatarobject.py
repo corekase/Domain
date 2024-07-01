@@ -32,10 +32,11 @@ class AvatarObject(DomainObject):
         # hide gui while moving
         DomainObject.gui.switch_context(None)
         teleporters = DomainObject.domain_manager.cell_objects(position, DomainObject.domain_objects.objects('teleporters'))
-        teleport_destination = None
         if len(teleporters) > 0:
             # there is a teleporter here
             teleport_destination = teleporters[0].destination
+        else:
+            teleport_destination = None
         # perform move
         if self.reset_queue():
             # no move_to in the queue so just go there directly
