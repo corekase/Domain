@@ -14,7 +14,6 @@ class AvatarObject(DomainObject):
         self.inventory = None
 
     def process(self):
-        DomainObject.gui.switch_context(None)
         if self.inventory == None:
             # check current cell for a pickup object
             pickups = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain_objects.objects('pickups'))
