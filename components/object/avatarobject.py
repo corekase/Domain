@@ -15,13 +15,14 @@ class AvatarObject(DomainObject):
 
     def process(self):
         DomainObject.gui.switch_context(None)
-        # check current cell for a pickup object
         if self.inventory == None:
+            # check current cell for a pickup object
             pickups = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('pickups'))
             if len(pickups) > 0:
                 # enable pick up button
                 DomainObject.gui.switch_context('pickup_context')
         else:
+            # check current cell for any teleporter
             teleporters = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain.objects('teleporters'))
             if len(teleporters) == 0:
                 # enable put down button
