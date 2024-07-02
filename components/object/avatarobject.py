@@ -29,7 +29,7 @@ class AvatarObject(DomainObject):
 
     def move_to(self, position):
         # hide gui while moving
-        DomainObject.gui.switch_context(None)
+        DomainObject.gui.switch_context('default')
         # perform move
         if self.reset_queue():
             # no move_to in the queue so just go there directly

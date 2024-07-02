@@ -73,14 +73,22 @@ class Main:
         information_frame_rect = Rect(self.clear_rect.x + 2, 2, self.clear_rect.width - 6, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
-        w, h = 120, 20
-        button_rect = (information_frame_rect.x, information_frame_rect.bottom + 2, w, h)
+        w, h = int(self.clear_rect.width / 2), 20
+        button_rect = Rect(self.clear_rect.x + 2, information_frame_rect.bottom + 2, w - 2, h)
+        button_exit_rect = Rect(self.clear_rect.x + 2, 1080 - h - 2, w - 2, h)
+        exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
         self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
+        self.gui.add_widget('pickup_context', exit_button)
         # putdown button context
         self.gui.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down'))
+        self.gui.add_widget('putdown_context', exit_button)
         # game won context
         self.gui.add_widget('win_context', Button(self.screen, 'won', button_rect, 'Won!'))
+        # default context
+        self.gui.add_widget('default', exit_button)
+        # switch to default context
+        self.gui.switch_context('default')
         # set won game condition to false
         self.won = False
         # Set the state of the application to "running"
@@ -145,7 +153,7 @@ class Main:
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
                     self.domain_manager.avatar.put_down()
-                elif gui_event == 'won':
+                elif (gui_event == 'won') or (gui_event == 'exit'):
                     self.running = False
             else:
                 # handle other events
