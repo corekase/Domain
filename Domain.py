@@ -70,12 +70,12 @@ class Main:
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
         # create a frame for the information panel
-        information_frame_rect = Rect(self.clear_rect.x + 2, 2, self.clear_rect.width - 6, padding(4))
+        information_frame_rect = Rect(self.clear_rect.x + 1, 1, self.clear_rect.width - 4, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
-        w, h = int(self.clear_rect.width / 2), 20
-        button_rect = Rect(self.clear_rect.x + 2, information_frame_rect.bottom + 2, w - 2, h)
-        button_exit_rect = Rect(self.clear_rect.x + 2, 1080 - h - 2, w - 2, h)
+        w, h = int((self.clear_rect.width - 2) / 2), 20
+        button_rect = Rect(self.clear_rect.x + 1, information_frame_rect.bottom + 1, w, h)
+        button_exit_rect = Rect(self.clear_rect.x + 1, 1080 - h - 1, w, h)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
         self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
