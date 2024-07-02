@@ -21,9 +21,9 @@ class AvatarObject(DomainObject):
                 # enable pick up button
                 DomainObject.gui.switch_context('pickup_context')
         else:
-            # check current cell for any teleporter
-            teleporters = DomainObject.domain_manager.cell_objects((self.x_coord, self.y_coord), DomainObject.domain_objects.objects('teleporters'))
-            if len(teleporters) == 0:
+            # check current cell for any teleporters
+            teleport = DomainObject.domain_manager.teleporters((self.x_coord, self.y_coord))
+            if teleport == None:
                 # enable put down button
                 DomainObject.gui.switch_context('putdown_context')
 
