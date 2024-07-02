@@ -56,7 +56,8 @@ class DomainManager:
         self.floor_port = None
         # initial floor is none
         self.floor = None
-        # add in teleporters
+        # add in teleporters, 'teleporters' is a reserved name, the domain manager uses it so other code
+        # may not use that name
         teleporters = {(27, 2): ['up', (57, 2)],
                        (57, 2): ['down', (27, 2)],
                        (32, 27): ['up', (62, 27)],
