@@ -41,7 +41,7 @@ class DomainManager:
         # create an object manager
         self.domain = ObjectManager(self.renderer)
         # share the domain with domain objects
-        DomainObject.domain_objects = self.domain
+        DomainObject.domain = self.domain
         # map constants
         self.floor_tiles = 30
         floors = int(self.map_object.width / self.floor_tiles)

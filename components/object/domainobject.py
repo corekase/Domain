@@ -24,7 +24,7 @@ class DomainObject(Sprite):
     # reference for the map
     map_object = None
     # reference for domain objects
-    domain_objects = None
+    domain = None
     # reference for gui manager
     gui = None
     # reference for the domain manager
