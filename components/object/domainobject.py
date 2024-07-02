@@ -104,7 +104,6 @@ class DomainObject(Sprite):
                 self.sync_cell(destination)
                 self.command_queue.pop(0)
                 # if follow then switch floor and main_viewport as well, done within a single command queue item
-                # so that switching the floor and following a domain object for the main_viewport doesn't flicker
                 if follow:
                     DomainObject.domain_manager.switch_floor(DomainObject.domain_manager.get_floor(destination[0]))
                     DomainObject.domain_manager.main_viewport = list(self.rect.center)
