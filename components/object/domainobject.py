@@ -70,7 +70,7 @@ class DomainObject(Sprite):
                 # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
-                if self.find_distance_from_self(destination) <= 1.0 + eps:
+                if self.find_distance(destination) <= 1.0 + eps:
                     # arrived at destination
                     self.sync_coordinate(destination)
                     # remove this command item from the queue
@@ -146,14 +146,9 @@ class DomainObject(Sprite):
         # find bearing angle on position
         return degrees(atan2(position[1] - self.centre_ypos, position[0] - self.centre_xpos)) % 360
 
-    def find_distance(self, position1, position2):
-        # find distance between position1 and position2, no specific units
-        return sqrt((abs(position1[0] - position2[0]) ** 2) + (abs(position1[1] - position2[1]) ** 2))
-
-    def find_distance_from_self(self, position):
-        # find distance to position in world pixel lengths
-        return self.find_distance((self.centre_xpos, self.centre_ypos),
-                                  (position[0], position[1]))
+    def find_distance(self, position):
+        # find distance between self and position
+        return sqrt((abs(self.centre_xpos - position[0]) ** 2) + (abs(self.centre_ypos - position[1]) ** 2))
 
     def pixel_centre(self, location):
         # given a tile x and y cell coordinate return the graphical x and y center point in renderer map rect pixels
