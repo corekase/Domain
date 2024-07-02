@@ -66,7 +66,7 @@ class Main:
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
         # create a rect to clear to the right side of the view_surface_rect and below the information panel
-        self.clear_area_rect = Rect(view_width, padding(4) + 1, 1920 - view_width, view_height)
+        self.clear_area_rect = Rect(view_width, padding(4) + 1, 1920 - view_width, 1080 - padding(4) + 1)
         # create a frame for the information panel
         information_frame_rect = Rect(self.clear_area_rect.x, 0, self.clear_area_rect.width, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
