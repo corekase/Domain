@@ -1,4 +1,4 @@
-from .domainobject import DomainObject, Path_To, Datagram, Teleport, Switch_Floor, Centre_View
+from .domainobject import DomainObject, Path_To, Datagram, Teleport
 from ..utility import image_alpha_resource
 
 class AvatarObject(DomainObject):
@@ -44,9 +44,7 @@ class AvatarObject(DomainObject):
         teleport = DomainObject.domain_manager.teleporters(position)
         if teleport != None:
             # there is a teleporter at the new position
-            self.command(Teleport(teleport))
-            self.command(Switch_Floor(DomainObject.domain_manager.get_floor(teleport[0])))
-            self.command(Centre_View(self))
+            self.command(Teleport(teleport, True))
 
     def pick_up(self):
         # pick up inventory

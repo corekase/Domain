@@ -15,9 +15,7 @@ Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
 Path_To = namedtuple('Path_To', 'position')
 Datagram = namedtuple('Datagram', 'callback argument')
-Teleport = namedtuple('Teleport', 'destination')
-Switch_Floor = namedtuple('Switch_Floor', 'floor')
-Centre_View = namedtuple('Centre_View', 'domain_object')
+Teleport = namedtuple('Teleport', 'destination follow')
 
 class Coordinate:
     def __init__(self, position):
@@ -102,19 +100,14 @@ class DomainObject(Sprite):
                 callback(argument)
             elif command_name == 'Teleport':
                 # teleport to a new position
-                destination = command.destination
+                destination, follow = command.destination, command.follow
                 self.sync_cell(destination)
                 self.command_queue.pop(0)
-            elif command_name == 'Switch_Floor':
-                # switch to a floor
-                floor = command.floor
-                DomainObject.domain_manager.switch_floor(floor)
-                self.command_queue.pop(0)
-            elif command_name == 'Centre_View':
-                domain_object = command.domain_object
-                # centre the main viewport on domain_object
-                DomainObject.domain_manager.main_viewport = list(domain_object.rect.center)
-                self.command_queue.pop(0)
+                # if follow then switch floor and main_viewport as well, done within a single command queue item
+                # so that switching the floor and following a domain object for the main_viewport doesn't flicker
+                if follow:
+                    DomainObject.domain_manager.switch_floor(DomainObject.domain_manager.get_floor(destination[0]))
+                    DomainObject.domain_manager.main_viewport = list(self.rect.center)
             else:
                 raise Exception(f'Command: {command_name} not implemented')
         else:
