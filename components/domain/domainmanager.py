@@ -24,7 +24,7 @@ class DomainManager:
     tiles = None
 
     def __init__(self, view_surface):
-        # load the map
+        # load the map, map is a keyword so this has _object added
         self.map_object = load_pygame(file_resource('domains', 'domain.tmx'))
         # give DomainObject subclasses a common reference to the map
         DomainObject.map_object = self.map_object
