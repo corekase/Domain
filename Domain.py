@@ -46,7 +46,7 @@ class Main:
         DomainObject.tiles = tiles
         # viewport size. renderer view_rect size at a given zoom must not be larger than renderer map_rect size
         # at the same zoom. if greater, pick_cell() in domain manager gives invalid results
-        view_width = 1730
+        view_width = 1700
         view_height = 1080
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
