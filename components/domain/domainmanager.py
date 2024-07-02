@@ -47,7 +47,7 @@ class DomainManager:
         floors = int(self.map_object.width / self.floor_tiles)
         # each floor_ports is a rect which has the boundaries for the floor
         self.floor_ports = []
-        # size of the floor port, is a square and the tiles used must also be square
+        # size of the floor port, square maps and tiles are assumed here, adjust if needed
         floor_size = self.floor_tiles * self.map_object.tilewidth
         # define a rect for each floor port
         for floor in range(floors):
