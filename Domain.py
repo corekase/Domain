@@ -14,14 +14,14 @@ from components import utility
 class Main:
     def __init__(self):
         # fullscreen?
-        fullscreen = True
+        fullscreen = False
         # initialize pygame
         pygame.init()
         # create main window surface
         if fullscreen:
             self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
         else:
-            self.screen = pygame.display.set_mode((1420, 990))
+            self.screen = pygame.display.set_mode((1420, 990), pygame.SCALED)
         # set window caption
         pygame.display.set_caption('Domain')
         # set window icon
