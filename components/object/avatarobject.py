@@ -28,7 +28,7 @@ class AvatarObject(DomainObject):
                 DomainObject.gui.switch_context('putdown_context')
 
     def move_to(self, position):
-        # hide gui while moving
+        # switch to default context while moving
         DomainObject.gui.switch_context('default')
         # perform move
         if self.reset_queue():
