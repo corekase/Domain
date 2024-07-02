@@ -93,10 +93,12 @@ class DomainManager:
         self.avatar = AvatarObject(position)
         self.avatar.layer = 5
         self.domain.object_add('avatar', self.avatar)
-        # initialize the main viewport with any value, the avatar centre is fine
-        self.main_viewport = list(self.avatar.rect.center)
+        # initialize the main viewport with any value, needed for switch_floor
+        self.main_viewport = list([0, 0])
         # switch to the avatar floor, which will adjust main_viewport
         self.switch_floor(self.get_floor(self.avatar.x_coord))
+        # centre the main_viewport on the avatar
+        self.main_viewport = list(self.avatar.rect.center)
 
     def random_position_floor(self, gid, floor):
         return self.random_position(gid, floor * self.floor_tiles, 0, self.floor_tiles, self.floor_tiles)

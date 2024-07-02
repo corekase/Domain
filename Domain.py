@@ -46,15 +46,17 @@ class Main:
         DomainObject.tiles = tiles
         # viewport size in pixels, must not be greater in either axis than zoomed map pixel sizes.
         # if greater, pick_cell() in domain manager gives invalid results
-        view_width = 1730
-        view_height = 1060
+        view_width = 1728
+        view_height = 1078
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # for that surface, centre both the x and y axis relative to the screen surface
-        view_xpos = 10
-        view_ypos = 10
+        view_xpos = 1
+        view_ypos = 1
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
+        # create a rect to clear to the right side of the view_surface_rect
+        self.clear_rect = Rect(self.view_surface_rect.right + 1, 0, 1920 - self.view_surface_rect.width, 1080)
         # create a rect for a border colour around the view surface
         self.view_surface_border_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
         # create domain manager
@@ -68,11 +70,11 @@ class Main:
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
         # create a frame for the information panel
-        information_frame_rect = (self.view_surface_rect.right + 10, self.view_surface_rect.y, 160, padding(4))
+        information_frame_rect = Rect(self.clear_rect.x + 2, 2, self.clear_rect.width - 6, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = 120, 20
-        button_rect = (self.view_surface_rect.right + 10, self.view_surface_rect.bottom - h, w, h)
+        button_rect = (information_frame_rect.x, information_frame_rect.bottom + 2, w, h)
         # pickup button context
         self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
         # putdown button context
@@ -107,7 +109,7 @@ class Main:
             if not self.won:
                 self.domain_manager.update_domain(elapsed_time)
             # clear screen
-            self.screen.fill(colours['background'])
+            self.screen.fill(colours['background'], self.clear_rect)
             # draw the main viewport to the viewport surface
             self.domain_manager.draw_domain()
             # and copy that surface into the main screen surface
