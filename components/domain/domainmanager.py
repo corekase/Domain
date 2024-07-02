@@ -56,8 +56,8 @@ class DomainManager:
         self.floor_port = None
         # initial floor is none
         self.floor = None
-        # add in teleporters, 'teleporters' is a reserved name, the domain manager uses it so other code
-        # may not use that name
+        # add in teleporters, 'teleporters' is a reserved group name, the domain manager uses it
+        # so other code may not use that group name
         teleporters = {(27, 2): ['up', (57, 2)],
                        (57, 2): ['down', (27, 2)],
                        (32, 27): ['up', (62, 27)],
@@ -68,7 +68,7 @@ class DomainManager:
             # instantiate the teleport
             instance = TeleporterObject(up_down, position, destination)
             instance.layer = 4
-            # add it to the domain
+            # add it to the domain, in 'teleporters' reserved name
             self.domain.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
