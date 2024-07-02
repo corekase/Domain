@@ -21,7 +21,7 @@ class Main:
         if fullscreen:
             self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
         else:
-            self.screen = pygame.display.set_mode((1700, 1000))
+            self.screen = pygame.display.set_mode((1420, 990))
         # set window caption
         pygame.display.set_caption('Domain')
         # set window icon
