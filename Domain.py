@@ -271,9 +271,9 @@ class Main:
             self.screen.set_clip(self.view_surface_rect)
             if self.panning:
                 self.screen.blit(self.cursor_domain_image,
-                                (self.pan_hold_position[0] - 7, self.pan_hold_position[1] - 7))
+                                (self.pan_hold_position[0] - 15, self.pan_hold_position[1] - 15))
             else:
-                self.screen.blit(self.cursor_domain_image, (x - 7, y - 7))
+                self.screen.blit(self.cursor_domain_image, (x - 15, y - 15))
             self.screen.set_clip(None)
         else:
             # outside of view surface rect, draw interface cursor
