@@ -13,15 +13,10 @@ from components import utility
 
 class Main:
     def __init__(self):
-        # fullscreen?
-        fullscreen = False
         # initialize pygame
         pygame.init()
         # create main window surface
-        if fullscreen:
-            self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
-        else:
-            self.screen = pygame.display.set_mode((1420, 990), pygame.SCALED)
+        self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
         # set window caption
         pygame.display.set_caption('Domain')
         # set window icon
@@ -49,15 +44,15 @@ class Main:
         # give both the domain manager and domain objects the tiles gid tuple
         DomainManager.tiles = tiles
         DomainObject.tiles = tiles
-        # viewport size in pixels, must not be greater in either axis than map pixel sizes.
+        # viewport size in pixels, must not be greater in either axis than zoomed map pixel sizes.
         # if greater, pick_cell() in domain manager gives invalid results
-        view_width = 960
-        view_height = 960
+        view_width = 1730
+        view_height = 1060
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # for that surface, centre both the x and y axis relative to the screen surface
-        view_xpos = (self.screen.get_rect().width - view_width) // 2
-        view_ypos = (self.screen.get_rect().height - view_height) // 2
+        view_xpos = 10
+        view_ypos = 10
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect for a border colour around the view surface
