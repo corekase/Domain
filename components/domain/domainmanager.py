@@ -195,21 +195,21 @@ class DomainManager:
         # clear the current tile so it isn't included in neighbours
         adjacents[4] = None
         # with the layout order, block out invalid orthographic moves due to walls
-        if adjacents[1] == self.tiles[WALL]:
+        if adjacents[1] == DomainManager.tiles[WALL]:
             adjacents[0] = None
             adjacents[2] = None
-        if adjacents[5] == self.tiles[WALL]:
+        if adjacents[5] == DomainManager.tiles[WALL]:
             adjacents[2] = None
             adjacents[8] = None
-        if adjacents[7] == self.tiles[WALL]:
+        if adjacents[7] == DomainManager.tiles[WALL]:
             adjacents[6] = None
             adjacents[8] = None
-        if adjacents[3] == self.tiles[WALL]:
+        if adjacents[3] == DomainManager.tiles[WALL]:
             adjacents[0] = None
             adjacents[6] = None
         valid_neighbours = []
         for num, value in enumerate(adjacents):
-            if value == self.tiles[FLOOR]:
+            if value == DomainManager.tiles[FLOOR]:
                 valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours
@@ -217,9 +217,9 @@ class DomainManager:
     def cell_gid(self, position):
         # get the tile gid for a cell position
         x, y = position
-        if x < 0 or y < 0 or x >= DomainObject.map_object.width or y >= DomainObject.map_object.height:
+        if x < 0 or y < 0 or x >= self.map_object.width or y >= self.map_object.height:
             return None
-        return DomainObject.map_object.get_tile_gid(x, y, 0)
+        return self.map_object.get_tile_gid(x, y, 0)
 
     def cell_objects(self, position, objects):
         # return a list of objects which match the position coordinate
@@ -232,7 +232,7 @@ class DomainManager:
 
     def teleporters(self, position):
         # if there is a teleporter at position then return its destination otherwise return None
-        teleporters = self.cell_objects(position, DomainObject.domain_objects.objects('teleporters'))
+        teleporters = self.cell_objects(position, self.domain.objects('teleporters'))
         if len(teleporters) > 0:
             # there is a teleporter here
             return teleporters[0].destination
