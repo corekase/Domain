@@ -130,21 +130,23 @@ class DomainManager:
         else:
             return None
 
-    def cell_gid(self, position):
-        # get the tile gid for a cell position
-        x, y = position
-        if x < 0 or y < 0 or x >= DomainObject.map_object.width or y >= DomainObject.map_object.height:
-            return None
-        return DomainObject.map_object.get_tile_gid(x, y, 0)
+    def get_floor(self, x_coord):
+        return int(x_coord / self.floor_tiles)
 
-    def cell_objects(self, position, objects):
-        # return a list of objects which match the position coordinate
-        results = []
-        x, y = position
-        for item in objects:
-            if (item.x_coord == x) and (item.y_coord == y):
-                results.append(item)
-        return results
+    def switch_floor(self, floor):
+        # get distance from center of current floor
+        if self.floor != None:
+            x, y = self.floor_ports[self.floor].center
+            difx = self.main_viewport[0] - x
+            dify = self.main_viewport[1] - y
+        else:
+            difx, dify = 0, 0
+        # load new floor
+        self.floor = floor
+        self.floor_port = self.floor_ports[self.floor]
+        # add the difference to new center of floor
+        x, y = self.floor_port.center
+        self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
 
     def find_nearest(self, start_position, destination_objects):
         # data structure for objects for find_nearest
@@ -221,40 +223,21 @@ class DomainManager:
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours
 
-    def switch_floor(self, floor):
-        # get distance from center of current floor
-        if self.floor != None:
-            x, y = self.floor_ports[self.floor].center
-            difx = self.main_viewport[0] - x
-            dify = self.main_viewport[1] - y
-        else:
-            difx, dify = 0, 0
-        # load new floor
-        self.floor = floor
-        self.floor_port = self.floor_ports[self.floor]
-        # add the difference to new center of floor
-        x, y = self.floor_port.center
-        self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
+    def cell_gid(self, position):
+        # get the tile gid for a cell position
+        x, y = position
+        if x < 0 or y < 0 or x >= DomainObject.map_object.width or y >= DomainObject.map_object.height:
+            return None
+        return DomainObject.map_object.get_tile_gid(x, y, 0)
 
-    def get_floor(self, x_coord):
-        return int(x_coord / self.floor_tiles)
-
-    def update_domain(self, elapsed_time):
-        # check for other mapobject collision, the sprites group is an expensive operation
-        # so is done once on its own line here
-        objects = self.domain.domain().sprites()
-        for object in objects:
-            # same, done once on its own line because it's an expensive operation
-            other_objects = pygame.sprite.spritecollide(object, self.domain.domain(), False)
-            for other_object in other_objects:
-                if not (other_object is object):
-                    # right here for finer-collisions:
-                    #     "if overlapped then per-pixel (mask-based) comparison"
-                    # for overall fast collisions and then accuracy only when overlapped
-                    object.overlap(other_object)
-                    other_object.overlap(object)
-        # update all mapobjects and their subclasses in the domain group
-        self.domain.domain().update(elapsed_time)
+    def cell_objects(self, position, objects):
+        # return a list of objects which match the position coordinate
+        results = []
+        x, y = position
+        for item in objects:
+            if (item.x_coord == x) and (item.y_coord == y):
+                results.append(item)
+        return results
 
     def pick_cell(self, x, y):
         # normalize x and y mouse position to the screen coordinates of the surface
@@ -289,6 +272,23 @@ class DomainManager:
             if self.get_floor(self.avatar.x_coord) == self.floor:
                 # centre on the avatar after a zoom change
                 self.main_viewport = list(self.avatar.rect.center)
+
+    def update_domain(self, elapsed_time):
+        # check for other mapobject collision, the sprites group is an expensive operation
+        # so is done once on its own line here
+        objects = self.domain.domain().sprites()
+        for object in objects:
+            # same, done once on its own line because it's an expensive operation
+            other_objects = pygame.sprite.spritecollide(object, self.domain.domain(), False)
+            for other_object in other_objects:
+                if not (other_object is object):
+                    # right here for finer-collisions:
+                    #     "if overlapped then per-pixel (mask-based) comparison"
+                    # for overall fast collisions and then accuracy only when overlapped
+                    object.overlap(other_object)
+                    other_object.overlap(object)
+        # update all mapobjects and their subclasses in the domain group
+        self.domain.domain().update(elapsed_time)
 
     def draw_domain(self):
         # centre on desired viewport
