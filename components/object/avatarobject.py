@@ -38,10 +38,10 @@ class AvatarObject(DomainObject):
             # do after existing move_to
             self.command(Datagram(self.move_to_guarded, position))
 
-    def move_to_guarded(self, new_position):
+    def move_to_guarded(self, position):
         # from current position go to new_position
-        self.command(Path_To(new_position))
-        teleport = DomainObject.domain_manager.teleporters(new_position)
+        self.command(Path_To(position))
+        teleport = DomainObject.domain_manager.teleporters(position)
         if teleport != None:
             # there is a teleporter at the new position
             self.command(Teleport(teleport))
