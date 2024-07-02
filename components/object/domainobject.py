@@ -1,5 +1,4 @@
 import sys, pygame
-from queue import Queue
 from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
 from pygame.sprite import Sprite
@@ -85,7 +84,7 @@ class DomainObject(Sprite):
                 # remove this command from the queue
                 self.command_queue.pop(0)
                 # find valid path, if no valid path do nothing
-                path = self.find_nearest((self.x_coord, self.y_coord), [Coordinate(destination)])[0]
+                path = DomainObject.domain_manager.find_nearest((self.x_coord, self.y_coord), [Coordinate(destination)])[0]
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
                     for position in path:
@@ -161,81 +160,6 @@ class DomainObject(Sprite):
         x_width, y_height = self.map_object.tilewidth, self.map_object.tileheight
         x_centre, y_centre = int(x_width / 2), int(y_height / 2)
         return (location[0] * x_width) + x_centre, (location[1] * y_height) + y_centre
-
-    def find_nearest(self, start_position, destination_objects):
-        # data structure for objects for find_nearest
-        destination_list = []
-        for item in destination_objects:
-            destination_list.append([item.x_coord, item.y_coord, item])
-        # breadth-first search
-        frontier = Queue()
-        frontier.put(start_position)
-        came_from = dict()
-        came_from[start_position] = None
-        found = False
-        goal = None
-        goal_object = None
-        while not frontier.empty():
-            current = frontier.get()
-            for x, y, object in destination_list:
-                if (current[0] == x) and (current[1] == y):
-                    found = True
-                    goal = current
-                    goal_object = object
-                    break
-            if found:
-                break
-            neighbours = self.adjacents(current)
-            for next in neighbours:
-                if next not in came_from:
-                    frontier.put(next)
-                    came_from[next] = current
-        if found:
-            path = []
-            while goal != start_position:
-                path.append(goal)
-                goal = came_from[goal]
-            # path is in reverse order, goal to start
-            return path, goal_object
-        else:
-            return None, None
-
-    def adjacents(self, position):
-        x, y = position
-        # an ordered 9 element list where indexes are mapped to neighbours which are
-        # tuples of delta x and y coordinates around a centre point
-        neighbours = ((-1, -1), (0, -1), (1, -1),
-                      (-1,  0), (0,  0), (1,  0),
-                      (-1,  1), (0,  1), (1,  1))
-        adjacents = []
-        # fill in ordered list with cell positions by adding neighbour deltas to each axis
-        for neighbour in neighbours:
-            adjacents.append(self.domain_manager.cell_gid((x + neighbour[0], y + neighbour[1])))
-        # the list indexes map by the neighbour deltas as given in this diagram:
-        # 0 1 2
-        # 3 4 5
-        # 6 7 8
-        # clear the current tile so it isn't included in neighbours
-        adjacents[4] = None
-        # with the layout order, block out invalid orthographic moves due to walls
-        if adjacents[1] == self.tiles[WALL]:
-            adjacents[0] = None
-            adjacents[2] = None
-        if adjacents[5] == self.tiles[WALL]:
-            adjacents[2] = None
-            adjacents[8] = None
-        if adjacents[7] == self.tiles[WALL]:
-            adjacents[6] = None
-            adjacents[8] = None
-        if adjacents[3] == self.tiles[WALL]:
-            adjacents[0] = None
-            adjacents[6] = None
-        valid_neighbours = []
-        for num, value in enumerate(adjacents):
-            if value == self.tiles[FLOOR]:
-                valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
-        # return neighbours which are floor tiles as cell positions
-        return valid_neighbours
 
     def sync_coordinate(self, position):
         # update position state in pixels

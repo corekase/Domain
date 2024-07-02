@@ -25,7 +25,7 @@ class AgentObject(DomainObject):
         if self.destination_object == None:
             if len(self.domain_objects.objects('generic')) > 0:
                 # find the nearest item
-                path, self.destination_object = self.find_nearest(
+                path, self.destination_object = DomainObject.domain_manager.find_nearest(
                                                 (self.x_coord, self.y_coord),
                                                 DomainObject.domain_objects.objects('generic'))
                 if path != None:
