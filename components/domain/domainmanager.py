@@ -31,7 +31,7 @@ class DomainManager:
         # surface to draw on
         self.view_surface = view_surface
         self.view_surface_rect = view_surface.get_rect()
-        size = self.view_surface.get_rect().width, self.view_surface.get_rect().height
+        size = self.view_surface_rect.width, self.view_surface_rect.height
         # reference to the renderer
         self.renderer = BufferedRenderer(TiledMapData(self.map_object), size, False)
         # set the zoom levels for the renderer
