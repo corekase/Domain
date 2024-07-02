@@ -100,9 +100,6 @@ class DomainManager:
         # centre the main_viewport on the avatar
         self.main_viewport = list(self.avatar.rect.center)
 
-    def random_position_floor(self, gid, floor):
-        return self.random_position(gid, floor * self.floor_tiles, 0, self.floor_tiles, self.floor_tiles)
-
     def random_position(self, gid, x_min, y_min, width, height):
         # return a random empty cell position which is a specific tile gid
         while True:
@@ -121,14 +118,8 @@ class DomainManager:
                 # is correct gid and is empty
                 return x, y
 
-    def teleporters(self, position):
-        # if there is a teleporter at position then return its destination otherwise return None
-        teleporters = self.cell_objects(position, DomainObject.domain_objects.objects('teleporters'))
-        if len(teleporters) > 0:
-            # there is a teleporter here
-            return teleporters[0].destination
-        else:
-            return None
+    def random_position_floor(self, gid, floor):
+        return self.random_position(gid, floor * self.floor_tiles, 0, self.floor_tiles, self.floor_tiles)
 
     def get_floor(self, x_coord):
         return int(x_coord / self.floor_tiles)
@@ -238,6 +229,15 @@ class DomainManager:
             if (item.x_coord == x) and (item.y_coord == y):
                 results.append(item)
         return results
+
+    def teleporters(self, position):
+        # if there is a teleporter at position then return its destination otherwise return None
+        teleporters = self.cell_objects(position, DomainObject.domain_objects.objects('teleporters'))
+        if len(teleporters) > 0:
+            # there is a teleporter here
+            return teleporters[0].destination
+        else:
+            return None
 
     def pick_cell(self, x, y):
         # normalize x and y mouse position to the screen coordinates of the surface
