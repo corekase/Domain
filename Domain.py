@@ -44,15 +44,15 @@ class Main:
         # give both the domain manager and domain objects the tiles gid tuple
         DomainManager.tiles = tiles
         DomainObject.tiles = tiles
+        # x and y position of the viewport
+        view_xpos = 0
+        view_ypos = 0
         # viewport size. renderer view_rect size at a given zoom must not be larger than renderer map_rect size
         # at the same zoom. if greater, pick_cell() in domain manager gives invalid results
         view_width = 1700
         view_height = 1080
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
-        # for that surface, centre both the x and y axis relative to the screen surface
-        view_xpos = 0
-        view_ypos = 0
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
         # create domain manager
@@ -65,15 +65,15 @@ class Main:
         DomainObject.gui = self.gui
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
-        # create a rect to clear to the right side of the view_surface_rect
-        self.clear_area_rect = Rect(view_width, padding(4), 1920 - view_width, view_height)
+        # create a rect to clear to the right side of the view_surface_rect and below the information panel
+        self.clear_area_rect = Rect(view_width, padding(4) + 1, 1920 - view_width, view_height)
         # create a frame for the information panel
         information_frame_rect = Rect(self.clear_area_rect.x, 0, self.clear_area_rect.width, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = int(self.clear_area_rect.width / 2), 20
-        button_rect = Rect(self.clear_area_rect.x + 1, information_frame_rect.bottom + 1, w, h)
-        button_exit_rect = Rect(self.clear_area_rect.x + w - 1, 1080 - h - 1, w, h)
+        button_rect = Rect(self.clear_area_rect.x, self.clear_area_rect.y + 1, w, h)
+        button_exit_rect = Rect(self.clear_area_rect.right - w - 1, 1080 - h - 1, w, h)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
         self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
