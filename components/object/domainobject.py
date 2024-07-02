@@ -21,7 +21,7 @@ class Coordinate:
         self.x_coord, self.y_coord = position
 
 class DomainObject(Sprite):
-    # reference for the map
+    # reference for the map, map is a keyword so this has _object added
     map_object = None
     # reference for domain objects
     domain = None
