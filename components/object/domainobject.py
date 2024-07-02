@@ -113,7 +113,7 @@ class DomainObject(Sprite):
             elif command_name == 'Centre_View':
                 domain_object = command.domain_object
                 # centre the main viewport on domain_object
-                self.domain_manager.main_viewport = list(domain_object.rect.center)
+                DomainObject.domain_manager.main_viewport = list(domain_object.rect.center)
                 self.command_queue.pop(0)
             else:
                 raise Exception(f'Command: {command_name} not implemented')
