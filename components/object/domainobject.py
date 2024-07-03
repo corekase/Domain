@@ -34,9 +34,7 @@ class DomainObject(Sprite):
 
     def __init__(self):
         super().__init__()
-        # values filled in by subclasses
-        self.normal_image = None
-        self.overlap_image = None
+        # value filled in by subclasses
         self.image = None
         # values updated by either sync_coordinate or sync_cell
         self.rect = None
@@ -54,9 +52,6 @@ class DomainObject(Sprite):
         # filter overlapped domain objects so that only objects still overlapping are kept
         self.overlaps = [domainobject for domainobject in self.overlaps \
                          if pygame.sprite.collide_rect(self, domainobject)]
-        # if this domain object isn't overlapping other objects return its image to normal
-        if len(self.overlaps) == 0:
-            self.image = self.normal_image
         # check the command queue for any commands
         if len(self.command_queue) > 0:
             # there is a command, get it
@@ -171,7 +166,5 @@ class DomainObject(Sprite):
     def overlap(self, other_object):
         # other_mapobject is overlapping rects with this mapobject, if it's not already in overlap_mapobjects then add it
         if not (other_object in self.overlaps):
-            # set visual sprite to overlap image
-            self.image = self.overlap_image
             # remember the agent
             self.overlaps.append(other_object)

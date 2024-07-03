@@ -9,10 +9,7 @@ class AgentObject(DomainObject):
     def __init__(self, position):
         super().__init__()
         # load images for the agents
-        self.normal_image = image_alpha_resource('sprites', 'agent', 'agent_normal.png')
-        self.overlap_image = image_alpha_resource('sprites', 'agent', 'agent_overlap.png')
-        # set default image for drawing
-        self.image = self.normal_image
+        self.image = image_alpha_resource('sprites', 'agent', 'agent_normal.png')
         # initialize agent rect for movement and drawing
         self.rect = self.image.get_rect()
         # speed variable, world pixels per second
@@ -41,7 +38,5 @@ class AgentObject(DomainObject):
             item_object.layer = 1
             # track the generic item
             DomainObject.domain.object_add('generic', item_object)
-            # set collision image to normal
-            self.image = self.normal_image
             # reset destination to none
             self.destination_object = None
