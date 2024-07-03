@@ -1,5 +1,6 @@
 import time, pygame
 from pygame import Rect
+from pygame.draw import rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_3, K_F1
 from components.utility import image_alpha_resource, padding, render_text
@@ -45,33 +46,36 @@ class Main:
         DomainManager.tiles = tiles
         DomainObject.tiles = tiles
         # x and y position of the viewport
-        view_xpos = 0
-        view_ypos = 0
+        view_xpos = 10
+        view_ypos = 10
         # viewport size. renderer view_rect size at a given zoom must not be larger than renderer map_rect size
         # at the same zoom. if greater, pick_cell() in domain manager gives invalid results
-        view_width = 1700
-        view_height = 1080
+        view_width = 1680
+        view_height = 1060
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
+        # create a rect that outlines view_surface_rect
+        self.view_surface_outline_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
         # create domain manager
         self.domain_manager = DomainManager(self.view_surface)
+        # give domain objects a reference to the domain manager
+        DomainObject.domain_manager = self.domain_manager
         # instantiate a GUI manager
         self.gui = GuiManager()
         # give domain objects a reference to the gui
         DomainObject.gui = self.gui
-        # give domain objects a reference to the domain manager
-        DomainObject.domain_manager = self.domain_manager
-        # create a rect to clear to the right side of the view_surface_rect and below the information panel
-        self.clear_area_rect = Rect(view_width, padding(4) + 1, 1920 - view_width, 1080 - padding(4) + 1)
+        # base x position
+        base_x = view_xpos + view_width + 10
+        width_x = 1920 - base_x
         # create a frame for the information panel
-        information_frame_rect = Rect(self.clear_area_rect.x, 0, self.clear_area_rect.width, padding(4))
+        information_frame_rect = Rect(base_x, 0, 1920 - base_x, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
-        w, h = int(self.clear_area_rect.width / 2), 20
-        button_rect = Rect(self.clear_area_rect.x, self.clear_area_rect.y + 1, w, h)
-        button_exit_rect = Rect(self.clear_area_rect.right - w - 1, 1080 - h - 1, w, h)
+        w, h = int(width_x / 2), 20
+        button_rect = Rect(base_x, padding(4) + 1, w, h)
+        button_exit_rect = Rect(base_x + width_x - w - 1, 1080 - h - 1, w, h)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
         self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
@@ -113,7 +117,9 @@ class Main:
             if not self.won:
                 self.domain_manager.update_domain(elapsed_time)
             # fill clear_area_rect with a colour, this area isn't drawn over by anything else
-            self.screen.fill(colours['background'], self.clear_area_rect)
+            self.screen.fill(colours['background'])
+            # draw the outline around the main viewport
+            rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
             self.domain_manager.draw_domain()
             # and copy that surface into the main screen surface
