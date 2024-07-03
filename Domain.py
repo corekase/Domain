@@ -142,8 +142,7 @@ class Main:
             # fill gui damaged areas
             for widget in self.gui.widgets[self.gui.context]:
                 self.screen.fill(colours['background'], widget.rect)
-            # check for winning conditions after gui damage has been filled as check_win()
-            # may change the gui context
+            # check for winning conditions after gui damage has been filled as the gui context may be changed
             if not self.won:
                 if self.check_win():
                     # display winning screen here
