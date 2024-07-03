@@ -18,8 +18,6 @@ from queue import Queue
 EMPTY, FLOOR, WALL = 0, 1, 2
 
 class DomainManager:
-    # reference to the gui manager
-    gui = None
     # reference to tiles gid tuple
     tiles = None
 
