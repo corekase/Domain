@@ -64,7 +64,9 @@ class DomainManager:
                        (1, 58): ['up', (61, 58)],
                        (61, 58): ['down', (1, 58)],
                        (58, 58): ['up', (118, 58)],
-                       (118, 58): ['down', (58, 58)]}
+                       (118, 58): ['down', (58, 58)],
+                       (29, 28): ['up', (89, 28)],
+                       (89, 28): ['down', (29, 28)]}
         for position, info in teleporters.items():
             # whether to show an up or down graphic and destination coordinate for the teleport in cells
             up_down, destination = info
