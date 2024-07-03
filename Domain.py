@@ -104,6 +104,8 @@ class Main:
         # track elapsed_time with more accurate os clock
         previous_time = time.time()
         # continue while the running flag is true
+        # fill clear_area_rect with a colour, this area isn't drawn over by anything else
+        self.screen.fill(colours['background'])
         while self.running:
             # main loop
             self.cycle += 1
@@ -116,8 +118,6 @@ class Main:
             # update domain state
             if not self.won:
                 self.domain_manager.update_domain(elapsed_time)
-            # fill clear_area_rect with a colour, this area isn't drawn over by anything else
-            self.screen.fill(colours['background'])
             # draw the outline around the main viewport
             rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
@@ -129,7 +129,10 @@ class Main:
             # draw information panel
             self.draw_info_panel(clock.get_fps())
             # draw mouse cursor
-            self.draw_mouse()
+            x, y = pygame.mouse.get_pos()
+            # mouse damage to background. tracking damage is much faster than filling entire screen
+            damaged_rect = Rect(x - 16, y - 16, 32, 32)
+            self.draw_mouse(x, y)
             # check for winning conditions
             if not self.won:
                 if self.check_win():
@@ -140,6 +143,13 @@ class Main:
             clock.tick(fps)
             # swap screen buffers
             pygame.display.flip()
+            # fill mouse damage
+            self.screen.fill(colours['background'], damaged_rect)
+            # fill gui damage
+            for group in self.gui.widgets.keys():
+                for widget in self.gui.widgets[group]:
+                    self.screen.fill(colours['background'], Rect(widget.rect.x - 1, widget.rect.y - 1,
+                                                                 widget.rect.width + 2, widget.rect.height + 2))
         # release resources
         pygame.quit()
 
@@ -262,9 +272,8 @@ class Main:
         # status is constantly updated in the event handler
         self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(3)))
 
-    def draw_mouse(self):
+    def draw_mouse(self, x, y):
         # draw mouse cursor
-        x, y = pygame.mouse.get_pos()
         # is the mouse in the view rect?
         if self.view_surface_rect.collidepoint(x, y):
             # draw domain cursor
