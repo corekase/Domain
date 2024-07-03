@@ -240,6 +240,10 @@ class Main:
             self.status = "N/A"
         # if middle button is held then follow the avatar
         if self.follow_state:
+            # if not on the same floor switch to it
+            avatar_floor = DomainObject.domain_manager.get_floor(self.domain_manager.avatar.x_coord)
+            if avatar_floor != DomainObject.domain_manager.floor:
+                DomainObject.domain_manager.switch_floor(avatar_floor)
             # centre on avatar
             self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
 
