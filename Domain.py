@@ -184,6 +184,9 @@ class Main:
                     x, y = pygame.mouse.get_pos()
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
+                        if event.button == 2:
+                            # centre on avatar
+                            self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
                         if event.button == 3:
                             # right button down, begin panning state
                             self.panning = True
