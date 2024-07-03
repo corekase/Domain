@@ -5,7 +5,7 @@ class AvatarObject(DomainObject):
     def __init__(self, position):
         super().__init__()
         self.load_sheet('sprites', 'avatar', 'avatar.png')
-        self.interval = 0.1
+        self.interval = 0.2
         self.speed = 64.0
         self.sync_cell(position)
         # avatar inventory
