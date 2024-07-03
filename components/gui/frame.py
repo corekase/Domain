@@ -31,14 +31,14 @@ class Frame(Widget):
         # draw background
         rect(self.surface, background, self.rect, 0)
         # draw frame upper and left lines
-        line(self.surface, ul, (x, y), (x + width, y))
-        line(self.surface, ul, (x, y), (x, y + height))
+        line(self.surface, ul, (x, y), (x + width - 1, y))
+        line(self.surface, ul, (x, y), (x, y + height - 1))
         # draw frame lower and right lines
-        line(self.surface, lr, (x, y + height), (x + width, y + height))
-        line(self.surface, lr, (x + width, y), (x + width, y + height))
+        line(self.surface, lr, (x, y + height - 1), (x + width - 1, y + height - 1))
+        line(self.surface, lr, (x + width - 1, y - 1), (x + width - 1, y + height - 1))
         # plot upper left dot
         self.surface.set_at((x + 1, y +1), ul_d)
         # plot lower right dot
-        self.surface.set_at((x + width - 1, y + height - 1), lr_d)
+        self.surface.set_at((x + width - 2, y + height - 2), lr_d)
         # unlock surface
         self.surface.unlock()

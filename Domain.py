@@ -74,7 +74,7 @@ class Main:
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = int(width_x / 2), 20
-        button_rect = Rect(base_x, padding(4) + 2, w, h)
+        button_rect = Rect(base_x, padding(4) + 1, w, h)
         button_exit_rect = Rect(1920 - w - 4, 1080 - h - 4, w, h)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
@@ -147,8 +147,7 @@ class Main:
             self.screen.fill(colours['background'], damaged_rect)
             # fill gui damage
             for widget in self.gui.widgets[self.gui.context]:
-                self.screen.fill(colours['background'], Rect(widget.rect.x - 1, widget.rect.y - 1,
-                                                             widget.rect.width + 2, widget.rect.height + 2))
+                self.screen.fill(colours['background'], widget.rect)
         # release resources
         pygame.quit()
 
