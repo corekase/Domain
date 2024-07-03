@@ -70,11 +70,11 @@ class Main:
         base_x = view_xpos + view_width + 10
         width_x = 1920 - base_x
         # create a frame for the information panel
-        information_frame_rect = Rect(base_x, 0, 1920 - base_x, padding(4))
+        information_frame_rect = Rect(base_x, 10, 1920 - base_x - 10, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = int(width_x / 2), 20
-        button_rect = Rect(base_x, padding(4) + 1, w, h)
+        button_rect = Rect(base_x, information_frame_rect.bottom + 1, w, h)
         button_exit_rect = Rect(1920 - w - 4, 1080 - h - 4, w, h)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
