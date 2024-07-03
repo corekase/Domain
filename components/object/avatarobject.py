@@ -4,8 +4,8 @@ from ..utility import image_alpha_resource
 class AvatarObject(DomainObject):
     def __init__(self, position):
         super().__init__()
-        self.image = image_alpha_resource('sprites', 'avatar', 'avatar_normal.png')
-        self.rect = self.image.get_rect()
+        self.load_sheet('sprites', 'avatar', 'avatar.png')
+        self.interval = 0.1
         self.speed = 64.0
         self.sync_cell(position)
         # avatar inventory

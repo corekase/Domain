@@ -1,6 +1,6 @@
 from .domainobject import DomainObject, Path_To
 from .genericobject import GenericObject
-from ..utility import image_alpha_resource
+from ..utility import sprite_sheet
 
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
@@ -8,10 +8,7 @@ EMPTY, FLOOR, WALL = 0, 1, 2
 class AgentObject(DomainObject):
     def __init__(self, position):
         super().__init__()
-        # load images for the agents
-        self.image = image_alpha_resource('sprites', 'agent', 'agent_normal.png')
-        # initialize agent rect for movement and drawing
-        self.rect = self.image.get_rect()
+        self.load_sheet('sprites', 'agent', 'agent_normal.png')
         # speed variable, world pixels per second
         self.speed = 64.0
         self.sync_cell(position)

@@ -6,10 +6,9 @@ class TeleporterObject(DomainObject):
     def __init__(self, graphic, position, destination):
         super().__init__()
         if graphic == 'up':
-            self.image = image_alpha_resource('sprites', 'item', 'teleporter_up.png')
+            self.load_sheet('sprites', 'item', 'teleporter_up.png')
         else:
-            self.image = image_alpha_resource('sprites', 'item', 'teleporter_down.png')
-        self.rect = self.image.get_rect()
+            self.load_sheet('sprites', 'item', 'teleporter_down.png')
         self.sync_cell(position)
         self.destination = destination
 

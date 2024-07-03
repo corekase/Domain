@@ -2,6 +2,7 @@ import sys, pygame
 from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
 from pygame.sprite import Sprite
+from ..utility import sprite_sheet
 
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
@@ -34,7 +35,7 @@ class DomainObject(Sprite):
 
     def __init__(self):
         super().__init__()
-        # value filled in by subclasses
+        # self.image is managed by the domain object class, subclasses give their animations to it
         self.image = None
         # values updated by either sync_coordinate or sync_cell
         self.rect = None
@@ -46,9 +47,31 @@ class DomainObject(Sprite):
         self.overlaps = []
         # command queue
         self.command_queue = []
+        self.animations = []
+        self.timer = 0.0
+        self.interval = 0.0
+        self.frame = 0
+        self.frames = 0
         # subclasess must call either sync_coordinate or sync_cell before they exit their __init__
 
+    def load_sheet(self, *image):
+        # load images for the agents
+        self.animations = sprite_sheet(*image)
+        self.frame = 0
+        self.frames = len(self.animations)
+        self.image = self.animations[self.frame]
+        self.rect = self.animations[self.frame].get_rect()
+
     def update(self, elapsed_time):
+        # handle animation frames
+        if self.frames > 1:
+            self.timer += elapsed_time
+            if self.timer >= self.interval:
+                self.timer -= self.interval
+                self.frame += 1
+                if self.frame >= self.frames:
+                    self.frame = 0
+                self.image = self.animations[self.frame]
         # filter overlapped domain objects so that only objects still overlapping are kept
         self.overlaps = [domainobject for domainobject in self.overlaps \
                          if pygame.sprite.collide_rect(self, domainobject)]
