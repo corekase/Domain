@@ -57,10 +57,14 @@ class DomainManager:
         self.floor = None
         # add in teleporters, 'teleporters' is a reserved group name, the domain manager uses it
         # so other code may not use that group name
-        teleporters = {(27, 2): ['up', (57, 2)],
-                       (57, 2): ['down', (27, 2)],
-                       (32, 27): ['up', (62, 27)],
-                       (62, 27): ['down', (32, 27)]}
+        teleporters = {(1, 1): ['up', (61, 1)],
+                       (61, 1): ['down', (1, 1)],
+                       (58, 1): ['up', (118, 1)],
+                       (118, 1): ['down', (58, 1)],
+                       (1, 58): ['up', (61, 58)],
+                       (61, 58): ['down', (1, 58)],
+                       (58, 58): ['up', (118, 58)],
+                       (118, 58): ['down', (58, 58)]}
         for position, info in teleporters.items():
             # whether to show an up or down graphic and destination coordinate for the teleport in cells
             up_down, destination = info
@@ -85,7 +89,7 @@ class DomainManager:
         # create pickup items
         populate(1, PickupObject, 2, 'pickups')
         # create agents
-        populate(4, AgentObject, 3, 'agents')
+        populate(10, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
         position = self.random_position_floor(DomainManager.tiles[FLOOR], 0)
         self.avatar = AvatarObject(position)
