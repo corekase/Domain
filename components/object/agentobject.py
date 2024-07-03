@@ -1,6 +1,5 @@
 from .domainobject import DomainObject, Path_To
 from .genericobject import GenericObject
-from ..utility import sprite_sheet
 
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2

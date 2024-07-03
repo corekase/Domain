@@ -1,5 +1,4 @@
 from .domainobject import DomainObject, Stall
-from ..utility import image_alpha_resource
 
 class PickupObject(DomainObject):
     def __init__(self, position):

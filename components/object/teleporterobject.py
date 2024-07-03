@@ -1,6 +1,5 @@
 # a cell with a teleporter object may not have any other objects
 from .domainobject import DomainObject, Stall
-from ..utility import image_alpha_resource
 
 class TeleporterObject(DomainObject):
     def __init__(self, graphic, position, destination):

@@ -1,5 +1,4 @@
 from .domainobject import DomainObject, Path_To, Datagram, Teleport
-from ..utility import image_alpha_resource
 
 class AvatarObject(DomainObject):
     def __init__(self, position):
