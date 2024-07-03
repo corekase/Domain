@@ -68,9 +68,9 @@ class Main:
         DomainObject.gui = self.gui
         # base x position
         base_x = view_xpos + view_width + 10
-        width_x = 1920 - base_x
+        width_x = 1920 - base_x - 10
         # create a frame for the information panel
-        information_frame_rect = Rect(base_x, 10, 1920 - base_x - 10, padding(4))
+        information_frame_rect = Rect(base_x, 10, width_x, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         w, h = int(width_x / 2), 20
