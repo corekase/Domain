@@ -133,21 +133,21 @@ class Main:
             # mouse damage to background. tracking damage is much faster than filling entire screen
             damaged_rect = Rect(x - 16, y - 16, 32, 32)
             self.draw_mouse(x, y)
-            # check for winning conditions
+            # limit frames-per-second
+            clock.tick(fps)
+            # swap screen buffers
+            pygame.display.flip()
+            # fill mouse damaged area
+            self.screen.fill(colours['background'], damaged_rect)
+            # fill gui damaged areas
+            for widget in self.gui.widgets[self.gui.context]:
+                self.screen.fill(colours['background'], widget.rect)
+            # check for winning conditions after damage has been filled
             if not self.won:
                 if self.check_win():
                     # display winning screen here
                     self.gui.lock_context('win_context')
                     self.won = True
-            # limit frames-per-second
-            clock.tick(fps)
-            # swap screen buffers
-            pygame.display.flip()
-            # fill mouse damage
-            self.screen.fill(colours['background'], damaged_rect)
-            # fill gui damage
-            for widget in self.gui.widgets[self.gui.context]:
-                self.screen.fill(colours['background'], widget.rect)
         # release resources
         pygame.quit()
 
