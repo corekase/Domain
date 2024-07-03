@@ -95,6 +95,8 @@ class Main:
         self.running = True
         # whether to show absolute x and y, or x and y relative to floor
         self.coordinate_toggle = True
+        # state for whether middle mouse button is held
+        self.follow_state = False
 
     def run(self):
         # maximum frames-per-second, 0 for unlimited
@@ -185,9 +187,9 @@ class Main:
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 2:
-                            # centre on avatar
-                            self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
-                        if event.button == 3:
+                            # start following the avatar
+                            self.follow_state = True
+                        elif event.button == 3:
                             # right button down, begin panning state
                             self.panning = True
                             self.pan_hold_position = x, y
@@ -209,7 +211,10 @@ class Main:
                         if self.view_surface_rect.collidepoint(x, y):
                             position = self.domain_manager.pick_cell(x -self.view_surface_rect.x, y - self.view_surface_rect.y)
                             self.domain_manager.avatar.move_to(position)
-                    if event.button == 3:
+                    elif event.button == 2:
+                        # stop following the avatar
+                        self.follow_state = False
+                    elif event.button == 3:
                         # right button up, end panning state
                         self.panning = False
                 # panning state actions
@@ -233,6 +238,10 @@ class Main:
         else:
             # not inside the surface rect
             self.status = "N/A"
+        # if middle button is held then follow the avatar
+        if self.follow_state:
+            # centre on avatar
+            self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
 
     def check_win(self):
         # if all the pickup items are in the same cell then the game is won
