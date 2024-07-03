@@ -9,6 +9,8 @@ class AgentObject(DomainObject):
         super().__init__()
         # load image
         self.load_sheet('sprites', 'agent', 'agent.png')
+        # frame time
+        self.interval = 0.2
         # world pixels per second
         self.speed = 64.0
         # sync position state
