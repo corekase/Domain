@@ -1,6 +1,6 @@
 from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
 from ..utility import render_text, centre
-from .frame import State, Frame
+from .frame import Frame, State
 
 class Button(Frame):
     def __init__(self, surface, id, rect, text):
