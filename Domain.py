@@ -146,10 +146,9 @@ class Main:
             # fill mouse damage
             self.screen.fill(colours['background'], damaged_rect)
             # fill gui damage
-            for group in self.gui.widgets.keys():
-                for widget in self.gui.widgets[group]:
-                    self.screen.fill(colours['background'], Rect(widget.rect.x - 1, widget.rect.y - 1,
-                                                                 widget.rect.width + 2, widget.rect.height + 2))
+            for widget in self.gui.widgets[self.gui.context]:
+                self.screen.fill(colours['background'], Rect(widget.rect.x - 1, widget.rect.y - 1,
+                                                             widget.rect.width + 2, widget.rect.height + 2))
         # release resources
         pygame.quit()
 
