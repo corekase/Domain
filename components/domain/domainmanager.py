@@ -216,6 +216,7 @@ class DomainManager:
 
     def cell_gid(self, position):
         # get the tile gid for a cell position
+        # floor boundaries are not yet taken into account here
         x, y = position
         if x < 0 or y < 0 or x >= self.map_object.width or y >= self.map_object.height:
             return None
