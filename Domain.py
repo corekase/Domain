@@ -75,7 +75,7 @@ class Main:
         # create buttons and add them to gui context widgets lists
         w, h = int(width / 2), 20
         button_rect = Rect(base_x, information_frame_rect.bottom + 1, w, h)
-        button_exit_rect = Rect(1920 - w - 4, 1080 - h - 4, w, h)
+        button_exit_rect = Rect(base_x + w, self.view_surface_rect.bottom - h, w, h)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
         self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
