@@ -8,7 +8,7 @@ EMPTY, FLOOR, WALL = 0, 1, 2
 class AgentObject(DomainObject):
     def __init__(self, position):
         super().__init__()
-        self.load_sheet('sprites', 'agent', 'agent_normal.png')
+        self.load_sheet('sprites', 'agent', 'agent.png')
         # speed variable, world pixels per second
         self.speed = 64.0
         self.sync_cell(position)
