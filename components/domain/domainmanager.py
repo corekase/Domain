@@ -41,7 +41,7 @@ class DomainManager:
         # share the domain with domain objects
         DomainObject.domain = self.domain
         # map constants
-        self.floor_tiles = 30
+        self.floor_tiles = 60
         floors = int(self.map_object.width / self.floor_tiles)
         # each floor_ports is a rect which has the boundaries for the floor
         self.floor_ports = []
@@ -71,7 +71,7 @@ class DomainManager:
             self.domain.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
-            for floor in range(3):
+            for floor in range(floors):
                 for _ in range(number):
                     position = self.random_position_floor(DomainManager.tiles[FLOOR], floor)
                     # instantiate from the class
@@ -208,13 +208,15 @@ class DomainManager:
         valid_neighbours = []
         for num, value in enumerate(adjacents):
             if value == DomainManager.tiles[FLOOR]:
-                valid_neighbours.append((x + neighbours[num][0], y + neighbours[num][1]))
+                new_x, new_y = x + neighbours[num][0], y + neighbours[num][1]
+                # if the neighbour is on the same floor then it is valid
+                if self.get_floor(x) == self.get_floor(new_x):
+                    valid_neighbours.append((new_x, new_y))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours
 
     def cell_gid(self, position):
         # get the tile gid for a cell position
-        # floor boundaries are not yet taken into account here
         x, y = position
         if x < 0 or y < 0 or x >= self.map_object.width or y >= self.map_object.height:
             return None

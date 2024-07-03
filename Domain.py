@@ -41,7 +41,7 @@ class Main:
         # index into tiles is: 0 empty, 1 floor, and 2 wall. the value of the index is the tile gid
         # in other class components, define these at the top and use them as named indexes:
         # EMPTY, FLOOR, WALL = 0, 1, 2
-        tiles = (3, 2, 1)
+        tiles = (0, 1, 3)
         # give both the domain manager and domain objects the tiles gid tuple
         DomainManager.tiles = tiles
         DomainObject.tiles = tiles
@@ -178,8 +178,6 @@ class Main:
                         self.domain_manager.switch_floor(0)
                     elif event.key == K_2:
                         self.domain_manager.switch_floor(1)
-                    elif event.key == K_3:
-                        self.domain_manager.switch_floor(2)
                     elif event.key == K_F1:
                         self.coordinate_toggle = not self.coordinate_toggle
                 # mouse buttons
