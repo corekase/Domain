@@ -41,36 +41,39 @@ class DomainObject(Sprite):
         self.rect = None
         self.centre_xpos, self.centre_ypos = None, None
         self.x_coord, self.y_coord = None, None
-        # speed variable, world pixels per second
+        # world pixels per second
         self.speed = 0.0
         # list of domain objects currently overlapping this one
         self.overlaps = []
         # command queue
         self.command_queue = []
+        # list of animation image frames
         self.animations = []
+        # internal timer for animation frames
         self.timer = 0.0
+        # the timer interval between each frame
         self.interval = 0.0
+        # initial frame
         self.frame = 0
+        # total number of frames
         self.frames = 0
         # subclasess must call either sync_coordinate or sync_cell before they exit their __init__
-
-    def load_sheet(self, *image):
-        # load images for the agents
-        self.animations = sprite_sheet(*image)
-        self.frame = 0
-        self.frames = len(self.animations)
-        self.image = self.animations[self.frame]
-        self.rect = self.animations[self.frame].get_rect()
 
     def update(self, elapsed_time):
         # handle animation frames
         if self.frames > 1:
+            # add elapsed time to timer time
             self.timer += elapsed_time
+            # if timer time is greater than frame time interval
             if self.timer >= self.interval:
+                # remove the interval leaving the remainer for future times
                 self.timer -= self.interval
+                # adjust the frame of the domain object
                 self.frame += 1
+                # limit frames within indexes
                 if self.frame >= self.frames:
                     self.frame = 0
+                # update sprite image from frame
                 self.image = self.animations[self.frame]
         # filter overlapped domain objects so that only objects still overlapping are kept
         self.overlaps = [domainobject for domainobject in self.overlaps \
@@ -191,3 +194,11 @@ class DomainObject(Sprite):
         if not (other_object in self.overlaps):
             # remember the agent
             self.overlaps.append(other_object)
+
+    def load_sheet(self, *image):
+        # load the sprite sheet for this domain object
+        self.animations = sprite_sheet(*image)
+        self.frame = 0
+        self.frames = len(self.animations)
+        self.image = self.animations[self.frame]
+        self.rect = self.animations[self.frame].get_rect()

@@ -8,9 +8,11 @@ EMPTY, FLOOR, WALL = 0, 1, 2
 class AgentObject(DomainObject):
     def __init__(self, position):
         super().__init__()
+        # load image
         self.load_sheet('sprites', 'agent', 'agent.png')
-        # speed variable, world pixels per second
+        # world pixels per second
         self.speed = 64.0
+        # sync position state
         self.sync_cell(position)
         # agent memory
         self.destination_object = None
