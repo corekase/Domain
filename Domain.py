@@ -131,6 +131,8 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw gui widgets
             self.gui.draw_widgets()
+            # update self.status for the information panel
+            self.update_status()
             # draw information panel
             self.draw_info_panel(clock.get_fps())
             # draw mouse cursor
@@ -228,6 +230,8 @@ class Main:
                         self.domain_manager.main_viewport[0] += x - self.pan_hold_position[0]
                         self.domain_manager.main_viewport[1] += y - self.pan_hold_position[1]
                         pygame.mouse.set_pos(self.pan_hold_position)
+
+    def update_status(self):
         # update the x and y map indexes for the information panel
         x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
@@ -275,7 +279,6 @@ class Main:
         self.screen.blit(render_text(cycle), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(1)))
         self.screen.blit(render_text(floor), (x_pos + 3, y_pos + padding(2)))
-        # status is constantly updated in the event handler
         self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(3)))
 
     def draw_mouse(self, x, y):
