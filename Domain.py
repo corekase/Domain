@@ -36,13 +36,8 @@ class Main:
         # load images for custom mouse pointers
         self.cursor_domain_image = image_alpha_resource('cursors', 'cursor_domain.png')
         self.cursor_interface_image = image_alpha_resource('cursors', 'cursor_interface.png')
-        # x and y position of the viewport
-        view_xpos = 10
-        view_ypos = 10
-        # viewport size. renderer view_rect size at a given zoom must not be larger than renderer map_rect size
-        # at the same zoom. if greater, pick_cell() in domain manager gives invalid results
-        view_width = 1680
-        view_height = 1060
+        # dimensions of the viewport
+        view_xpos, view_ypos, view_width, view_height = 10, 10, 1680, 1060
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
@@ -57,16 +52,17 @@ class Main:
         self.gui = GuiManager()
         # give domain objects a reference to the gui
         DomainObject.gui = self.gui
-        # base x position
-        base_x = view_xpos + view_width + 10
-        width = 1920 - base_x - 10
+        # create gui buttons
+        gui_xpos = view_xpos + view_width + 10
+        gui_width = 1920 - gui_xpos - 10
         # create a frame for the information panel
-        information_frame_rect = Rect(base_x, 10, width, padding(4))
+        information_frame_rect = Rect(gui_xpos, 10, gui_width, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
-        w, h = int(width / 2), 20
-        button_rect = Rect(base_x, information_frame_rect.bottom + 1, w, h)
-        button_exit_rect = Rect(base_x + w, self.view_surface_rect.bottom - h, w, h)
+        button_width, button_height = int(gui_width / 2), 20
+        button_rect = Rect(gui_xpos, information_frame_rect.bottom + 1, button_width, button_height)
+        button_exit_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height,
+                                button_width, button_height)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
         self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))

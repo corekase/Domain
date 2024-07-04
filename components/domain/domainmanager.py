@@ -247,6 +247,8 @@ class DomainManager:
             return None
 
     def pick_cell(self, x, y):
+        # renderer view_rect size at a given zoom must not be larger than renderer map_rect size
+        # at the same zoom. if greater, pick_cell() gives invalid results.
         # normalize x and y mouse position to the screen coordinates of the surface
         x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
         # get all the needed information from the map and renderer
