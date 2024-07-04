@@ -105,9 +105,9 @@ class Main:
         clock = pygame.time.Clock()
         # track elapsed_time with more accurate os clock
         previous_time = time.time()
-        # continue while the running flag is true
-        # fill clear_area_rect with a colour, this area isn't drawn over by anything else
+        # clear main surface
         self.screen.fill(colours['background'])
+        # continue while the running flag is true
         while self.running:
             # main loop
             self.cycle += 1
