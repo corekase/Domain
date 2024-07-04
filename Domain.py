@@ -133,7 +133,7 @@ class Main:
             # draw mouse cursor
             x, y = pygame.mouse.get_pos()
             # mouse damage to background. tracking damage is much faster than filling entire screen
-            damaged_rect = Rect(x - 16, y - 16, 32, 32)
+            damaged_rect = Rect(x - 6, y, 16, 16)
             self.draw_mouse(x, y)
             # limit frames-per-second
             clock.tick(fps)
