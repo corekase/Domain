@@ -181,8 +181,10 @@ class Main:
                         # escape key, also quits
                         self.running = False
                     if event.key == K_1:
+                        self.follow_state = False
                         self.domain_manager.switch_floor(0)
                     elif event.key == K_2:
+                        self.follow_state = False
                         self.domain_manager.switch_floor(1)
                     elif event.key == K_F1:
                         self.coordinate_toggle = not self.coordinate_toggle
