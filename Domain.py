@@ -120,6 +120,14 @@ class Main:
             # update domain state
             if not self.won:
                 self.domain_manager.update_domain(elapsed_time)
+            # if follow_state centre on avatar, after update_domain to fix jitter
+            if self.follow_state:
+                # if not on the same floor switch to it
+                avatar_floor = self.domain_manager.get_floor(self.domain_manager.avatar.x_coord)
+                if avatar_floor != self.domain_manager.floor:
+                    self.domain_manager.switch_floor(avatar_floor)
+                # centre on avatar
+                self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
             # draw the outline around the main viewport
             rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
@@ -237,14 +245,6 @@ class Main:
         else:
             # not inside the surface rect
             self.status = "N/A"
-        # if middle button is held then follow the avatar
-        if self.follow_state:
-            # if not on the same floor switch to it
-            avatar_floor = self.domain_manager.get_floor(self.domain_manager.avatar.x_coord)
-            if avatar_floor != self.domain_manager.floor:
-                self.domain_manager.switch_floor(avatar_floor)
-            # centre on avatar
-            self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
 
     def check_win(self):
         # if all the pickup items are in the same cell then the game is won
