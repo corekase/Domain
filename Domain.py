@@ -36,7 +36,7 @@ class Main:
         self.pan_hold_position = None
         # cycle counter
         self.cycle = -1
-        # text status containing the x and y map indexes of the mouse position, updated in the event handler
+        # text status containing the x and y map indexes of the mouse position
         self.status = None
         # index into tiles is: 0 empty, 1 floor, and 2 wall. the value of the index is the tile gid
         # in other class components, define these at the top and use them as named indexes:
