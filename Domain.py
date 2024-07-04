@@ -95,7 +95,7 @@ class Main:
         self.running = True
         # whether to show absolute x and y, or x and y relative to floor
         self.coordinate_toggle = True
-        # state for whether middle mouse button is held
+        # toggle state for following the avatar
         self.follow_state = False
 
     def run(self):
