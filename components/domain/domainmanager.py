@@ -280,9 +280,6 @@ class DomainManager:
                 # centre on the avatar after a zoom change
                 self.main_viewport = list(self.avatar.rect.center)
 
-    def update_domain(self, elapsed_time):
-        self.domain.domain().update(elapsed_time)
-
     def draw_domain(self):
         # centre on desired viewport
         self.renderer.center(self.main_viewport)

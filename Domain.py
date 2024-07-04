@@ -119,7 +119,7 @@ class Main:
             self.handle_events()
             # update domain state
             if not self.won:
-                self.domain_manager.update_domain(elapsed_time)
+                self.domain_manager.domain.domain().update(elapsed_time)
             # draw the outline around the main viewport
             rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
