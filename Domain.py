@@ -14,6 +14,12 @@ from components import utility
 
 class Main:
     def __init__(self):
+        # named index value in tiles is the tile gid from pytmx. defined only here
+        # EMPTY, FLOOR, WALL = 0, 1, 2
+        tiles = (0, 2, 1)
+        # give both the domain manager and domain objects the tiles gid tuple
+        DomainManager.tiles = tiles
+        DomainObject.tiles = tiles
         # initialize pygame
         pygame.init()
         # create main window surface
@@ -30,21 +36,6 @@ class Main:
         # load images for custom mouse pointers
         self.cursor_domain_image = image_alpha_resource('cursors', 'cursor_domain.png')
         self.cursor_interface_image = image_alpha_resource('cursors', 'cursor_interface.png')
-        # state for whether or not panning the view
-        self.panning = False
-        # when panning lock mouse position to this position
-        self.pan_hold_position = None
-        # cycle counter
-        self.cycle = -1
-        # text status containing the x and y map indexes of the mouse position
-        self.status = None
-        # index into tiles is: 0 empty, 1 floor, and 2 wall. the value of the index is the tile gid
-        # in other class components, define these at the top and use them as named indexes:
-        # EMPTY, FLOOR, WALL = 0, 1, 2
-        tiles = (0, 2, 1)
-        # give both the domain manager and domain objects the tiles gid tuple
-        DomainManager.tiles = tiles
-        DomainObject.tiles = tiles
         # x and y position of the viewport
         view_xpos = 10
         view_ypos = 10
@@ -89,14 +80,22 @@ class Main:
         self.gui.add_widget('default', exit_button)
         # switch to default context
         self.gui.switch_context('default')
-        # set won game condition to false
-        self.won = False
-        # Set the state of the application to "running"
-        self.running = True
-        # whether to show absolute x and y, or x and y relative to floor
-        self.coordinate_toggle = True
+        # state for whether or not panning the view
+        self.panning_state = False
+        # when panning lock mouse position to this position
+        self.panning_state_position = None
         # toggle state for following the avatar
         self.follow_state = False
+        # whether to show absolute x and y, or x and y relative to floor
+        self.coordinate_toggle = True
+        # text status containing the x and y map indexes of the mouse position
+        self.status = None
+        # is the game won flag
+        self.won = False
+        # cycle counter
+        self.cycle = -1
+        # Set the state of the application to "running"
+        self.running = True
 
     def run(self):
         # maximum frames-per-second, 0 for unlimited
@@ -200,15 +199,15 @@ class Main:
                             # cancel follow_state
                             self.follow_state = False
                             # right button down, begin panning state
-                            self.panning = True
-                            self.pan_hold_position = x, y
+                            self.panning_state = True
+                            self.panning_state_position = x, y
                         elif event.button == 4:
                             # wheel scroll up, increase zoom index
                             self.domain_manager.set_zoom_index(1)
                             # if right-mouse button is also pressed begin panning
                             if pygame.mouse.get_pressed()[2]:
-                                self.panning = True
-                                self.pan_hold_position = x, y
+                                self.panning_state = True
+                                self.panning_state_position = x, y
                         elif event.button == 5:
                             # wheel scroll down, decrease zoom index
                             self.domain_manager.set_zoom_index(-1)
@@ -222,16 +221,16 @@ class Main:
                             self.domain_manager.avatar.move_to(position)
                     elif event.button == 3:
                         # right button up, end panning state
-                        self.panning = False
+                        self.panning_state = False
                 # panning state actions
-                if self.panning:
+                if self.panning_state:
                     # if the mouse is moving
                     if event.type == MOUSEMOTION:
                         # move the centre of the viewport
                         x, y = event.pos
-                        self.domain_manager.main_viewport[0] += x - self.pan_hold_position[0]
-                        self.domain_manager.main_viewport[1] += y - self.pan_hold_position[1]
-                        pygame.mouse.set_pos(self.pan_hold_position)
+                        self.domain_manager.main_viewport[0] += x - self.panning_state_position[0]
+                        self.domain_manager.main_viewport[1] += y - self.panning_state_position[1]
+                        pygame.mouse.set_pos(self.panning_state_position)
 
     def update_status(self):
         # update the x and y map indexes for the information panel
@@ -289,9 +288,9 @@ class Main:
         if self.view_surface_rect.collidepoint(x, y):
             # draw domain cursor
             self.screen.set_clip(self.view_surface_rect)
-            if self.panning:
+            if self.panning_state:
                 self.screen.blit(self.cursor_domain_image,
-                                (self.pan_hold_position[0] - 15, self.pan_hold_position[1] - 15))
+                                (self.panning_state_position[0] - 15, self.panning_state_position[1] - 15))
             else:
                 self.screen.blit(self.cursor_domain_image, (x - 15, y - 15))
             self.screen.set_clip(None)
