@@ -2,7 +2,7 @@ import time, pygame
 from pygame import Rect
 from pygame.draw import rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
-from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_3, K_F1
+from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_F1
 from components.utility import image_alpha_resource, padding, render_text
 from components.gui.button import Button
 from components.gui.frame import Frame
