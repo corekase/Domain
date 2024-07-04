@@ -75,9 +75,6 @@ class DomainObject(Sprite):
                     self.frame = 0
                 # update sprite image from frame
                 self.image = self.animations[self.frame]
-        # filter overlapped domain objects so that only objects still overlapping are kept
-        self.overlaps = [domainobject for domainobject in self.overlaps \
-                         if pygame.sprite.collide_rect(self, domainobject)]
         # check the command queue for any commands
         if len(self.command_queue) > 0:
             # there is a command, get it

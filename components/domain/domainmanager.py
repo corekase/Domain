@@ -281,20 +281,6 @@ class DomainManager:
                 self.main_viewport = list(self.avatar.rect.center)
 
     def update_domain(self, elapsed_time):
-        # check for other mapobject collision, the sprites group is an expensive operation
-        # so is done once on its own line here
-        objects = self.domain.domain().sprites()
-        for object in objects:
-            # same, done once on its own line because it's an expensive operation
-            other_objects = pygame.sprite.spritecollide(object, self.domain.domain(), False)
-            for other_object in other_objects:
-                if not (other_object is object):
-                    # right here for finer-collisions:
-                    #     "if overlapped then per-pixel (mask-based) comparison"
-                    # for overall fast collisions and then accuracy only when overlapped
-                    object.overlap(other_object)
-                    other_object.overlap(object)
-        # update all mapobjects and their subclasses in the domain group
         self.domain.domain().update(elapsed_time)
 
     def draw_domain(self):
