@@ -6,9 +6,9 @@ class TeleporterObject(DomainObject):
         super().__init__()
         # load either image
         if graphic == 'up':
-            self.load_sheet('sprites', 'item', 'teleporter_up.png')
+            self.load_sheet('sprites', 'teleporter', 'teleporter_up.png')
         else:
-            self.load_sheet('sprites', 'item', 'teleporter_down.png')
+            self.load_sheet('sprites', 'teleporter', 'teleporter_down.png')
         # sync position state
         self.sync_cell(position)
         # teleporter destination in cell coordinates
