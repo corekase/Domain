@@ -130,14 +130,15 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw gui widgets
             self.gui.draw_widgets()
-            # update self.status for the information panel
-            self.update_status()
-            # draw information panel
-            self.draw_info_panel(clock.get_fps())
-            # draw mouse cursor
+            # poll for mouse position
             x, y = pygame.mouse.get_pos()
             # mouse damage to background. tracking damage is much faster than filling entire screen
             damaged_rect = Rect(x - 6, y, 16, 16)
+            # update self.status for the information panel
+            self.update_status(x, y)
+            # draw information panel
+            self.draw_info_panel(clock.get_fps())
+            # draw mouse cursor
             self.draw_mouse(x, y)
             # limit frames-per-second
             clock.tick(fps)
@@ -232,9 +233,8 @@ class Main:
                         self.domain_manager.main_viewport[1] += y - self.panning_state_position[1]
                         pygame.mouse.set_pos(self.panning_state_position)
 
-    def update_status(self):
+    def update_status(self, x, y):
         # update the x and y map indexes for the information panel
-        x, y = pygame.mouse.get_pos()
         if self.view_surface_rect.collidepoint(x, y):
             x_coord, y_coord = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
             if self.coordinate_toggle:
