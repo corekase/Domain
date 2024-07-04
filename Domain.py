@@ -187,9 +187,11 @@ class Main:
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 2:
-                            # start following the avatar
-                            self.follow_state = True
+                            # toggle between follow_state true and false
+                            self.follow_state = not self.follow_state
                         elif event.button == 3:
+                            # cancel follow_state
+                            self.follow_state = False
                             # right button down, begin panning state
                             self.panning = True
                             self.pan_hold_position = x, y
@@ -211,9 +213,6 @@ class Main:
                         if self.view_surface_rect.collidepoint(x, y):
                             position = self.domain_manager.pick_cell(x -self.view_surface_rect.x, y - self.view_surface_rect.y)
                             self.domain_manager.avatar.move_to(position)
-                    elif event.button == 2:
-                        # stop following the avatar
-                        self.follow_state = False
                     elif event.button == 3:
                         # right button up, end panning state
                         self.panning = False
