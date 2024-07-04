@@ -4,28 +4,14 @@ This project aims to be a complete game of some kind in the end, mainly about sh
 
 Controls:
 
-left-click on map moves the avatar to that location.
-
-mouse-wheel controls zooming.
-
-while zoomed, holding right-mouse-button scrolls around the map.
-
-mouse-wheel click toggles following the avatar.
-
-There are two floors, pressing the number keys 1, and 2 show them.
-
-F1 toggles between absolute coordinates and coordinates relative to floor.
+Left-click anywhere on the map moves the avatar to that location.  Mouse-wheel controls zooming.  Holding right-mouse-button and moving the mouse scrolls around the map.  Mouse-wheel-click toggles following the avatar.  There are two floors, pressing the number keys 1 and 2 show them.  F1 toggles between absolute coordinates and coordinates relative to floor shown in the information panel.
 
 Winning:
 
-The game is won by gathering the items you can pick up and putting them all down into the same square.
-
-If you can pick up a item a button will appear when you are on the same square.  When you have an item there will be a put down button.
-
-You may only have one item in your inventory at a time.
+The game is won by gathering the items you can pick up and putting them all down into the same square.  The items you can pick up are a triangle graphic.  If you can pick up an item a button will appear for that when you are on the same square, and then when you have an item there will be a put down button.  You may only have one item in your inventory at a time.
 
 Graphics:
 
 Graphics are purposely minimal, years can be spent on them and this application isn't about graphics, it's about game systems.
 
-What is displayed is just the moveable area of the map, that is layer 0.  Layer 0 in a more developed domain isn't displayed, it's just where you can move to.  Then with the moveable areas layers 1 and higher are all the art assets and those layers are as many as needed.
+What is displayed is just the moveable area of the map, that is layer 0.  Layer 0 in a more developed domain isn't displayed, it's just where you can move to.  Then with the layer 0 moveable areas, layers 1 and higher are all the art assets and those layers are as many as needed.
