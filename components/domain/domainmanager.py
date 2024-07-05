@@ -1,4 +1,3 @@
-import pygame
 from pygame import Rect
 from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.data import TiledMapData

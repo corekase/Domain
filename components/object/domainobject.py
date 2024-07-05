@@ -1,4 +1,4 @@
-import sys, pygame
+import sys
 from math import cos, sin, atan2, radians, degrees, sqrt
 from collections import namedtuple
 from pygame.sprite import Sprite
