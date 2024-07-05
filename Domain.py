@@ -18,7 +18,7 @@ class Main:
         # EMPTY, FLOOR, WALL = 0, 1, 2
         # which can be used with tile_gid, like 'tile_gid[FLOOR]'
         tile_gid = (0, 2, 1)
-        # give both the domain manager and domain objects the tiles gid tuple
+        # give both the domain manager and domain objects the tile_gid tuple
         DomainManager.tile_gid = tile_gid
         DomainObject.tile_gid = tile_gid
         # initialize pygame
