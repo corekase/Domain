@@ -30,7 +30,7 @@ class DomainObject(Sprite):
     gui = None
     # reference for the domain manager
     domain_manager = None
-    # tile gid tuple
+    # tile gid tuple, useful for subclasses
     tiles = None
 
     def __init__(self):
@@ -43,8 +43,6 @@ class DomainObject(Sprite):
         self.x_coord, self.y_coord = None, None
         # world pixels per second
         self.speed = 0.0
-        # list of domain objects currently overlapping this one
-        self.overlaps = []
         # command queue
         self.command_queue = []
         # list of animation image frames
@@ -185,12 +183,6 @@ class DomainObject(Sprite):
         self.centre_xpos, self.centre_ypos = self.pixel_centre(position)
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
         self.x_coord, self.y_coord = position
-
-    def overlap(self, other_object):
-        # other_mapobject is overlapping rects with this mapobject, if it's not already in overlap_mapobjects then add it
-        if not (other_object in self.overlaps):
-            # remember the agent
-            self.overlaps.append(other_object)
 
     def load_sheet(self, *image):
         # load the sprite sheet for this domain object
