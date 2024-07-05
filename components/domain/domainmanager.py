@@ -17,7 +17,7 @@ from queue import Queue
 EMPTY, FLOOR, WALL = 0, 1, 2
 
 class DomainManager:
-    # reference to tiles gid tuple
+    # reference to tile_gid tuple
     tile_gid = None
 
     def __init__(self, view_surface):
