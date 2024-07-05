@@ -16,10 +16,10 @@ class Main:
     def __init__(self):
         # named index value in tiles is the tile gid from pytmx. defined only here
         # EMPTY, FLOOR, WALL = 0, 1, 2
-        tiles = (0, 2, 1)
+        tile_gid = (0, 2, 1)
         # give both the domain manager and domain objects the tiles gid tuple
-        DomainManager.tiles = tiles
-        DomainObject.tiles = tiles
+        DomainManager.tile_gid = tile_gid
+        DomainObject.tile_gid = tile_gid
         # initialize pygame
         pygame.init()
         # create main window surface
