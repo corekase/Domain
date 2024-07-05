@@ -14,8 +14,9 @@ from components import utility
 
 class Main:
     def __init__(self):
-        # named index value in tiles is the tile gid from pytmx. defined only here
+        # Each index in tile_gid is a gid, then the indexes can be named with the following values:
         # EMPTY, FLOOR, WALL = 0, 1, 2
+        # which can be used with tile_gid, like 'tile_gid[FLOOR]'
         tile_gid = (0, 2, 1)
         # give both the domain manager and domain objects the tiles gid tuple
         DomainManager.tile_gid = tile_gid
