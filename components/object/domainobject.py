@@ -4,6 +4,15 @@ from collections import namedtuple
 from pygame.sprite import Sprite
 from ..utility import sprite_sheet
 
+# setup typing for editor autocompletions
+from typing import TypeVar
+from components.object.objectmanager import ObjectManager
+from components.domain.domainmanager import DomainManager
+from components.gui.guimanager import GuiManager
+Obj_Man = TypeVar('Obj_Man', bound = ObjectManager)
+Dom_Man = TypeVar('Dom_Man', bound = DomainManager)
+Gui_Man = TypeVar('Gui_Man', bound = GuiManager)
+
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
 
@@ -25,11 +34,11 @@ class DomainObject(Sprite):
     # reference for the map, map is a keyword so this has _object added
     map_object = None
     # reference for domain objects
-    domain = None
+    domain: Obj_Man
     # reference for gui manager
-    gui = None
+    gui: Gui_Man
     # reference for the domain manager
-    domain_manager = None
+    domain_manager: Dom_Man
     # tile_gid tuple, useful for subclasses
     tile_gid = None
 

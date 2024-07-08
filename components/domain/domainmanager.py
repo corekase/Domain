@@ -3,13 +3,6 @@ from components.bundled.pyscroll.orthographic import BufferedRenderer
 from components.bundled.pyscroll.data import TiledMapData
 from components.bundled.pytmx.util_pygame import load_pygame
 from components.utility import file_resource
-from components.object.objectmanager import ObjectManager
-from components.object.domainobject import DomainObject
-from components.object.genericobject import GenericObject
-from components.object.pickupobject import PickupObject
-from components.object.agentobject import AgentObject
-from components.object.avatarobject import AvatarObject
-from components.object.teleporterobject import TeleporterObject
 from random import randint
 from queue import Queue
 
@@ -21,6 +14,15 @@ class DomainManager:
     tile_gid = None
 
     def __init__(self, view_surface):
+        # object references needed for domain initialization
+        # inside __init__ due to circular imports when doing type hinting in domainobject.py
+        from components.object.domainobject import DomainObject
+        from components.object.genericobject import GenericObject
+        from components.object.pickupobject import PickupObject
+        from components.object.agentobject import AgentObject
+        from components.object.avatarobject import AvatarObject
+        from components.object.teleporterobject import TeleporterObject
+        from components.object.objectmanager import ObjectManager
         # load the map, map is a keyword so this has _object added
         self.map_object = load_pygame(file_resource('domains', 'domain.tmx'))
         # give DomainObject subclasses a common reference to the map
