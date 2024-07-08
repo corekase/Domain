@@ -15,7 +15,6 @@ class DomainManager:
 
     def __init__(self, view_surface):
         # object references needed for domain initialization
-        # inside __init__ due to circular imports when doing type hinting in domainobject.py
         from components.object.domainobject import DomainObject
         from components.object.genericobject import GenericObject
         from components.object.pickupobject import PickupObject
