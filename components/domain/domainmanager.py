@@ -38,9 +38,9 @@ class DomainManager:
         self.zoom_amounts = [2.0, 4.0, 8.0]
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
         # create an object manager
-        self.domain = ObjectManager(self.renderer)
+        self.object_manager = ObjectManager(self.renderer)
         # share the domain with domain objects
-        DomainObject.object_manager = self.domain
+        DomainObject.object_manager = self.object_manager
         # map constants
         self.floor_tiles = 60
         floors = int(self.map_object.width / self.floor_tiles)
@@ -75,7 +75,7 @@ class DomainManager:
             instance = TeleporterObject(up_down, position, destination)
             instance.layer = 4
             # add it to the domain, in 'teleporters' reserved name
-            self.domain.object_add('teleporters', instance)
+            self.object_manager.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
             for floor in range(floors):
@@ -86,7 +86,7 @@ class DomainManager:
                     # set the layer, higher takes priority
                     instance.layer = layer
                     # add the instance to the group
-                    self.domain.object_add(group, instance)
+                    self.object_manager.object_add(group, instance)
         # create generic items
         populate(40, GenericObject, 1, 'generic')
         # create pickup items
@@ -97,7 +97,7 @@ class DomainManager:
         position = self.random_position_floor(self.tile_gid[FLOOR], 0)
         self.avatar = AvatarObject(position)
         self.avatar.layer = 5
-        self.domain.object_add('avatar', self.avatar)
+        self.object_manager.object_add('avatar', self.avatar)
         # initialize the main viewport with any value, needed for switch_floor
         self.main_viewport = list([0, 0])
         # switch to the avatar floor, which will adjust main_viewport
@@ -114,7 +114,7 @@ class DomainManager:
             if self.cell_gid((x, y)) == gid:
                 # is it already occupied by something
                 hit = False
-                for item in self.domain.domain():
+                for item in self.object_manager.domain():
                     if item.x_coord == x and item.y_coord == y:
                         hit = True
                         break
@@ -240,7 +240,7 @@ class DomainManager:
 
     def teleporters(self, position):
         # if there is a teleporter at position then return its destination otherwise return None
-        teleporters = self.cell_objects(position, self.domain.objects('teleporters'))
+        teleporters = self.cell_objects(position, self.object_manager.objects('teleporters'))
         if len(teleporters) > 0:
             # there is a teleporter here
             return teleporters[0].destination
@@ -285,7 +285,7 @@ class DomainManager:
 
     def update_domain(self, elapsed_time):
         # update the domain
-        self.domain.domain().update(elapsed_time)
+        self.object_manager.domain().update(elapsed_time)
 
     def draw_domain(self):
         # centre on desired viewport
@@ -305,4 +305,4 @@ class DomainManager:
         # reupdate the viewport, viewport is updated here in case the bounds were modified
         self.renderer.center(self.main_viewport)
         # draw map and group objects to surface
-        self.domain.domain().draw(self.view_surface)
+        self.object_manager.domain().draw(self.view_surface)

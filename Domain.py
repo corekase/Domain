@@ -252,7 +252,7 @@ class Main:
         # if all the pickup items are in the same cell then the game is won
         matched = True
         last_item = None
-        objects = self.domain_manager.domain.objects('pickups')
+        objects = self.domain_manager.object_manager.objects('pickups')
         # if the avatar has an item in their inventory then include it
         if self.domain_manager.avatar.inventory != None:
             objects.append(self.domain_manager.avatar.inventory)
