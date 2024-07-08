@@ -6,12 +6,15 @@ from ..utility import sprite_sheet
 
 # setup typing for editor autocompletions
 from typing import TypeVar
+from components.bundled.pytmx import TiledMap
 from components.object.objectmanager import ObjectManager
-from components.domain.domainmanager import DomainManager
 from components.gui.guimanager import GuiManager
+from components.domain.domainmanager import DomainManager
+# create the types
+Map_Obj = TypeVar('Map_Obj', bound = TiledMap)
 Obj_Man = TypeVar('Obj_Man', bound = ObjectManager)
-Dom_Man = TypeVar('Dom_Man', bound = DomainManager)
 Gui_Man = TypeVar('Gui_Man', bound = GuiManager)
+Dom_Man = TypeVar('Dom_Man', bound = DomainManager)
 
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
@@ -32,7 +35,7 @@ class Coordinate:
 
 class DomainObject(Sprite):
     # reference for the map, map is a keyword so this has _object added
-    map_object = None
+    map_object: Map_Obj
     # reference for domain objects
     domain: Obj_Man
     # reference for gui manager
