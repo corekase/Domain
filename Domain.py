@@ -1,11 +1,8 @@
 import time, pygame
 from pygame import Rect
-from pygame.draw import rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_F1
 from components.utility import image_alpha, padding, render_text
-from components.gui.button import Button
-from components.gui.frame import Frame
 from components.gui.widget import colours
 
 class Main:
@@ -51,10 +48,13 @@ class Main:
         DomainObject.domain_manager = self.domain_manager
         # instantiate a GUI manager
         from components.gui.guimanager import GuiManager
-        self.gui = GuiManager()
+        self.gui_manager = GuiManager()
         # give domain objects a reference to the gui
-        DomainObject.gui_manager = self.gui
-        # create gui buttons
+        DomainObject.gui_manager = self.gui_manager
+        # needed gui widgets
+        from components.gui.button import Button
+        from components.gui.frame import Frame
+        # create gui frame and buttons layout
         gui_xpos = view_xpos + view_width + 10
         gui_width = 1920 - gui_xpos - 10
         # create a frame for the information panel
@@ -67,17 +67,17 @@ class Main:
                                 button_width, button_height)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
-        self.gui.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
-        self.gui.add_widget('pickup_context', exit_button)
+        self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
+        self.gui_manager.add_widget('pickup_context', exit_button)
         # putdown button context
-        self.gui.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down'))
-        self.gui.add_widget('putdown_context', exit_button)
+        self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down'))
+        self.gui_manager.add_widget('putdown_context', exit_button)
         # game won context
-        self.gui.add_widget('win_context', Button(self.screen, 'won', button_rect, 'Won!'))
+        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', button_rect, 'Won!'))
         # default context
-        self.gui.add_widget('default', exit_button)
+        self.gui_manager.add_widget('default', exit_button)
         # switch to default context
-        self.gui.switch_context('default')
+        self.gui_manager.switch_context('default')
         # state for whether or not panning the view
         self.panning_state = False
         # when panning lock mouse position to this position
@@ -121,13 +121,13 @@ class Main:
             if self.follow_state:
                 self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
             # draw the outline around the main viewport
-            rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
+            pygame.draw.rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
             self.domain_manager.draw_domain()
             # and copy that surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw gui widgets
-            self.gui.draw_widgets()
+            self.gui_manager.draw_widgets()
             # poll for mouse position
             x, y = pygame.mouse.get_pos()
             # mouse damage to background. tracking damage is much faster than filling entire screen
@@ -145,13 +145,13 @@ class Main:
             # fill mouse damaged area
             self.screen.fill(colours['background'], damaged_rect)
             # fill gui damaged areas
-            for widget in self.gui.widgets[self.gui.context]:
+            for widget in self.gui_manager.widgets[self.gui_manager.context]:
                 self.screen.fill(colours['background'], widget.rect)
             # check for winning conditions after gui damage has been filled as the gui context may be changed
             if not self.won:
                 if self.check_win():
                     # display winning screen here
-                    self.gui.lock_context('win_context')
+                    self.gui_manager.lock_context('win_context')
                     self.won = True
         # release resources
         pygame.quit()
@@ -159,7 +159,7 @@ class Main:
     def handle_events(self):
         # handle event queue
         for event in pygame.event.get():
-            gui_event = self.gui.handle_event(event)
+            gui_event = self.gui_manager.handle_event(event)
             if gui_event != None:
                 # handle gui events
                 if gui_event == 'pick_up':
