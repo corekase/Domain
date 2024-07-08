@@ -11,10 +11,10 @@ from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
 # create the types
-Map_Obj = TypeVar('Map_Obj', bound = TiledMap)
-Obj_Man = TypeVar('Obj_Man', bound = ObjectManager)
-Gui_Man = TypeVar('Gui_Man', bound = GuiManager)
-Dom_Man = TypeVar('Dom_Man', bound = DomainManager)
+Map_Obj = TypeVar('Map_Obj', bound=TiledMap)
+Obj_Man = TypeVar('Obj_Man', bound=ObjectManager)
+Gui_Man = TypeVar('Gui_Man', bound=GuiManager)
+Dom_Man = TypeVar('Dom_Man', bound=DomainManager)
 
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
