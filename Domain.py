@@ -54,8 +54,8 @@ class Main:
         # give domain objects a reference to the gui
         DomainObject.gui_manager = self.gui_manager
         # needed gui widgets
-        from components.gui.button import Button
         from components.gui.frame import Frame
+        from components.gui.button import Button
         # create gui frame and buttons layout
         gui_xpos = view_xpos + view_width + 10
         gui_width = 1920 - gui_xpos - 10
