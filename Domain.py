@@ -191,8 +191,10 @@ class Main:
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 2:
-                            # toggle between follow_state true and false
-                            self.follow_state = not self.follow_state
+                            # only follow the avatar if on the same floor as it
+                            if self.domain_manager.get_floor(self.domain_manager.avatar.x_coord) == self.domain_manager.floor:
+                                # toggle between follow_state true and false
+                                self.follow_state = not self.follow_state
                         elif event.button == 3:
                             # cancel follow_state
                             self.follow_state = False
