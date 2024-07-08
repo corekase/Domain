@@ -22,21 +22,21 @@ class AgentObject(DomainObject):
         if self.destination_object == None:
             if len(self.object_manager.objects('generic')) > 0:
                 # find the nearest item
-                path, self.destination_object = DomainObject.domain_manager.find_nearest(
+                path, self.destination_object = self.domain_manager.find_nearest(
                                                 (self.x_coord, self.y_coord),
-                                                DomainObject.object_manager.objects('generic'))
+                                                self.object_manager.objects('generic'))
                 if path != None:
-                    DomainObject.object_manager.object_remove('generic', self.destination_object)
+                    self.object_manager.object_remove('generic', self.destination_object)
                     self.command(Path_To((self.destination_object.x_coord, self.destination_object.y_coord)))
         else:
-            floor = DomainObject.domain_manager.get_floor(self.destination_object.x_coord)
+            floor = self.domain_manager.get_floor(self.destination_object.x_coord)
             # remove reference to old object
-            DomainObject.object_manager.delete('generic', self.destination_object)
+            self.object_manager.delete('generic', self.destination_object)
             # create a new generic object
-            position = DomainObject.domain_manager.random_position_floor(DomainObject.tile_gid[FLOOR], floor)
+            position = self.domain_manager.random_position_floor(self.tile_gid[FLOOR], floor)
             item_object = GenericObject(position)
             item_object.layer = 1
             # track the generic item
-            DomainObject.object_manager.object_add('generic', item_object)
+            self.object_manager.object_add('generic', item_object)
             # reset destination to none
             self.destination_object = None

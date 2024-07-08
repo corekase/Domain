@@ -112,7 +112,7 @@ class DomainObject(Sprite):
                 # remove this command from the queue
                 self.command_queue.pop(0)
                 # find valid path, if no valid path do nothing
-                path = DomainObject.domain_manager.find_nearest((self.x_coord, self.y_coord), [Coordinate(destination)])[0]
+                path = self.domain_manager.find_nearest((self.x_coord, self.y_coord), [Coordinate(destination)])[0]
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
                     for position in path:
@@ -132,8 +132,8 @@ class DomainObject(Sprite):
                 self.command_queue.pop(0)
                 # if follow then switch floor and main_viewport as well, done within a single command queue item
                 if follow:
-                    DomainObject.domain_manager.switch_floor(DomainObject.domain_manager.get_floor(destination[0]))
-                    DomainObject.domain_manager.main_viewport = list(self.rect.center)
+                    self.domain_manager.switch_floor(self.domain_manager.get_floor(destination[0]))
+                    self.domain_manager.main_viewport = list(self.rect.center)
             else:
                 raise Exception(f'Command: {command_name} not implemented')
         else:
@@ -188,7 +188,7 @@ class DomainObject(Sprite):
         # update position state in pixels
         self.centre_xpos, self.centre_ypos = position
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
-        self.x_coord, self.y_coord = int(self.rect.centerx / DomainObject.map_object.tilewidth), int(self.rect.centery / DomainObject.map_object.tileheight)
+        self.x_coord, self.y_coord = int(self.rect.centerx / self.map_object.tilewidth), int(self.rect.centery / self.map_object.tileheight)
 
     def sync_cell(self, position):
         # update position state in cells

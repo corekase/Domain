@@ -80,7 +80,7 @@ class DomainManager:
         def populate(number, cls, layer, group):
             for floor in range(floors):
                 for _ in range(number):
-                    position = self.random_position_floor(DomainManager.tile_gid[FLOOR], floor)
+                    position = self.random_position_floor(self.tile_gid[FLOOR], floor)
                     # instantiate from the class
                     instance = cls(position)
                     # set the layer, higher takes priority
@@ -94,7 +94,7 @@ class DomainManager:
         # create agents
         populate(20, AgentObject, 3, 'agents')
         # create a player avatar and add it to the domain
-        position = self.random_position_floor(DomainManager.tile_gid[FLOOR], 0)
+        position = self.random_position_floor(self.tile_gid[FLOOR], 0)
         self.avatar = AvatarObject(position)
         self.avatar.layer = 5
         self.domain.object_add('avatar', self.avatar)
@@ -200,21 +200,21 @@ class DomainManager:
         # clear the current tile so it isn't included in neighbours
         adjacents[4] = None
         # with the layout order, block out invalid orthographic moves due to walls
-        if adjacents[1] == DomainManager.tile_gid[WALL]:
+        if adjacents[1] == self.tile_gid[WALL]:
             adjacents[0] = None
             adjacents[2] = None
-        if adjacents[5] == DomainManager.tile_gid[WALL]:
+        if adjacents[5] == self.tile_gid[WALL]:
             adjacents[2] = None
             adjacents[8] = None
-        if adjacents[7] == DomainManager.tile_gid[WALL]:
+        if adjacents[7] == self.tile_gid[WALL]:
             adjacents[6] = None
             adjacents[8] = None
-        if adjacents[3] == DomainManager.tile_gid[WALL]:
+        if adjacents[3] == self.tile_gid[WALL]:
             adjacents[0] = None
             adjacents[6] = None
         valid_neighbours = []
         for num, value in enumerate(adjacents):
-            if value == DomainManager.tile_gid[FLOOR]:
+            if value == self.tile_gid[FLOOR]:
                 new_x, new_y = x + neighbours[num][0], y + neighbours[num][1]
                 # if the neighbour is on the same floor then it is valid
                 if self.get_floor(x) == self.get_floor(new_x):
