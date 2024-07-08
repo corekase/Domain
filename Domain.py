@@ -12,6 +12,7 @@ class Main:
         #     which can be used with tile_gid, like 'tile_gid[FLOOR]'
         # - gid values are defined once right here, if map data changes only here needs to be changed
         tile_gid = (0, 2, 1)
+        # bring in references so that class variables can be set
         from components.domain.domainmanager import DomainManager
         from components.object.domainobject import DomainObject
         # give both the domain manager and domain objects the tile_gid tuple
@@ -27,8 +28,9 @@ class Main:
         pygame.display.set_icon(image_alpha('icon.png'))
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
-        # set the default font for utility functions
+        # bring in reference
         from components import utility
+        # set the default font for utility functions
         utility.font_size = 16
         utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # load images for custom mouse pointers
@@ -46,8 +48,9 @@ class Main:
         self.domain_manager = DomainManager(self.view_surface)
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
-        # instantiate a GUI manager
+        # bring in reference
         from components.gui.guimanager import GuiManager
+        # instantiate a GUI manager
         self.gui_manager = GuiManager()
         # give domain objects a reference to the gui
         DomainObject.gui_manager = self.gui_manager
