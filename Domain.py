@@ -14,9 +14,10 @@ from components import utility
 
 class Main:
     def __init__(self):
-        # Each index in tile_gid is a gid, then the indexes can be named with the following values:
-        # EMPTY, FLOOR, WALL = 0, 1, 2
-        # which can be used with tile_gid, like 'tile_gid[FLOOR]'
+        # - Each index value in tile_gid is a gid, then the indexes can be named:
+        #     EMPTY, FLOOR, WALL = 0, 1, 2
+        #     which can be used with tile_gid, like 'tile_gid[FLOOR]'
+        # - gid values are defined once right here, if map data changes only here needs to be changed
         tile_gid = (0, 2, 1)
         # give both the domain manager and domain objects the tile_gid tuple
         DomainManager.tile_gid = tile_gid
