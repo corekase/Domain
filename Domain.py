@@ -1,8 +1,7 @@
 import time, pygame
-from pygame import Rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_F1
-from components.utility import image_alpha, padding, render_text
+from components.utility import padding, render_text
 from components.gui.widget import colours
 
 class Main:
@@ -24,26 +23,26 @@ class Main:
         self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
         # set window caption
         pygame.display.set_caption('Domain')
-        # set window icon
-        pygame.display.set_icon(image_alpha('icon.png'))
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
         # bring in reference
         from components import utility
+        # set window icon
+        pygame.display.set_icon(utility.image_alpha('icon.png'))
         # set the default font for utility functions
         utility.font_size = 16
         utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # load images for custom mouse pointers
-        self.cursor_domain_image = image_alpha('cursors', 'cursor_domain.png')
-        self.cursor_interface_image = image_alpha('cursors', 'cursor_interface.png')
+        self.cursor_domain_image = utility.image_alpha('cursors', 'cursor_domain.png')
+        self.cursor_interface_image = utility.image_alpha('cursors', 'cursor_interface.png')
         # dimensions of the viewport
         view_xpos, view_ypos, view_width, view_height = 10, 10, 1680, 1060
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
-        self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
+        self.view_surface_rect = pygame.Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect that outlines view_surface_rect
-        self.view_surface_outline_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
+        self.view_surface_outline_rect = pygame.Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
         # create domain manager
         self.domain_manager = DomainManager(self.view_surface)
         # give domain objects a reference to the domain manager
@@ -61,13 +60,13 @@ class Main:
         gui_xpos = view_xpos + view_width + 10
         gui_width = 1920 - gui_xpos - 10
         # create a frame for the information panel
-        information_frame_rect = Rect(gui_xpos, 10, gui_width, padding(4))
+        information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(4))
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         button_width, button_height = int(gui_width / 2), 20
-        button_rect = Rect(gui_xpos, information_frame_rect.bottom + 1, button_width, button_height)
-        button_exit_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height,
-                                button_width, button_height)
+        button_rect = pygame.Rect(gui_xpos, information_frame_rect.bottom + 1, button_width, button_height)
+        button_exit_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height,
+                                       button_width, button_height)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         # pickup button context
         self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
@@ -134,7 +133,7 @@ class Main:
             # poll for mouse position
             x, y = pygame.mouse.get_pos()
             # mouse damage to background. tracking damage is much faster than filling entire screen
-            damaged_rect = Rect(x - 6, y, 16, 16)
+            damaged_rect = pygame.Rect(x - 6, y, 16, 16)
             # update self.status for the information panel
             self.update_status(x, y)
             # draw information panel
