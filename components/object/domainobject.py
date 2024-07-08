@@ -36,7 +36,7 @@ class Coordinate:
 class DomainObject(Sprite):
     # reference for the map, map is a keyword so this has _object added
     map_object: Map_Obj
-    # reference for domain objects
+    # reference for object manager
     object_manager: Obj_Man
     # reference for gui manager
     gui_manager: Gui_Man
