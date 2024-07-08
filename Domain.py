@@ -7,9 +7,6 @@ from components.utility import image_alpha, padding, render_text
 from components.gui.button import Button
 from components.gui.frame import Frame
 from components.gui.widget import colours
-from components.gui.guimanager import GuiManager
-from components.domain.domainmanager import DomainManager
-from components.object.domainobject import DomainObject
 
 class Main:
     def __init__(self):
@@ -18,6 +15,8 @@ class Main:
         #     which can be used with tile_gid, like 'tile_gid[FLOOR]'
         # - gid values are defined once right here, if map data changes only here needs to be changed
         tile_gid = (0, 2, 1)
+        from components.domain.domainmanager import DomainManager
+        from components.object.domainobject import DomainObject
         # give both the domain manager and domain objects the tile_gid tuple
         DomainManager.tile_gid = tile_gid
         DomainObject.tile_gid = tile_gid
@@ -51,6 +50,7 @@ class Main:
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
         # instantiate a GUI manager
+        from components.gui.guimanager import GuiManager
         self.gui = GuiManager()
         # give domain objects a reference to the gui
         DomainObject.gui_manager = self.gui
