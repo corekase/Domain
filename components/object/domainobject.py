@@ -37,9 +37,9 @@ class DomainObject(Sprite):
     # reference for the map, map is a keyword so this has _object added
     map_object: Map_Obj
     # reference for domain objects
-    domain: Obj_Man
+    object_manager: Obj_Man
     # reference for gui manager
-    gui: Gui_Man
+    gui_manager: Gui_Man
     # reference for the domain manager
     domain_manager: Dom_Man
     # tile_gid tuple, useful for subclasses

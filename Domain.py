@@ -52,7 +52,7 @@ class Main:
         # instantiate a GUI manager
         self.gui = GuiManager()
         # give domain objects a reference to the gui
-        DomainObject.gui = self.gui
+        DomainObject.gui_manager = self.gui
         # create gui buttons
         gui_xpos = view_xpos + view_width + 10
         gui_width = 1920 - gui_xpos - 10
