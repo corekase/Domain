@@ -3,14 +3,13 @@ from pygame import Rect
 from pygame.draw import rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_F1
-from components.utility import image_alpha_resource, padding, render_text
+from components.utility import image_alpha, padding, render_text
 from components.gui.button import Button
 from components.gui.frame import Frame
 from components.gui.widget import colours
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
-from components import utility
 
 class Main:
     def __init__(self):
@@ -29,15 +28,16 @@ class Main:
         # set window caption
         pygame.display.set_caption('Domain')
         # set window icon
-        pygame.display.set_icon(image_alpha_resource('icon.png'))
+        pygame.display.set_icon(image_alpha('icon.png'))
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
         # set the default font for utility functions
+        from components import utility
         utility.font_size = 16
         utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # load images for custom mouse pointers
-        self.cursor_domain_image = image_alpha_resource('cursors', 'cursor_domain.png')
-        self.cursor_interface_image = image_alpha_resource('cursors', 'cursor_interface.png')
+        self.cursor_domain_image = image_alpha('cursors', 'cursor_domain.png')
+        self.cursor_interface_image = image_alpha('cursors', 'cursor_interface.png')
         # dimensions of the viewport
         view_xpos, view_ypos, view_width, view_height = 10, 10, 1680, 1060
         # create a surface of that size for rendering

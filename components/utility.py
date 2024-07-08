@@ -21,7 +21,7 @@ def sprite_sheet(*names):
     # returns list of frames
     return frames_list
 
-def image_alpha_resource(*names):
+def image_alpha(*names):
     # load, convert with an alpha channel, and return an image surface
     return pygame.image.load(file_resource(*names)).convert_alpha()
 
