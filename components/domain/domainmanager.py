@@ -1,11 +1,3 @@
-from pygame import Rect
-from components.bundled.pyscroll.orthographic import BufferedRenderer
-from components.bundled.pyscroll.data import TiledMapData
-from components.bundled.pytmx.util_pygame import load_pygame
-from components.utility import file_resource
-from random import randint
-from queue import Queue
-
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
 
@@ -14,6 +6,12 @@ class DomainManager:
     tile_gid = None
 
     def __init__(self, view_surface):
+        # needed functions for initialization
+        from components.bundled.pyscroll.orthographic import BufferedRenderer
+        from components.bundled.pyscroll.data import TiledMapData
+        from components.bundled.pytmx.util_pygame import load_pygame
+        from components.utility import file_resource
+        from pygame import Rect
         # object references needed for domain initialization
         from components.object.domainobject import DomainObject
         from components.object.objectmanager import ObjectManager
@@ -105,6 +103,7 @@ class DomainManager:
         self.main_viewport = list(self.avatar.rect.center)
 
     def random_position(self, gid, x_min, y_min, width, height):
+        from random import randint
         # return a random empty cell position which is a specific tile gid
         while True:
             # random position
@@ -144,6 +143,7 @@ class DomainManager:
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
 
     def find_nearest(self, start_position, destination_objects):
+        from queue import Queue
         # data structure for objects for find_nearest
         destination_list = []
         for item in destination_objects:
