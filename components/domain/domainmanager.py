@@ -36,7 +36,7 @@ class DomainManager:
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
         # create an object manager
         self.object_manager = ObjectManager(self.renderer)
-        # share the domain with domain objects
+        # share the object manager with domain objects
         DomainObject.object_manager = self.object_manager
         # map constants
         self.floor_tiles = 60
