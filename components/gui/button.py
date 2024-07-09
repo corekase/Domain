@@ -1,9 +1,9 @@
-from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
-from ..utility import render_text, centre
-from .frame import Frame, State
+from .frame import Frame
 
 class Button(Frame):
     def __init__(self, surface, id, rect, text):
+        from ..utility import render_text, centre
+        from .frame import State
         # initialize common widget values
         super().__init__(surface, id, rect)
         # button state
@@ -18,6 +18,8 @@ class Button(Frame):
         self.position = text_x, text_y
 
     def handle_event(self, event):
+        from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
+        from .frame import State
         if not (event.type in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN)):
             # no matching events for button logic
             return False
@@ -44,6 +46,7 @@ class Button(Frame):
         return False
 
     def draw(self):
+        from .frame import State
         # draw the button frame
         super().draw()
         # draw the button text
