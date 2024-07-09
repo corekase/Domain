@@ -5,8 +5,6 @@ class Main:
         #     which can be used with tile_gid, like 'tile_gid[FLOOR]'
         # - gid values are defined once right here, if map data changes only here needs to be changed
         tile_gid = (0, 2, 1)
-        import pygame
-        from components.utility import padding
         # bring in references so that class variables can be set
         from components.domain.domainmanager import DomainManager
         from components.object.domainobject import DomainObject
@@ -14,6 +12,7 @@ class Main:
         DomainManager.tile_gid = tile_gid
         DomainObject.tile_gid = tile_gid
         # initialize pygame
+        import pygame
         pygame.init()
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
@@ -52,6 +51,8 @@ class Main:
         # needed gui widgets
         from components.gui.frame import Frame
         from components.gui.button import Button
+        # padding function from utility
+        from components.utility import padding
         # create gui frame and buttons layout
         gui_xpos = view_xpos + view_width + 10
         gui_width = 1920 - gui_xpos - 10
@@ -157,6 +158,7 @@ class Main:
         pygame.quit()
 
     def handle_events(self):
+        # bring in pygame reference
         import pygame
         # used constants
         from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
@@ -275,6 +277,7 @@ class Main:
         return matched
 
     def draw_info_panel(self, fps):
+        # bring in needed functions
         from components.utility import padding, render_text
         # gather information into text strings
         cycle = f'Cycle: {self.cycle}'

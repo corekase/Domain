@@ -13,10 +13,6 @@ Dom_Man = TypeVar('Dom_Man', bound=DomainManager)
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
 
-# machine epsilon for distance calculation in move_to
-import sys
-eps = sys.float_info.epsilon
-
 from collections import namedtuple
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
@@ -96,7 +92,8 @@ class DomainObject(Sprite):
                 # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
-                if self.find_distance(destination) <= 1.0 + eps:
+                import sys
+                if self.find_distance(destination) <= 1.0 + sys.float_info.epsilon:
                     # arrived at destination
                     self.sync_coordinate(destination)
                     # remove this command item from the queue
