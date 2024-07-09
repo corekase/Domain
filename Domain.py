@@ -95,7 +95,7 @@ class Main:
         self.running = True
 
     def run(self):
-        from components.gui.widget import colours
+        from components.gui.guimanager import colours
         import time, pygame
         # maximum frames-per-second, 0 for unlimited
         fps = 0

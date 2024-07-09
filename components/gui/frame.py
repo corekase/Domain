@@ -12,7 +12,7 @@ class Frame(Widget):
         return False
 
     def draw(self):
-        from .widget import colours
+        from .guimanager import colours
         if self.state == State.IDLE:
             self.draw_frame(colours['light'], colours['dark'], colours['full'], colours['none'], colours['medium'])
         elif self.state == State.HOVER:

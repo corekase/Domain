@@ -1,6 +1,6 @@
 import os, pygame
 from pygame import Rect
-from .gui.widget import colours
+from .gui.guimanager import colours
 
 # these are filled in during the initializer of Main()
 font_size = None
