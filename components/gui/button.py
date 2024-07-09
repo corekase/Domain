@@ -18,7 +18,9 @@ class Button(Frame):
         self.position = text_x, text_y
 
     def handle_event(self, event):
+        # bring in mouse-related events
         from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
+        # bring in State from the base Frame
         from .frame import State
         if not (event.type in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN)):
             # no matching events for button logic

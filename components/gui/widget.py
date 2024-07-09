@@ -1,6 +1,7 @@
 # widget is the base class all gui widgets inherit from
 class Widget:
     def __init__(self, surface, id, rect):
+        # bring in Rect
         from pygame import Rect
         # surface to draw the widget on
         self.surface = surface

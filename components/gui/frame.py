@@ -12,7 +12,9 @@ class Frame(Widget):
         return False
 
     def draw(self):
+        # bring in colours
         from .guimanager import colours
+        # determine which colours to use depending on State
         if self.state == State.IDLE:
             self.draw_frame(colours['light'], colours['dark'], colours['full'], colours['none'], colours['medium'])
         elif self.state == State.HOVER:
@@ -21,6 +23,7 @@ class Frame(Widget):
             self.draw_frame(colours['none'], colours['light'], colours['none'], colours['full'], colours['dark'])
 
     def draw_frame(self, ul, lr, ul_d, lr_d, background):
+        # bring in rect and line
         from pygame.draw import rect, line
         # ul, lr = upper and left, lower and right lines
         # ul_d, lr_d = upper-left dot, lower-right dot
