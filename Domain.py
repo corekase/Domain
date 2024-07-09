@@ -184,12 +184,12 @@ class Main:
                     if event.key == K_ESCAPE:
                         # escape key, also quits
                         self.running = False
-                    if event.key == K_1:
+                    elif event.key in (K_1, K_2):
                         self.follow_state = False
-                        self.domain_manager.switch_floor(0)
-                    elif event.key == K_2:
-                        self.follow_state = False
-                        self.domain_manager.switch_floor(1)
+                        if event.key == K_1:
+                            self.domain_manager.switch_floor(0)
+                        elif event.key == K_2:
+                            self.domain_manager.switch_floor(1)
                     elif event.key == K_F1:
                         self.coordinate_toggle = not self.coordinate_toggle
                 # mouse buttons
