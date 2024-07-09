@@ -1,5 +1,4 @@
-from .domainobject import DomainObject, Path_To
-from .genericobject import GenericObject
+from .domainobject import DomainObject
 
 # named indexes for tiles to map the correct gid
 EMPTY, FLOOR, WALL = 0, 1, 2
@@ -26,9 +25,11 @@ class AgentObject(DomainObject):
                                                 (self.x_coord, self.y_coord),
                                                 self.object_manager.objects('generic'))
                 if path != None:
+                    from .domainobject import Path_To
                     self.object_manager.object_remove('generic', self.destination_object)
                     self.command(Path_To((self.destination_object.x_coord, self.destination_object.y_coord)))
         else:
+            from .genericobject import GenericObject
             floor = self.domain_manager.get_floor(self.destination_object.x_coord)
             # remove reference to old object
             self.object_manager.delete('generic', self.destination_object)

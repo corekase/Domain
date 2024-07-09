@@ -1,4 +1,4 @@
-from .domainobject import DomainObject, Path_To, Datagram, Teleport
+from .domainobject import DomainObject
 
 class AvatarObject(DomainObject):
     def __init__(self, position):
@@ -36,14 +36,17 @@ class AvatarObject(DomainObject):
             # no move_to in the queue so just go there directly
             self.move_to_guarded(position)
         else:
+            from .domainobject import Datagram
             # do after existing move_to
             self.command(Datagram(self.move_to_guarded, position))
 
     def move_to_guarded(self, position):
+        from .domainobject import Path_To
         # from current position go to new_position
         self.command(Path_To(position))
         teleport = self.domain_manager.teleporters(position)
         if teleport != None:
+            from .domainobject import Teleport
             # there is a teleporter at the new position
             self.command(Teleport(teleport, True))
 

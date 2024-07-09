@@ -1,9 +1,3 @@
-import sys
-from math import cos, sin, atan2, radians, degrees, sqrt
-from collections import namedtuple
-from pygame.sprite import Sprite
-from ..utility import sprite_sheet
-
 # setup typing for editor autocompletions
 from typing import TypeVar
 from components.bundled.pytmx import TiledMap
@@ -20,8 +14,10 @@ Dom_Man = TypeVar('Dom_Man', bound=DomainManager)
 EMPTY, FLOOR, WALL = 0, 1, 2
 
 # machine epsilon for distance calculation in move_to
+import sys
 eps = sys.float_info.epsilon
 
+from collections import namedtuple
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
@@ -32,6 +28,8 @@ Teleport = namedtuple('Teleport', 'destination follow')
 class Coordinate:
     def __init__(self, position):
         self.x_coord, self.y_coord = position
+
+from pygame.sprite import Sprite
 
 class DomainObject(Sprite):
     # reference for the map, map is a keyword so this has _object added
@@ -165,16 +163,19 @@ class DomainObject(Sprite):
         return True
 
     def move(self, degree, elapsed_time):
-        # move in the direction of degree
+        from math import cos, sin, radians
+       # move in the direction of degree
         degree %= 360
         self.sync_coordinate((self.centre_xpos + (cos(radians(degree)) * self.speed) * elapsed_time,
                               self.centre_ypos + (sin(radians(degree)) * self.speed) * elapsed_time))
 
     def find_bearing_angle(self, position):
+        from math import atan2, degrees
         # find bearing angle on position
         return degrees(atan2(position[1] - self.centre_ypos, position[0] - self.centre_xpos)) % 360
 
     def find_distance(self, position):
+        from math import sqrt
         # find distance between self and position
         return sqrt((abs(self.centre_xpos - position[0]) ** 2) + (abs(self.centre_ypos - position[1]) ** 2))
 
@@ -197,6 +198,7 @@ class DomainObject(Sprite):
         self.x_coord, self.y_coord = position
 
     def load_sheet(self, *image):
+        from ..utility import sprite_sheet
         # load the sprite sheet for this domain object
         self.animations = sprite_sheet(*image)
         self.frame = 0

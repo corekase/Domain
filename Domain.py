@@ -1,9 +1,3 @@
-import time, pygame
-from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
-from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_F1
-from components.utility import padding, render_text
-from components.gui.widget import colours
-
 class Main:
     def __init__(self):
         # - Each index value in tile_gid is a gid, then the indexes can be named:
@@ -11,6 +5,8 @@ class Main:
         #     which can be used with tile_gid, like 'tile_gid[FLOOR]'
         # - gid values are defined once right here, if map data changes only here needs to be changed
         tile_gid = (0, 2, 1)
+        import pygame
+        from components.utility import padding
         # bring in references so that class variables can be set
         from components.domain.domainmanager import DomainManager
         from components.object.domainobject import DomainObject
@@ -98,6 +94,8 @@ class Main:
         self.running = True
 
     def run(self):
+        from components.gui.widget import colours
+        import time, pygame
         # maximum frames-per-second, 0 for unlimited
         fps = 0
         # instantiate a pygame clock for frame maximum limits
@@ -159,6 +157,10 @@ class Main:
         pygame.quit()
 
     def handle_events(self):
+        import pygame
+        # used constants
+        from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
+        from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_F1
         # handle event queue
         for event in pygame.event.get():
             gui_event = self.gui_manager.handle_event(event)
@@ -273,6 +275,7 @@ class Main:
         return matched
 
     def draw_info_panel(self, fps):
+        from components.utility import padding, render_text
         # gather information into text strings
         cycle = f'Cycle: {self.cycle}'
         fps = f'FPS: {int(round(fps))}'

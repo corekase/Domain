@@ -1,4 +1,4 @@
-from .domainobject import DomainObject, Stall
+from .domainobject import DomainObject
 
 class GenericObject(DomainObject):
     def __init__(self, position):
@@ -9,4 +9,5 @@ class GenericObject(DomainObject):
         self.sync_cell(position)
 
     def process(self):
+        from .domainobject import Stall
         self.command(Stall(None))
