@@ -185,12 +185,16 @@ class Main:
                         # escape key, also quits
                         self.running = False
                     elif event.key in (K_1, K_2):
+                        # stop following on any floor switch
                         self.follow_state = False
                         if event.key == K_1:
+                            # switch to floor 1
                             self.domain_manager.switch_floor(0)
                         elif event.key == K_2:
+                            # switch to floor 2
                             self.domain_manager.switch_floor(1)
                     elif event.key == K_F1:
+                        # toggle whether coordinates shown are relative or absolute
                         self.coordinate_toggle = not self.coordinate_toggle
                 # mouse buttons
                 elif event.type == MOUSEBUTTONDOWN:
