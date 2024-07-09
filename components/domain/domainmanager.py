@@ -7,10 +7,10 @@ class DomainManager:
 
     def __init__(self, view_surface):
         # needed functions for initialization
-        from components.bundled.pyscroll.orthographic import BufferedRenderer
-        from components.bundled.pyscroll.data import TiledMapData
         from components.bundled.pytmx.util_pygame import load_pygame
         from components.utility import file_resource
+        from components.bundled.pyscroll.orthographic import BufferedRenderer
+        from components.bundled.pyscroll.data import TiledMapData
         from pygame import Rect
         # object references needed for domain initialization
         from components.object.domainobject import DomainObject
