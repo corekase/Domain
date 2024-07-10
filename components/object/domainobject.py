@@ -1,14 +1,8 @@
-# setup typing for editor autocompletions
-from typing import TypeVar
+# bring in class references
 from components.bundled.pytmx import TiledMap
 from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
-# create the types
-Map_Obj = TypeVar('Map_Obj', bound=TiledMap)
-Obj_Man = TypeVar('Obj_Man', bound=ObjectManager)
-Gui_Man = TypeVar('Gui_Man', bound=GuiManager)
-Dom_Man = TypeVar('Dom_Man', bound=DomainManager)
 
 from collections import namedtuple
 # commands and their parameters for the command queue
@@ -26,13 +20,13 @@ from pygame.sprite import Sprite
 
 class DomainObject(Sprite):
     # reference for the map, map is a keyword so this has _object added
-    map_object: Map_Obj
+    map_object: TiledMap
     # reference for object manager
-    object_manager: Obj_Man
+    object_manager: ObjectManager
     # reference for gui manager
-    gui_manager: Gui_Man
+    gui_manager: GuiManager
     # reference for the domain manager
-    domain_manager: Dom_Man
+    domain_manager: DomainManager
     # tile_gid tuple, useful for subclasses
     tile_gid = None
 
