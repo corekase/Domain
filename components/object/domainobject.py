@@ -11,7 +11,7 @@ Gui_Man = TypeVar('Gui_Man', bound=GuiManager)
 Dom_Man = TypeVar('Dom_Man', bound=DomainManager)
 
 # named indexes for tiles to map the correct gid
-EMPTY, FLOOR, WALL = 0, 1, 2
+EMPTY, WALL, FLOOR = 0, 1, 2
 
 from collections import namedtuple
 # commands and their parameters for the command queue

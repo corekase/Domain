@@ -1,5 +1,5 @@
 # named indexes for tiles to map the correct gid
-EMPTY, FLOOR, WALL = 0, 1, 2
+EMPTY, WALL, FLOOR = 0, 1, 2
 
 class DomainManager:
     # reference to tile_gid tuple
