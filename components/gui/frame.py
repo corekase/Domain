@@ -40,7 +40,7 @@ class Frame(Widget):
         line(self.surface, lr, (x, y + height - 1), (x + width - 1, y + height - 1))
         line(self.surface, lr, (x + width - 1, y - 1), (x + width - 1, y + height - 1))
         # plot upper left dot
-        self.surface.set_at((x + 1, y +1), ul_d)
+        self.surface.set_at((x + 1, y + 1), ul_d)
         # plot lower right dot
         self.surface.set_at((x + width - 2, y + height - 2), lr_d)
         # unlock surface
