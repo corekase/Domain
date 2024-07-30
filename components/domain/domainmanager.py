@@ -146,7 +146,7 @@ class DomainManager:
         # data structure for objects for find_nearest
         destination_list = []
         for item in destination_objects:
-            destination_list.append([item.x_coord, item.y_coord, item])
+            destination_list.append([(item.x_coord, item.y_coord), item])
         # breadth-first search
         frontier = list()
         frontier.append(start_position)
@@ -157,8 +157,8 @@ class DomainManager:
         goal_object = None
         while len(frontier) > 0:
             current = frontier.pop(0)
-            for x, y, object in destination_list:
-                if (current[0] == x) and (current[1] == y):
+            for coord, object in destination_list:
+                if coord == current:
                     found = True
                     goal = current
                     goal_object = object
