@@ -143,21 +143,20 @@ class DomainManager:
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
 
     def find_nearest(self, start_position, destination_objects):
-        from queue import Queue
         # data structure for objects for find_nearest
         destination_list = []
         for item in destination_objects:
             destination_list.append([item.x_coord, item.y_coord, item])
         # breadth-first search
-        frontier = Queue()
-        frontier.put(start_position)
+        frontier = list()
+        frontier.append(start_position)
         came_from = dict()
         came_from[start_position] = None
         found = False
         goal = None
         goal_object = None
-        while not frontier.empty():
-            current = frontier.get()
+        while len(frontier) > 0:
+            current = frontier.pop(0)
             for x, y, object in destination_list:
                 if (current[0] == x) and (current[1] == y):
                     found = True
@@ -168,8 +167,8 @@ class DomainManager:
                 break
             neighbours = self.adjacents(current)
             for next in neighbours:
-                if next not in came_from:
-                    frontier.put(next)
+                if not (next in came_from):
+                    frontier.append(next)
                     came_from[next] = current
         if found:
             path = []
