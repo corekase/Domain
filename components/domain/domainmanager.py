@@ -148,11 +148,10 @@ class DomainManager:
         for item in destination_objects:
             destination_list.append([(item.x_coord, item.y_coord), item])
         # breadth-first search
-        frontier = list([start_position])
-        came_from = dict()
-        came_from[start_position] = None
+        frontier = [start_position]
+        came_from = {}
+        came_from[start_position] = goal = goal_object = None
         found = False
-        goal = goal_object = None
         while len(frontier) > 0:
             current = frontier.pop(0)
             for coord, object in destination_list:
