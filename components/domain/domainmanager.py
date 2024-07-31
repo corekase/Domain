@@ -143,10 +143,6 @@ class DomainManager:
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
 
     def find_nearest(self, start_position, destination_objects):
-        # data structure for objects for find_nearest
-        destination_list = []
-        for item in destination_objects:
-            destination_list.append([item.coord, item])
         # breadth-first search
         frontier = [start_position]
         came_from = {}
@@ -154,11 +150,11 @@ class DomainManager:
         found = False
         while len(frontier) > 0:
             current = frontier.pop(0)
-            for coord, object in destination_list:
-                if coord == current:
+            for item in destination_objects:
+                if item.coord == current:
                     found = True
                     goal = current
-                    goal_object = object
+                    goal_object = item
                     break
             if found:
                 break
