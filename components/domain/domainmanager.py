@@ -223,9 +223,8 @@ class DomainManager:
     def cell_objects(self, position, objects):
         # return a list of objects which match the position coordinate
         results = []
-        x, y = position
         for item in objects:
-            if (item.coord[0] == x) and (item.coord[1] == y):
+            if item.coord == position:
                 results.append(item)
         return results
 
