@@ -144,12 +144,20 @@ class DomainManager:
 
     def find_nearest(self, start_position, destination_objects):
         # breadth-first search
+        used_teleporters = []
         frontier = [start_position]
         came_from = {}
         came_from[start_position] = goal = goal_object = None
         found = False
         while len(frontier) > 0:
             current = frontier.pop(0)
+            # if there is a teleporter here and if it isn't in the used
+            # list then add the teleporter destination coordinate into the
+            # frontier
+            teleports = self.teleporters(current)
+            for item in teleports:
+                pass
+
             for item in destination_objects:
                 if item.coord == current:
                     found = True
@@ -233,7 +241,7 @@ class DomainManager:
         teleporters = self.cell_objects(position, self.object_manager.objects('teleporters'))
         if len(teleporters) > 0:
             # there is a teleporter here
-            return teleporters[0].destination
+            return teleporters
         else:
             return None
 

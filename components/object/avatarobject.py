@@ -48,7 +48,7 @@ class AvatarObject(DomainObject):
         if teleport != None:
             from .domainobject import Teleport
             # there is a teleporter at the new position
-            self.command(Teleport(teleport, True))
+            self.command(Teleport(teleport[0].destination, True))
 
     def pick_up(self):
         # pick up inventory
