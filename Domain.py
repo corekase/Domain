@@ -203,7 +203,7 @@ class Main:
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 2:
                             # only follow the avatar if on the same floor as it
-                            if self.domain_manager.get_floor(self.domain_manager.avatar.x_coord) == self.domain_manager.floor:
+                            if self.domain_manager.get_floor(self.domain_manager.avatar.coord[0]) == self.domain_manager.floor:
                                 # toggle between follow_state true and false
                                 self.follow_state = not self.follow_state
                         elif event.button == 3:
@@ -274,7 +274,7 @@ class Main:
             if last_item == None:
                 last_item = item
                 continue
-            if (item.x_coord != last_item.x_coord) or (item.y_coord != last_item.y_coord):
+            if (item.coord[0] != last_item.coord[0]) or (item.coord[1] != last_item.coord[1]):
                 matched = False
                 break
         # if true then won

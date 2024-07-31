@@ -17,13 +17,13 @@ class AvatarObject(DomainObject):
     def process(self):
         if self.inventory == None:
             # check current cell for a pickup object
-            pickups = self.domain_manager.cell_objects((self.x_coord, self.y_coord), self.object_manager.objects('pickups'))
+            pickups = self.domain_manager.cell_objects(self.coord, self.object_manager.objects('pickups'))
             if len(pickups) > 0:
                 # enable pick up button
                 self.gui_manager.switch_context('pickup_context')
         else:
             # check current cell for any teleporters
-            teleport = self.domain_manager.teleporters((self.x_coord, self.y_coord))
+            teleport = self.domain_manager.teleporters(self.coord)
             if teleport == None:
                 # enable put down button
                 self.gui_manager.switch_context('putdown_context')
@@ -52,14 +52,14 @@ class AvatarObject(DomainObject):
 
     def pick_up(self):
         # pick up inventory
-        pickup = self.domain_manager.cell_objects((self.x_coord, self.y_coord), self.object_manager.objects('pickups'))[0]
+        pickup = self.domain_manager.cell_objects(self.coord, self.object_manager.objects('pickups'))[0]
         self.inventory = pickup
         # delete pickup object from the domain
         self.object_manager.delete('pickups', pickup)
 
     def put_down(self):
         # update the pickup object coordinates
-        self.inventory.sync_cell((self.x_coord, self.y_coord))
+        self.inventory.sync_cell(self.coord)
         # place the pickup object back into the domain
         self.object_manager.object_add('pickups', self.inventory)
         # delete inventory

@@ -98,7 +98,7 @@ class DomainManager:
         # initialize the main viewport with any value, needed for switch_floor
         self.main_viewport = list([0, 0])
         # switch to the avatar floor, which will adjust main_viewport
-        self.switch_floor(self.get_floor(self.avatar.x_coord))
+        self.switch_floor(self.get_floor(self.avatar.coord[0]))
         # centre the main_viewport on the avatar
         self.main_viewport = list(self.avatar.rect.center)
 
@@ -113,7 +113,7 @@ class DomainManager:
                 # is it already occupied by something
                 hit = False
                 for item in self.object_manager.domain():
-                    if item.x_coord == x and item.y_coord == y:
+                    if item.coord[0] == x and item.coord[1] == y:
                         hit = True
                         break
                 if hit:
@@ -146,7 +146,7 @@ class DomainManager:
         # data structure for objects for find_nearest
         destination_list = []
         for item in destination_objects:
-            destination_list.append([(item.x_coord, item.y_coord), item])
+            destination_list.append([item.coord, item])
         # breadth-first search
         frontier = [start_position]
         came_from = {}
@@ -229,7 +229,7 @@ class DomainManager:
         results = []
         x, y = position
         for item in objects:
-            if (item.x_coord == x) and (item.y_coord == y):
+            if (item.coord[0] == x) and (item.coord[1] == y):
                 results.append(item)
         return results
 

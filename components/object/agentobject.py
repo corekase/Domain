@@ -22,15 +22,15 @@ class AgentObject(DomainObject):
             if len(self.object_manager.objects('generic')) > 0:
                 # find the nearest item
                 path, self.destination_object = self.domain_manager.find_nearest(
-                                                (self.x_coord, self.y_coord),
+                                                self.coord,
                                                 self.object_manager.objects('generic'))
                 if path != None:
                     from .domainobject import Path_To
                     self.object_manager.object_remove('generic', self.destination_object)
-                    self.command(Path_To((self.destination_object.x_coord, self.destination_object.y_coord)))
+                    self.command(Path_To(self.destination_object.coord))
         else:
             from .genericobject import GenericObject
-            floor = self.domain_manager.get_floor(self.destination_object.x_coord)
+            floor = self.domain_manager.get_floor(self.destination_object.coord[0])
             # remove reference to old object
             self.object_manager.delete('generic', self.destination_object)
             # create a new generic object

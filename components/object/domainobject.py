@@ -14,7 +14,7 @@ Teleport = namedtuple('Teleport', 'destination follow')
 
 class Coordinate:
     def __init__(self, position):
-        self.x_coord, self.y_coord = position
+        self.coord = position
 
 from pygame.sprite import Sprite
 
@@ -37,7 +37,7 @@ class DomainObject(Sprite):
         # values updated by either sync_coordinate or sync_cell
         self.rect = None
         self.centre_xpos, self.centre_ypos = None, None
-        self.x_coord, self.y_coord = None, None
+        self.coord = None
         # world pixels per second
         self.speed = 0.0
         # command queue
@@ -98,7 +98,7 @@ class DomainObject(Sprite):
                 # remove this command from the queue
                 self.command_queue.pop(0)
                 # find valid path, if no valid path do nothing
-                path = self.domain_manager.find_nearest((self.x_coord, self.y_coord), [Coordinate(destination)])[0]
+                path = self.domain_manager.find_nearest(self.coord, [Coordinate(destination)])[0]
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
                     for position in path:
@@ -177,13 +177,13 @@ class DomainObject(Sprite):
         # update position state in pixels
         self.centre_xpos, self.centre_ypos = position
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
-        self.x_coord, self.y_coord = int(self.rect.centerx / self.map_object.tilewidth), int(self.rect.centery / self.map_object.tileheight)
+        self.coord = int(self.rect.centerx / self.map_object.tilewidth), int(self.rect.centery / self.map_object.tileheight)
 
     def sync_cell(self, position):
         # update position state in cells
         self.centre_xpos, self.centre_ypos = self.pixel_centre(position)
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
-        self.x_coord, self.y_coord = position
+        self.coord = position
 
     def load_sheet(self, *image):
         from ..utility import sprite_sheet
