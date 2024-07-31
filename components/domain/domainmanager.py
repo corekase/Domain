@@ -113,7 +113,7 @@ class DomainManager:
                 # is it already occupied by something
                 hit = False
                 for item in self.object_manager.domain():
-                    if item.coord[0] == x and item.coord[1] == y:
+                    if item.coord == (x, y):
                         hit = True
                         break
                 if hit:
