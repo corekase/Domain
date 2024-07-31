@@ -30,7 +30,7 @@ class AgentObject(DomainObject):
                     self.command(Path_To(self.destination_object.coord))
         else:
             from .genericobject import GenericObject
-            floor = self.domain_manager.get_floor(self.destination_object.coord[0])
+            floor = self.domain_manager.get_floor(self.destination_object.coord)
             # remove reference to old object
             self.object_manager.delete('generic', self.destination_object)
             # create a new generic object

@@ -98,7 +98,7 @@ class DomainManager:
         # initialize the main viewport with any value, needed for switch_floor
         self.main_viewport = list([0, 0])
         # switch to the avatar floor, which will adjust main_viewport
-        self.switch_floor(self.get_floor(self.avatar.coord[0]))
+        self.switch_floor(self.get_floor(self.avatar.coord))
         # centre the main_viewport on the avatar
         self.main_viewport = list(self.avatar.rect.center)
 
@@ -124,8 +124,8 @@ class DomainManager:
     def random_position_floor(self, gid, floor):
         return self.random_position(gid, floor * self.floor_tiles, 0, self.floor_tiles, self.floor_tiles)
 
-    def get_floor(self, x_coord):
-        return int(x_coord / self.floor_tiles)
+    def get_floor(self, coord):
+        return int(coord[0] / self.floor_tiles)
 
     def switch_floor(self, floor):
         # get distance from center of current floor
@@ -208,7 +208,7 @@ class DomainManager:
             if value == self.tile_gid[FLOOR]:
                 new_x, new_y = x + neighbours[num][0], y + neighbours[num][1]
                 # if the neighbour is on the same floor then it is valid
-                if self.get_floor(x) == self.get_floor(new_x):
+                if self.get_floor(position) == self.get_floor((new_x, new_y)):
                     valid_neighbours.append((new_x, new_y))
         # return neighbours which are floor tiles as cell positions
         return valid_neighbours
@@ -269,7 +269,7 @@ class DomainManager:
         if self.zoom_amounts_index != old_index:
             # update state information inside the renderer
             self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
-            if self.get_floor(self.avatar.x_coord) == self.floor:
+            if self.get_floor(self.avatar.coord) == self.floor:
                 # centre on the avatar after a zoom change
                 self.main_viewport = list(self.avatar.rect.center)
 

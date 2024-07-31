@@ -118,7 +118,7 @@ class DomainObject(Sprite):
                 self.command_queue.pop(0)
                 # if follow then switch floor and main_viewport as well, done within a single command queue item
                 if follow:
-                    self.domain_manager.switch_floor(self.domain_manager.get_floor(destination[0]))
+                    self.domain_manager.switch_floor(self.domain_manager.get_floor(destination))
                     self.domain_manager.main_viewport = list(self.rect.center)
             else:
                 raise Exception(f'Command: {command_name} not implemented')
