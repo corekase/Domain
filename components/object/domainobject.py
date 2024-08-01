@@ -98,8 +98,8 @@ class DomainObject(Sprite):
                 # remove this command from the queue
                 self.command_queue.pop(0)
                 # replaces a path_to with move_to and teleport commands without affecting items in the queue after it
-                for item in path:
-                    kind, value = item
+                # path is in reverse order, when inserted into the queue that results in the commands being in forward order
+                for kind, value in path:
                     if kind == 'move':
                         # convert to renderer map rect pixel coordinates for each position in the path
                         self.command_queue.insert(0, Move_To(self.pixel_centre(value)))
