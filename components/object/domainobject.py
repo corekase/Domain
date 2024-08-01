@@ -102,8 +102,13 @@ class DomainObject(Sprite):
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
                     for position in path:
-                        # convert to renderer map rect pixel coordinates for each position in the path
-                        self.command_queue.insert(0, Move_To(self.pixel_centre(position)))
+                        kind, value = position
+                        if kind == 'move':
+                            # convert to renderer map rect pixel coordinates for each position in the path
+                            self.command_queue.insert(0, Move_To(self.pixel_centre(value)))
+                        elif kind == 'teleport':
+                            is_avatar = self is self.domain_manager.avatar
+                            self.command_queue.insert(0, Teleport(value, is_avatar))
             elif command_name == 'Datagram':
                 # call a method with an argument parameter.  If you need more than one value
                 # then make it a tuple of values

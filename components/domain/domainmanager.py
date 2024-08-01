@@ -143,21 +143,14 @@ class DomainManager:
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
 
     def find_nearest(self, start_position, destination_objects):
-        # breadth-first search
-        used_teleporters = []
         frontier = [start_position]
         came_from = {}
         came_from[start_position] = goal = goal_object = None
+        came_from_teleports = {}
+        used_teleporters = []
         found = False
         while len(frontier) > 0:
             current = frontier.pop(0)
-            # if there is a teleporter here and if it isn't in the used
-            # list then add the teleporter destination coordinate into the
-            # frontier
-            teleports = self.teleporters(current)
-            for item in teleports:
-                pass
-
             for item in destination_objects:
                 if item.coord == current:
                     found = True
@@ -166,6 +159,16 @@ class DomainManager:
                     break
             if found:
                 break
+            teleport = self.teleporters(current)
+            if teleport != None:
+                source, destination = teleport[0].source, teleport[0].destination
+                if source not in used_teleporters:
+                    used_teleporters.append(source)
+                    used_teleporters.append(destination)
+                    if destination not in frontier:
+                        frontier.append(destination)
+                        came_from[destination] = current
+                        came_from_teleports[destination] = destination
             neighbours = self.adjacents(current)
             for next in neighbours:
                 if not (next in came_from):
@@ -173,8 +176,16 @@ class DomainManager:
                     came_from[next] = current
         if found:
             path = []
+            teleport = self.teleporters(goal)
+            if teleport != None:
+                destination = teleport[0].destination
+                path.append(['teleport', destination])
             while goal != start_position:
-                path.append(goal)
+                teleports = came_from_teleports.keys()
+                if goal in teleports:
+                    path.append(['teleport', came_from_teleports[goal]])
+                else:
+                    path.append(['move', goal])
                 goal = came_from[goal]
             # path is in reverse order, goal to start
             return path, goal_object
