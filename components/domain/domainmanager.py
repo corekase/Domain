@@ -142,7 +142,7 @@ class DomainManager:
         x, y = self.floor_port.center
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
 
-    def find_nearest(self, start_position, destination_objects):
+    def find_path(self, start_position, destination_objects):
         frontier = [start_position]
         came_from = {}
         came_from[start_position] = goal = goal_object = None
@@ -150,46 +150,68 @@ class DomainManager:
         used_teleporters = []
         found = False
         while len(frontier) > 0:
+            # get the frontier cell coordinate
             current = frontier.pop(0)
+            # compare that coordinate against all destination objects
             for item in destination_objects:
                 if item.coord == current:
+                    # destination object is found
                     found = True
                     goal = current
                     goal_object = item
+                    # break for loop
                     break
             if found:
+                # if found, also break while loop
                 break
-            teleporters = self.teleporters(current)
-            if teleporters != None:
-                source, destination = teleporters[0].source, teleporters[0].destination
+            # check if there is a teleporter at the current cell
+            teleporter = self.teleporters(current)
+            if teleporter != None:
+                # get source and destination cell coordinates
+                source, destination = teleporter.source, teleporter.destination
                 if source not in used_teleporters:
+                    # add them to used, only allowed to use a teleporter pair once
                     used_teleporters.append(source)
                     used_teleporters.append(destination)
                     if destination not in frontier:
+                        # add the teleporter destination cell to the frontier
                         frontier.append(destination)
                         came_from[destination] = current
+                        # track teleport coordinate for the path
                         teleport_destinations[destination] = destination
+            # get list of valid neighbours from the current cell
             neighbours = self.adjacents(current)
+            # add each valid neighbour into the frontier
             for next in neighbours:
                 if next not in came_from:
                     frontier.append(next)
+                    # track the flow of the cell
                     came_from[next] = current
         if found:
+            # path between goal and start
             path = []
-            teleporters = self.teleporters(goal)
-            if teleporters != None:
-                destination = teleporters[0].destination
+            # is there a teleporter at the goal?
+            teleporter = self.teleporters(goal)
+            if teleporter != None:
+                # if so, add that teleport to the path
+                destination = teleporter.destination
                 path.append(['teleport', destination])
+            # get a list of the tracked teleport coordinates
             teleports = teleport_destinations.keys()
+            # follow the flow back to the start
             while goal != start_position:
+                # is this cell a teleport?
                 if goal in teleports:
                     path.append(['teleport', teleport_destinations[goal]])
+                # otherwise it's a move
                 else:
                     path.append(['move', goal])
+                # follow flow
                 goal = came_from[goal]
             # path is in reverse order, goal to start
             return path, goal_object
         else:
+            # no valid path found
             return None, None
 
     def adjacents(self, position):
@@ -251,8 +273,8 @@ class DomainManager:
         # if there is a teleporter at position then return its destination otherwise return None
         teleporters = self.cell_objects(position, self.object_manager.objects('teleporters'))
         if len(teleporters) > 0:
-            # there is a teleporter here
-            return teleporters
+            # there is a teleporter here, return the first match
+            return teleporters[0]
         else:
             return None
 

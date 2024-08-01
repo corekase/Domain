@@ -43,7 +43,7 @@ class AvatarObject(DomainObject):
     def move_to_guarded(self, position):
         from .domainobject import Path_To
         # from current position go to new_position
-        path = self.domain_manager.find_nearest(self.coord, [Coordinate(position)])[0]
+        path = self.domain_manager.find_path(self.coord, [Coordinate(position)])[0]
         self.command(Path_To(path))
 
     def pick_up(self):

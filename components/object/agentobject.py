@@ -21,9 +21,9 @@ class AgentObject(DomainObject):
         if self.destination_object == None:
             if len(self.object_manager.objects('generic')) > 0:
                 # find the nearest item
-                path, self.destination_object = self.domain_manager.find_nearest(
-                                                self.coord,
-                                                self.object_manager.objects('generic'))
+                path, self.destination_object = self.domain_manager.find_path(
+                                                     self.coord,
+                                                     self.object_manager.objects('generic'))
                 if path != None:
                     from .domainobject import Path_To
                     self.object_manager.object_remove('generic', self.destination_object)
