@@ -1,5 +1,5 @@
 from .domainobject import DomainObject
-from ..domain.domainmanager import Coordinate
+from components.domain.domainmanager import Coordinate
 
 class AvatarObject(DomainObject):
     def __init__(self, position):
