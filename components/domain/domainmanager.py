@@ -1,6 +1,11 @@
 # named indexes for tiles to map the correct gid
 EMPTY, WALL, FLOOR = 0, 1, 2
 
+class Coordinate:
+    # coordinate container for find_path() when only one destination is needed
+    def __init__(self, position):
+        self.coord = position
+
 class DomainManager:
     # reference to tile_gid tuple
     tile_gid = None

@@ -12,10 +12,6 @@ Path_To = namedtuple('Path_To', 'path')
 Datagram = namedtuple('Datagram', 'callback argument')
 Teleport = namedtuple('Teleport', 'destination follow')
 
-class Coordinate:
-    def __init__(self, position):
-        self.coord = position
-
 from pygame.sprite import Sprite
 
 class DomainObject(Sprite):
