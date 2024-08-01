@@ -159,9 +159,9 @@ class DomainManager:
                     break
             if found:
                 break
-            teleport = self.teleporters(current)
-            if teleport != None:
-                source, destination = teleport[0].source, teleport[0].destination
+            teleporters = self.teleporters(current)
+            if teleporters != None:
+                source, destination = teleporters[0].source, teleporters[0].destination
                 if source not in used_teleporters:
                     used_teleporters.append(source)
                     used_teleporters.append(destination)
@@ -176,9 +176,9 @@ class DomainManager:
                     came_from[next] = current
         if found:
             path = []
-            teleport = self.teleporters(goal)
-            if teleport != None:
-                destination = teleport[0].destination
+            teleporters = self.teleporters(goal)
+            if teleporters != None:
+                destination = teleporters[0].destination
                 path.append(['teleport', destination])
             while goal != start_position:
                 teleports = came_from_teleports.keys()
