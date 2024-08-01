@@ -180,8 +180,8 @@ class DomainManager:
             if teleporters != None:
                 destination = teleporters[0].destination
                 path.append(['teleport', destination])
+            teleports = teleport_destinations.keys()
             while goal != start_position:
-                teleports = teleport_destinations.keys()
                 if goal in teleports:
                     path.append(['teleport', teleport_destinations[goal]])
                 else:
