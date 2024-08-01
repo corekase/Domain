@@ -249,14 +249,17 @@ class DomainManager:
         if adjacents[3] == self.tile_gid[WALL]:
             adjacents[0] = None
             adjacents[6] = None
+        # order to return the adjacents in, this affects how appealing the paths look
+        indexes = (1, 5, 7, 3, 2, 8, 6, 0)
+        # build list of neighbours that are floor tiles in index order
         valid_neighbours = []
-        for num, value in enumerate(adjacents):
-            if value == self.tile_gid[FLOOR]:
-                new_x, new_y = x + neighbours[num][0], y + neighbours[num][1]
+        for index in indexes:
+            if adjacents[index] == self.tile_gid[FLOOR]:
+                new_x, new_y = x + neighbours[index][0], y + neighbours[index][1]
                 # if the neighbour is on the same floor then it is valid
                 if self.get_floor(position) == self.get_floor((new_x, new_y)):
                     valid_neighbours.append((new_x, new_y))
-        # return neighbours which are floor tiles as cell positions
+        # return neighbours which are floor tiles as cell positions, in order
         return valid_neighbours
 
     def cell_gid(self, position):
