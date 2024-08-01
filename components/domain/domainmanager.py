@@ -171,7 +171,7 @@ class DomainManager:
                         teleport_destinations[destination] = destination
             neighbours = self.adjacents(current)
             for next in neighbours:
-                if not (next in came_from):
+                if next not in came_from:
                     frontier.append(next)
                     came_from[next] = current
         if found:
