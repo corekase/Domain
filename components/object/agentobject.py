@@ -27,7 +27,7 @@ class AgentObject(DomainObject):
                 if path != None:
                     from .domainobject import Path_To
                     self.object_manager.object_remove('generic', self.destination_object)
-                    self.command(Path_To(self.destination_object.coord))
+                    self.command(Path_To(path))
         else:
             from .genericobject import GenericObject
             floor = self.domain_manager.get_floor(self.destination_object.coord)

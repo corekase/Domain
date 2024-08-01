@@ -1,4 +1,4 @@
-from .domainobject import DomainObject
+from .domainobject import DomainObject, Coordinate
 
 class AvatarObject(DomainObject):
     def __init__(self, position):
@@ -43,7 +43,8 @@ class AvatarObject(DomainObject):
     def move_to_guarded(self, position):
         from .domainobject import Path_To
         # from current position go to new_position
-        self.command(Path_To(position))
+        path = self.domain_manager.find_nearest(self.coord, [Coordinate(position)])[0]
+        self.command(Path_To(path))
 
     def pick_up(self):
         # pick up inventory

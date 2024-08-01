@@ -70,7 +70,7 @@ class DomainManager:
             up_down, destination = info
             # instantiate the teleport
             instance = TeleporterObject(up_down, position, destination)
-            instance.layer = 4
+            instance.layer = 3
             # add it to the domain, in 'teleporters' reserved name
             self.object_manager.object_add('teleporters', instance)
         # helper function to create objects
@@ -89,7 +89,7 @@ class DomainManager:
         # create pickup items
         populate(1, PickupObject, 2, 'pickups')
         # create agents
-        populate(20, AgentObject, 3, 'agents')
+        populate(20, AgentObject, 4, 'agents')
         # create a player avatar and add it to the domain
         position = self.random_position_floor(self.tile_gid[FLOOR], 0)
         self.avatar = AvatarObject(position)
@@ -146,7 +146,7 @@ class DomainManager:
         frontier = [start_position]
         came_from = {}
         came_from[start_position] = goal = goal_object = None
-        came_from_teleports = {}
+        teleport_destinations = {}
         used_teleporters = []
         found = False
         while len(frontier) > 0:
@@ -168,7 +168,7 @@ class DomainManager:
                     if destination not in frontier:
                         frontier.append(destination)
                         came_from[destination] = current
-                        came_from_teleports[destination] = destination
+                        teleport_destinations[destination] = destination
             neighbours = self.adjacents(current)
             for next in neighbours:
                 if not (next in came_from):
@@ -181,9 +181,9 @@ class DomainManager:
                 destination = teleporters[0].destination
                 path.append(['teleport', destination])
             while goal != start_position:
-                teleports = came_from_teleports.keys()
+                teleports = teleport_destinations.keys()
                 if goal in teleports:
-                    path.append(['teleport', came_from_teleports[goal]])
+                    path.append(['teleport', teleport_destinations[goal]])
                 else:
                     path.append(['move', goal])
                 goal = came_from[goal]

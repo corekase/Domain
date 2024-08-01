@@ -8,7 +8,7 @@ from collections import namedtuple
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
-Path_To = namedtuple('Path_To', 'position')
+Path_To = namedtuple('Path_To', 'path')
 Datagram = namedtuple('Datagram', 'callback argument')
 Teleport = namedtuple('Teleport', 'destination follow')
 
@@ -94,15 +94,14 @@ class DomainObject(Sprite):
                     self.move(self.find_bearing_angle(destination), elapsed_time)
             elif command_name == 'Path_To':
                 # from current x_coord and y_coord move to destination in cells coordinates
-                destination = command.position
+                path = command.path
                 # remove this command from the queue
                 self.command_queue.pop(0)
                 # find valid path, if no valid path do nothing
-                path = self.domain_manager.find_nearest(self.coord, [Coordinate(destination)])[0]
                 if path != None:
                     # replaces a path_to with move_to commands without affecting items in the queue after it
-                    for position in path:
-                        kind, value = position
+                    for item in path:
+                        kind, value = item
                         if kind == 'move':
                             # convert to renderer map rect pixel coordinates for each position in the path
                             self.command_queue.insert(0, Move_To(self.pixel_centre(value)))
