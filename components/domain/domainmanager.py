@@ -133,7 +133,7 @@ class DomainManager:
         return int(coord[0] / self.floor_tiles)
 
     def switch_floor(self, floor):
-        # get distance from center of current floor
+        # get distance from centre of current floor
         if self.floor != None:
             x, y = self.floor_ports[self.floor].center
             difx = self.main_viewport[0] - x
@@ -143,7 +143,7 @@ class DomainManager:
         # load new floor
         self.floor = floor
         self.floor_port = self.floor_ports[self.floor]
-        # add the difference to new center of floor
+        # add the difference to new centre of floor
         x, y = self.floor_port.center
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
 

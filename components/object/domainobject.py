@@ -89,7 +89,7 @@ class DomainObject(Sprite):
                     # move towards destination
                     self.move(self.find_bearing_angle(destination), elapsed_time)
             elif command_name == 'Path_To':
-                # from current x_coord and y_coord move to destination in cells coordinates
+                # from current coordinate follow path
                 path = command.path
                 # remove this command from the queue
                 self.command_queue.pop(0)
