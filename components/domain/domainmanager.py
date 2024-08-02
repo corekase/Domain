@@ -234,8 +234,6 @@ class DomainManager:
         # 0 1 2
         # 3 4 5
         # 6 7 8
-        # clear the current tile so it isn't included in neighbours
-        adjacents[4] = None
         # with the layout order, block out invalid orthographic moves due to walls
         if adjacents[1] == self.tile_gid[WALL]:
             adjacents[0] = None
