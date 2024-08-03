@@ -32,7 +32,7 @@ class Main:
         from components.gui.pushbuttongroup import PushButtonGroup
         floor_1_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1, information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
         self.floor_group['0'] = PushButtonGroup(self.screen, 'floor1', floor_1_button_rect, '1', 'floors', True)
-        floor_2_button_rect = pygame.Rect(gui_xpos + + floor_label.rect.width + 1 + floor_select_size + 1, information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
+        floor_2_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1 + floor_select_size + 1, information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
         self.floor_group['1'] = PushButtonGroup(self.screen, 'floor2', floor_2_button_rect, '2', 'floors', False)
         # bring in references so that class variables can be set
         from components.domain.domainmanager import DomainManager
