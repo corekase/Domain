@@ -4,7 +4,7 @@ EMPTY, WALL, FLOOR = 0, 1, 2
 from .domainobject import DomainObject
 from components.domain.domainmanager import Coordinate
 
-class AvatarObject(DomainObject):
+class Avatar(DomainObject):
     def __init__(self, position):
         super().__init__()
         # load images

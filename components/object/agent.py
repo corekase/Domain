@@ -3,7 +3,7 @@ from .domainobject import DomainObject
 # named indexes for tiles to map the correct gid
 EMPTY, WALL, FLOOR = 0, 1, 2
 
-class AgentObject(DomainObject):
+class Agent(DomainObject):
     def __init__(self, position):
         super().__init__()
         # load image
@@ -28,13 +28,13 @@ class AgentObject(DomainObject):
                     self.object_manager.object_remove('generic', self.destination_object)
                     self.command(Path_To(path))
         else:
-            from .generic import GenericObject
+            from .generic import Generic
             floor = self.domain_manager.get_floor(self.destination_object.coord)
             # remove reference to old object
             self.object_manager.delete('generic', self.destination_object)
             # create a new generic object
             position = self.domain_manager.random_position_floor(self.tile_gid[FLOOR], floor)
-            item_object = GenericObject(position)
+            item_object = Generic(position)
             item_object.layer = 1
             # track the generic item
             self.object_manager.object_add('generic', item_object)
