@@ -28,7 +28,7 @@ class AgentObject(DomainObject):
                     self.object_manager.object_remove('generic', self.destination_object)
                     self.command(Path_To(path))
         else:
-            from .genericobject import GenericObject
+            from .generic import GenericObject
             floor = self.domain_manager.get_floor(self.destination_object.coord)
             # remove reference to old object
             self.object_manager.delete('generic', self.destination_object)
