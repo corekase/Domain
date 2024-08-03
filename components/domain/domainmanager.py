@@ -9,6 +9,7 @@ class Coordinate:
 class DomainManager:
     # reference to tile_gid tuple
     tile_gid = None
+    floor_group = None
 
     def __init__(self, view_surface):
         # needed functions for initialization
@@ -146,6 +147,11 @@ class DomainManager:
         # add the difference to new centre of floor
         x, y = self.floor_port.center
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
+        # update the floor select gui buttons
+        if self.floor == 0:
+            self.floor_group['0'].select()
+        elif self.floor == 1:
+            self.floor_group['1'].select()
 
     def find_path(self, start_position, destination_objects):
         frontier = [start_position]

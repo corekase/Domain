@@ -95,13 +95,16 @@ class DomainObject(Sprite):
                 self.command_queue.pop(0)
                 # replaces a path_to with move_to and teleport commands without affecting items in the queue after it
                 # path is in reverse order, when inserted into the queue that results in the commands being in forward order
-                for kind, value in path:
-                    if kind == 'move':
-                        # convert to renderer map rect pixel coordinates for each position in the path
-                        self.command_queue.insert(0, Move_To(self.pixel_centre(value)))
-                    elif kind == 'teleport':
-                        is_avatar = self is self.domain_manager.avatar
-                        self.command_queue.insert(0, Teleport(value, is_avatar))
+                # next two lines guard against edge cases in pathfinding
+                if len(path) > 0:
+                    if path[0] != None:
+                        for kind, value in path:
+                            if kind == 'move':
+                                # convert to renderer map rect pixel coordinates for each position in the path
+                                self.command_queue.insert(0, Move_To(self.pixel_centre(value)))
+                            elif kind == 'teleport':
+                                is_avatar = self is self.domain_manager.avatar
+                                self.command_queue.insert(0, Teleport(value, is_avatar))
             elif command_name == 'Datagram':
                 # call a method with an argument parameter.  If you need more than one value
                 # then make it a tuple of values

@@ -5,33 +5,52 @@ class Main:
         #     which can be used with tile_gid, like 'tile_gid[FLOOR]'
         # - gid values are defined once right here, if map data changes only here needs to be changed
         tile_gid = (0, 1, 2)
-        # bring in references so that class variables can be set
-        from components.domain.domainmanager import DomainManager
-        from components.object.domainobject import DomainObject
-        # give both the domain manager and domain objects the tile_gid tuple
-        DomainManager.tile_gid = tile_gid
-        DomainObject.tile_gid = tile_gid
         # initialize pygame
         import pygame
         pygame.init()
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
+        # dimensions of the viewport
+        view_xpos, view_ypos, view_width, view_height = 10, 10, 1680, 1060
+        # area for gui elements
+        gui_xpos = view_xpos + view_width + 10
+        gui_width = 1920 - gui_xpos - 10
+        # bring in reference
+        from components import utility
+        # set the default font for utility functions
+        utility.font_size = 16
+        utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
+        # padding function from utility
+        from components.utility import padding
+        # create a frame for the information panel
+        information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(3))
+        # set up the floor group buttons
+        self.floor_group = {}
+        floor_select_size = 20
+        from components.gui.label import Label
+        floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 3), 'Floor: ')
+        from components.gui.pushbuttongroup import PushButtonGroup
+        floor_1_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1, information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
+        self.floor_group['0'] = PushButtonGroup(self.screen, 'floor1', floor_1_button_rect, '1', 'floors', True)
+        floor_2_button_rect = pygame.Rect(gui_xpos + + floor_label.rect.width + 1 + floor_select_size + 1, information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
+        self.floor_group['1'] = PushButtonGroup(self.screen, 'floor2', floor_2_button_rect, '2', 'floors', False)
+        # bring in references so that class variables can be set
+        from components.domain.domainmanager import DomainManager
+        from components.object.domainobject import DomainObject
+        # give the domain manager a referece to the floor group
+        DomainManager.floor_group = self.floor_group
+        # give both the domain manager and domain objects the tile_gid tuple
+        DomainManager.tile_gid = tile_gid
+        DomainObject.tile_gid = tile_gid
         # set window caption
         pygame.display.set_caption('Domain')
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
-        # bring in reference
-        from components import utility
         # set window icon
         pygame.display.set_icon(utility.image_alpha('icon.png'))
-        # set the default font for utility functions
-        utility.font_size = 16
-        utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
         # load images for custom mouse pointers
         self.cursor_domain_image = utility.image_alpha('cursors', 'cursor_domain.png')
         self.cursor_interface_image = utility.image_alpha('cursors', 'cursor_interface.png')
-        # dimensions of the viewport
-        view_xpos, view_ypos, view_width, view_height = 10, 10, 1680, 1060
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
@@ -44,27 +63,21 @@ class Main:
         DomainObject.domain_manager = self.domain_manager
         # bring in reference
         from components.gui.guimanager import GuiManager
-        # instantiate a GUI manager
+        # instantiate a gui manager
         self.gui_manager = GuiManager()
         # give domain objects a reference to the gui
         DomainObject.gui_manager = self.gui_manager
         # needed gui widgets
         from components.gui.frame import Frame
         from components.gui.button import Button
-        # padding function from utility
-        from components.utility import padding
-        # create gui frame and buttons layout
-        gui_xpos = view_xpos + view_width + 10
-        gui_width = 1920 - gui_xpos - 10
-        # create a frame for the information panel
-        information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(4))
+        # create information frame
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         button_width, button_height = int(gui_width / 2), 20
-        button_rect = pygame.Rect(gui_xpos, information_frame_rect.bottom + 1, button_width, button_height)
         button_exit_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height,
                                        button_width, button_height)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
+        button_rect = pygame.Rect(gui_xpos, floor_1_button_rect.bottom + 2, button_width, button_height)
         # pickup button context
         self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
         self.gui_manager.add_widget('pickup_context', exit_button)
@@ -75,6 +88,11 @@ class Main:
         self.gui_manager.add_widget('win_context', Button(self.screen, 'won', button_rect, 'Won!'))
         # default context
         self.gui_manager.add_widget('default', exit_button)
+        # add the floor group controls to all contexts
+        for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
+            self.gui_manager.add_widget(context, floor_label)
+            self.gui_manager.add_widget(context, self.floor_group['0'])
+            self.gui_manager.add_widget(context, self.floor_group['1'])
         # switch to default context
         self.gui_manager.switch_context('default')
         # state for whether or not panning the view
@@ -168,7 +186,11 @@ class Main:
             gui_event = self.gui_manager.handle_event(event)
             if gui_event != None:
                 # handle gui events
-                if gui_event == 'pick_up':
+                if gui_event == 'floor1':
+                    self.domain_manager.switch_floor(0)
+                elif gui_event == 'floor2':
+                    self.domain_manager.switch_floor(1)
+                elif gui_event == 'pick_up':
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
                     self.domain_manager.avatar.put_down()
@@ -287,7 +309,6 @@ class Main:
         # gather information into text strings
         cycle = f'Cycle: {self.cycle}'
         fps = f'FPS: {int(round(fps))}'
-        floor = f'Floor: {self.domain_manager.floor + 1}'
         # draw frame
         self.information_frame.draw()
         # layout coordinates
@@ -295,8 +316,7 @@ class Main:
         # draw each text line onto the screen
         self.screen.blit(render_text(cycle), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(1)))
-        self.screen.blit(render_text(floor), (x_pos + 3, y_pos + padding(2)))
-        self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(3)))
+        self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(2)))
 
     def draw_mouse(self, x, y):
         # draw mouse cursor
