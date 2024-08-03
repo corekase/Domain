@@ -186,10 +186,14 @@ class Main:
             gui_event = self.gui_manager.handle_event(event)
             if gui_event != None:
                 # handle gui events
-                if gui_event == 'floor1':
-                    self.domain_manager.switch_floor(0)
-                elif gui_event == 'floor2':
-                    self.domain_manager.switch_floor(1)
+                if gui_event in ('floor1', 'floor2'):
+                    # stop following on any floor switch
+                    self.follow_state = False
+                    # switch floors
+                    if gui_event == 'floor1':
+                        self.domain_manager.switch_floor(0)
+                    elif gui_event == 'floor2':
+                        self.domain_manager.switch_floor(1)
                 elif gui_event == 'pick_up':
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
@@ -209,11 +213,10 @@ class Main:
                     elif event.key in (K_1, K_2):
                         # stop following on any floor switch
                         self.follow_state = False
+                        # switch floors
                         if event.key == K_1:
-                            # switch to floor 1
                             self.domain_manager.switch_floor(0)
                         elif event.key == K_2:
-                            # switch to floor 2
                             self.domain_manager.switch_floor(1)
                     elif event.key == K_F1:
                         # toggle whether coordinates shown are relative or absolute
