@@ -35,10 +35,10 @@ class PushButtonGroup(Button):
 
     def select(self):
         from .frame import State
-        # clear all other selected flags in the group and set this one
+        # clear all other armed states in the group and set this one as armed
         for item in PushButtonGroup.groups[self.group]:
             item.state = State.IDLE
-        # mark this item as selected
+        # mark this item armed
         self.state = State.ARMED
 
     def draw(self):
