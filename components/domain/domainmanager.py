@@ -91,11 +91,11 @@ class DomainManager:
                     # add the instance to the group
                     self.object_manager.object_add(group, instance)
         # create generic items
-        populate(40, Generic, 1, 'generic')
+        populate(15, Generic, 1, 'generic')
         # create pickup items
         populate(1, Pickup, 2, 'pickups')
         # create agents
-        populate(20, Agent, 4, 'agents')
+        populate(8, Agent, 4, 'agents')
         # create a player avatar and add it to the domain
         position = self.random_position_floor(self.tile_gid[FLOOR], 0)
         self.avatar = Avatar(position)
