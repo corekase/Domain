@@ -4,7 +4,7 @@ This project aims to be a complete game of some kind in the end, mainly about sh
 
 Controls:
 
-Left-click anywhere on the map moves the avatar to that location.  Mouse-wheel controls zooming.  Holding right-mouse-button and moving the mouse scrolls around the map.  Mouse-wheel-click toggles following the avatar.  There are two floors, pressing the number keys 1 and 2 show them or press the numbered buttons to the right of the "Floor" label.  F1 toggles between absolute coordinates and coordinates relative to floor shown in the information panel.
+Left-click anywhere on the map moves the avatar to that location.  Mouse-wheel controls zooming.  Holding right-mouse-button and moving the mouse scrolls around the map.  Mouse-wheel-click toggles following the avatar.  There are two floors, pressing the number keys 1 and 2 show them or left-click the numbered buttons to the right of the "Floor" label.  F1 toggles between absolute coordinates and coordinates relative to floor shown in the information panel.
 
 Winning:
 

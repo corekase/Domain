@@ -15,14 +15,14 @@ class PushButtonGroup(Button):
         # bring in mouse-related events
         from pygame.locals import MOUSEBUTTONDOWN
         if event.type != MOUSEBUTTONDOWN:
-            # no matching events for button logic
+            # no matching event for push button logic
             return False
-        # is the mouse position within the button rect
+        # is the mouse position within the push button rect and is it clicked
         if self.rect.collidepoint(event.pos) and event.button == 1:
-            # clicked, update button states
+            # clicked, update push button states
             self.select()
             return True
-        # button not clicked
+        # push button not clicked
         return False
 
     def select(self):
