@@ -22,7 +22,7 @@ class PushButtonGroup(Button):
         # manage the state of the push button
         if self.state == State.IDLE and collision:
             self.state = State.HOVER
-        elif self.state == State.HOVER:
+        if self.state == State.HOVER:
             if (event.type == MOUSEMOTION) and (not collision):
                 self.state = State.IDLE
             if (event.type == MOUSEBUTTONDOWN) and collision:
