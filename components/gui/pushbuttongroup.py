@@ -18,10 +18,9 @@ class PushButtonGroup(Button):
             # no matching events for button logic
             return False
         # is the mouse position within the button rect
-        collision = self.rect.collidepoint(event.pos)
-        # manage the state of the button
-        if (event.type == MOUSEBUTTONDOWN) and collision:
+        if self.rect.collidepoint(event.pos):
             if event.button == 1:
+                # clicked, update button states
                 self.select()
                 return True
         # button not clicked
