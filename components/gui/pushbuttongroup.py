@@ -35,7 +35,7 @@ class PushButtonGroup(Button):
 
     def select(self):
         from .frame import State
-        # clear all other armed states in the group and set this one as armed
+        # clear all other armed states in the group
         for item in PushButtonGroup.groups[self.group]:
             item.state = State.IDLE
         # mark this item armed
