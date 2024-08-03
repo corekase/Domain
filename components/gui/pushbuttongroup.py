@@ -22,7 +22,7 @@ class PushButtonGroup(Button):
         # is the mouse position within the push button rect
         collision = self.rect.collidepoint(event.pos)
         # manage the state of the push button
-        if self.state == State.IDLE and collision:
+        if (self.state == State.IDLE) and collision:
             self.state = State.HOVER
         if self.state == State.HOVER:
             if (event.type == MOUSEMOTION) and (not collision):
