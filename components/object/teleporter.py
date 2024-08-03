@@ -11,8 +11,7 @@ class Teleporter(DomainObject):
             self.load_sheet('sprites', 'teleporter', 'teleporter_down.png')
         # sync position state
         self.sync_cell(position)
-        # teleporter source and destination cells coordinates
-        self.source = position
+        # teleporter source and destination cell coordinates
         self.destination = destination
 
     def process(self):

@@ -179,7 +179,7 @@ class DomainManager:
             teleporter = self.teleporters(current)
             if teleporter != None:
                 # get source and destination cell coordinates
-                source, destination = teleporter.source, teleporter.destination
+                source, destination = teleporter.coord, teleporter.destination
                 if source not in used_teleporters:
                     # add them to used, only allowed to use a teleporter pair once
                     used_teleporters.append(source)
