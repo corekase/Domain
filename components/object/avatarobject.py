@@ -35,13 +35,13 @@ class AvatarObject(DomainObject):
     def move_to(self, position):
         if self.domain_manager.cell_gid(position) == self.tile_gid[FLOOR]:
             # perform move
-            result = self.reset_queue()
-            if result == None:
+            destination = self.reset_queue()
+            if destination == None:
                 # there is no move to in the queue, pathfind from current coordinate
                 path = self.domain_manager.find_path(self.coord, [Coordinate(position)])[0]
             else:
                 # there is a move to, pathfind from its destination after it completes
-                path = self.domain_manager.find_path(result, [Coordinate(position)])[0]
+                path = self.domain_manager.find_path(destination, [Coordinate(position)])[0]
             if path != None:
                 # switch to default context while moving
                 self.gui_manager.switch_context('default')
