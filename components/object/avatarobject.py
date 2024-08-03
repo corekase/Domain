@@ -1,3 +1,6 @@
+# named indexes for tiles to map the correct gid
+EMPTY, WALL, FLOOR = 0, 1, 2
+
 from .domainobject import DomainObject
 from components.domain.domainmanager import Coordinate
 
@@ -30,22 +33,21 @@ class AvatarObject(DomainObject):
                 self.gui_manager.switch_context('putdown_context')
 
     def move_to(self, position):
-        # switch to default context while moving
-        self.gui_manager.switch_context('default')
-        # perform move
-        if self.reset_queue():
-            # no move_to in the queue so just go there directly
-            self.move_to_guarded(position)
-        else:
-            from .domainobject import Datagram
-            # do after existing move_to
-            self.command(Datagram(self.move_to_guarded, position))
-
-    def move_to_guarded(self, position):
-        from .domainobject import Path_To
-        # from current position go to new_position
-        path = self.domain_manager.find_path(self.coord, [Coordinate(position)])[0]
-        self.command(Path_To(path))
+        if self.domain_manager.cell_gid(position) == self.tile_gid[FLOOR]:
+            # perform move
+            result = self.reset_queue()
+            if result == None:
+                # there is no move to in the queue, pathfind from current coordinate
+                path = self.domain_manager.find_path(self.coord, [Coordinate(position)])[0]
+            else:
+                # there is a move to, pathfind from its destination after it completes
+                path = self.domain_manager.find_path(result, [Coordinate(position)])[0]
+            if path != None:
+                # switch to default context while moving
+                self.gui_manager.switch_context('default')
+                # add path to the command queue
+                from .domainobject import Path_To
+                self.command(Path_To(path))
 
     def pick_up(self):
         # pick up inventory

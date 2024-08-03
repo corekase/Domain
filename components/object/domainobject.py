@@ -9,7 +9,6 @@ from collections import namedtuple
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
 Path_To = namedtuple('Path_To', 'path')
-Datagram = namedtuple('Datagram', 'callback argument')
 Teleport = namedtuple('Teleport', 'destination follow')
 
 from pygame.sprite import Sprite
@@ -95,23 +94,13 @@ class DomainObject(Sprite):
                 self.command_queue.pop(0)
                 # replaces a path_to with move_to and teleport commands without affecting items in the queue after it
                 # path is in reverse order, when inserted into the queue that results in the commands being in forward order
-                # next two lines guard against edge cases in pathfinding
-                if len(path) > 0:
-                    if path[0] != None:
-                        for kind, value in path:
-                            if kind == 'move':
-                                # convert to renderer map rect pixel coordinates for each position in the path
-                                self.command_queue.insert(0, Move_To(self.pixel_centre(value)))
-                            elif kind == 'teleport':
-                                is_avatar = self is self.domain_manager.avatar
-                                self.command_queue.insert(0, Teleport(value, is_avatar))
-            elif command_name == 'Datagram':
-                # call a method with an argument parameter.  If you need more than one value
-                # then make it a tuple of values
-                callback, argument = command.callback, command.argument
-                self.command_queue.pop(0)
-                # call the datagram callback function with the argument
-                callback(argument)
+                for kind, value in path:
+                    if kind == 'move':
+                        # convert to renderer map rect pixel coordinates for each position in the path
+                        self.command_queue.insert(0, Move_To(self.pixel_centre(value)))
+                    elif kind == 'teleport':
+                        is_avatar = self is self.domain_manager.avatar
+                        self.command_queue.insert(0, Teleport(value, is_avatar))
             elif command_name == 'Teleport':
                 # teleport to a new position
                 destination, follow = command.destination, command.follow
@@ -140,16 +129,19 @@ class DomainObject(Sprite):
         return type(command).__name__
 
     def reset_queue(self):
-        # clear the queue except for the first in-progress Move_To
+        # clear the queue except for the first in-progress move to
         if len(self.command_queue) > 0:
+            # get the current command
             current = self.command_queue[0]
             if self.command_name(current) == 'Move_To':
+                # if it's a move to return its destination in cell coordinates and clear the queue except for it
+                destination = current.destination
+                coord = int(destination[0] / self.map_object.tilewidth), int(destination[1] / self.map_object.tileheight)
                 self.command_queue = [current]
-                # return that queue wasn't fully cleared
-                return False
+                return coord
+        # otherwise clear the entire queue and return None
         self.command_queue.clear()
-        # return queue cleared
-        return True
+        return None
 
     def move(self, degree, elapsed_time):
         from math import cos, sin, radians
