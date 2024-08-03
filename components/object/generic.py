@@ -1,6 +1,6 @@
 from .domainobject import DomainObject
 
-class GenericObject(DomainObject):
+class Generic(DomainObject):
     def __init__(self, position):
         super().__init__()
         # load image

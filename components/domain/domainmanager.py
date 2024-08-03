@@ -21,11 +21,11 @@ class DomainManager:
         # object references needed for domain initialization
         from components.object.domainobject import DomainObject
         from components.object.objectmanager import ObjectManager
-        from components.object.teleporter import TeleporterObject
-        from components.object.generic import GenericObject
-        from components.object.pickup import PickupObject
-        from components.object.agent import AgentObject
-        from components.object.avatar import AvatarObject
+        from components.object.teleporter import Teleporter
+        from components.object.generic import Generic
+        from components.object.pickup import Pickup
+        from components.object.agent import Agent
+        from components.object.avatar import Avatar
         # load the map, map is a keyword so this has _object added
         self.map_object = load_pygame(file_resource('domains', 'domain.tmx'))
         # give DomainObject subclasses a common reference to the map
@@ -75,7 +75,7 @@ class DomainManager:
             # whether to show an up or down graphic and destination coordinate for the teleport in cells
             up_down, destination = info
             # instantiate the teleport
-            instance = TeleporterObject(up_down, position, destination)
+            instance = Teleporter(up_down, position, destination)
             instance.layer = 3
             # add it to the domain, in 'teleporters' reserved name
             self.object_manager.object_add('teleporters', instance)
@@ -91,14 +91,14 @@ class DomainManager:
                     # add the instance to the group
                     self.object_manager.object_add(group, instance)
         # create generic items
-        populate(40, GenericObject, 1, 'generic')
+        populate(40, Generic, 1, 'generic')
         # create pickup items
-        populate(1, PickupObject, 2, 'pickups')
+        populate(1, Pickup, 2, 'pickups')
         # create agents
-        populate(20, AgentObject, 4, 'agents')
+        populate(20, Agent, 4, 'agents')
         # create a player avatar and add it to the domain
         position = self.random_position_floor(self.tile_gid[FLOOR], 0)
-        self.avatar = AvatarObject(position)
+        self.avatar = Avatar(position)
         self.avatar.layer = 5
         self.object_manager.object_add('avatar', self.avatar)
         # initialize the main viewport with any value, needed for switch_floor

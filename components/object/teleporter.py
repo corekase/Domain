@@ -1,7 +1,7 @@
 # a cell with a teleporter object may not have any other objects
 from .domainobject import DomainObject
 
-class TeleporterObject(DomainObject):
+class Teleporter(DomainObject):
     def __init__(self, graphic, position, destination):
         super().__init__()
         # load either image

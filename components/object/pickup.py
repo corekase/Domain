@@ -1,6 +1,6 @@
 from .domainobject import DomainObject
 
-class PickupObject(DomainObject):
+class Pickup(DomainObject):
     def __init__(self, position):
         super().__init__()
         # load image
