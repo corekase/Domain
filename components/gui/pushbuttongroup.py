@@ -3,10 +3,10 @@ from .button import Button
 class PushButtonGroup(Button):
     groups = {}
 
-    def __init__(self, surface, id, rect, text, group, selected):
+    def __init__(self, surface, id, rect, text, group):
         super().__init__(surface, id, rect, text)
         self.group = group
-        self.selected = selected
+        self.selected = False
         if group not in PushButtonGroup.groups.keys():
             PushButtonGroup.groups[group] = []
         PushButtonGroup.groups[group].append(self)
