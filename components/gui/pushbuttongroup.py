@@ -30,8 +30,6 @@ class PushButtonGroup(Button):
                     # push button was clicked
                     self.select()
                     return True
-            if (event.type == MOUSEMOTION) and (not collision):
-                self.state = State.IDLE
         # push button not clicked
         return False
 
