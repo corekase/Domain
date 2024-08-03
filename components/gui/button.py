@@ -28,15 +28,15 @@ class Button(Frame):
         # is the mouse position within the button rect
         collision = self.rect.collidepoint(event.pos)
         # manage the state of the button
-        if self.state == State.IDLE and collision:
+        if (self.state == State.IDLE) and collision:
             self.state = State.HOVER
-        elif self.state == State.HOVER:
+        if self.state == State.HOVER:
             if (event.type == MOUSEMOTION) and (not collision):
                 self.state = State.IDLE
             if (event.type == MOUSEBUTTONDOWN) and collision:
                 if event.button == 1:
                     self.state = State.ARMED
-        elif self.state == State.ARMED:
+        if self.state == State.ARMED:
             if (event.type == MOUSEBUTTONUP) and collision:
                 if event.button == 1:
                     # button clicked
