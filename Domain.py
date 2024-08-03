@@ -85,7 +85,7 @@ class Main:
         self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down'))
         self.gui_manager.add_widget('putdown_context', exit_button)
         # game won context
-        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', button_rect, 'Won!'))
+        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', button_exit_rect, 'Won!'))
         # default context
         self.gui_manager.add_widget('default', exit_button)
         # add the floor group controls to all contexts
