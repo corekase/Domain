@@ -1,6 +1,8 @@
 from .button import Button
 
 class PushButtonGroup(Button):
+    # dictionary of key:value -> key is the name of the group. value is a list of
+    # PushButtonGroup objects
     groups = {}
 
     def __init__(self, surface, id, rect, text, group):
