@@ -4,10 +4,8 @@ class PushButtonGroup(Button):
     groups = {}
 
     def __init__(self, surface, id, rect, text, group):
-        from .frame import State
         super().__init__(surface, id, rect, text)
         self.group = group
-        self.state = State.IDLE
         if group not in PushButtonGroup.groups.keys():
             PushButtonGroup.groups[group] = []
         PushButtonGroup.groups[group].append(self)
@@ -15,11 +13,11 @@ class PushButtonGroup(Button):
     def handle_event(self, event):
         from .frame import State
         # bring in mouse-related events
-        from pygame.locals import MOUSEBUTTONDOWN, MOUSEMOTION
-        if event.type not in (MOUSEBUTTONDOWN, MOUSEMOTION):
+        from pygame.locals import MOUSEMOTION, MOUSEBUTTONDOWN
+        if event.type not in (MOUSEMOTION, MOUSEBUTTONDOWN):
             # no matching events for push button logic
             return False
-        # is the mouse position within the button rect
+        # is the mouse position within the push button rect
         collision = self.rect.collidepoint(event.pos)
         # manage the state of the push button
         if self.state == State.IDLE and collision:
