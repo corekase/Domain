@@ -128,21 +128,6 @@ class DomainObject(Sprite):
         # return the name of the tuple which is the command
         return type(command).__name__
 
-    def reset_queue(self):
-        # clear the queue except for the first in-progress move to
-        if len(self.command_queue) > 0:
-            # get the current command
-            current = self.command_queue[0]
-            if self.command_name(current) == 'Move_To':
-                # if it's a move to return its destination in cell coordinates and clear the queue except for it
-                destination = current.destination
-                coord = int(destination[0] / self.map_object.tilewidth), int(destination[1] / self.map_object.tileheight)
-                self.command_queue = [current]
-                return coord
-        # otherwise clear the entire queue and return None
-        self.command_queue.clear()
-        return None
-
     def move(self, degree, elapsed_time):
         from math import cos, sin, radians
        # move in the direction of degree
