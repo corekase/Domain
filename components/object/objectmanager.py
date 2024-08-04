@@ -1,7 +1,7 @@
 class ObjectManager:
     def __init__(self, renderer):
         # items are key:value -> list_name:list_of_objects
-        self.item_dict = dict()
+        self.item_dict = {}
         # main domain group, everything in this group will be drawn onscreen
         # 'domain' is a reserved list name, it is all the objects that will be drawn
         from components.bundled.pyscroll.group import PyscrollGroup
@@ -9,7 +9,7 @@ class ObjectManager:
 
     def object_add(self, name, object):
         # append and add an object to the named list and the domain group
-        if not (name in self.item_dict.keys()):
+        if name not in self.item_dict.keys():
             self.item_dict[name] = []
         self.item_dict[name].append(object)
         self.domain_add(object)
