@@ -62,6 +62,7 @@ class Avatar(DomainObject):
                 return coord
         # otherwise clear the entire queue and return None
         self.command_queue = []
+        return None
 
     def pick_up(self):
         # pick up inventory
