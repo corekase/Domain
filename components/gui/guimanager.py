@@ -5,7 +5,7 @@ colours = {'full': (255, 255, 255), 'light': (0, 200, 200), 'medium': (0, 140, 1
 class GuiManager:
     def __init__(self):
         # widgets to be managed: key:value -> group_name:list_of_widgets
-        self.widgets = dict()
+        self.widgets = {}
         # which key group to show
         self.context = None
         # lock to this context
@@ -41,6 +41,6 @@ class GuiManager:
 
     def add_widget(self, context, widget):
         # add a widget to the manager
-        if not (context in self.widgets.keys()):
+        if context not in self.widgets.keys():
             self.widgets[context] = []
         self.widgets[context].append(widget)
