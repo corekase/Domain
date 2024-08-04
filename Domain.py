@@ -49,8 +49,7 @@ class Main:
         # set window icon
         pygame.display.set_icon(utility.image_alpha('icon.png'))
         # load images for custom mouse pointers
-        self.cursor_domain_image = utility.image_alpha('cursors', 'cursor_domain.png')
-        self.cursor_interface_image = utility.image_alpha('cursors', 'cursor_interface.png')
+        self.cursor_interface_image = utility.image_alpha('cursors', 'normal.png')
         # create a surface of that size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
@@ -323,18 +322,10 @@ class Main:
 
     def draw_mouse(self, x, y):
         # draw mouse cursor
-        # is the mouse in the view rect?
-        if self.view_surface_rect.collidepoint(x, y):
-            # draw domain cursor
-            self.screen.set_clip(self.view_surface_rect)
-            if self.panning_state:
-                self.screen.blit(self.cursor_domain_image,
-                                (self.panning_state_position[0] - 15, self.panning_state_position[1] - 15))
-            else:
-                self.screen.blit(self.cursor_domain_image, (x - 15, y - 15))
-            self.screen.set_clip(None)
+        if self.panning_state:
+            self.screen.blit(self.cursor_interface_image,
+                            (self.panning_state_position[0] - 6, self.panning_state_position[1]))
         else:
-            # outside of view surface rect, draw interface cursor
             self.screen.blit(self.cursor_interface_image, (x - 6, y))
 
 if __name__ == '__main__':
