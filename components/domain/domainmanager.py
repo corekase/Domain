@@ -9,6 +9,7 @@ class Coordinate:
 class DomainManager:
     # reference to tile_gid tuple
     tile_gid = None
+    # reference to gui objects for floor control
     floor_group = None
 
     def __init__(self, view_surface):
