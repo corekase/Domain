@@ -254,7 +254,7 @@ class Main:
                         x, y = event.pos
                         # if mouse is inside the view rect
                         if self.view_surface_rect.collidepoint(x, y):
-                            position = self.domain_manager.pick_cell(x -self.view_surface_rect.x, y - self.view_surface_rect.y)
+                            position = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
                             self.domain_manager.avatar.move_to(position)
                     elif event.button == 3:
                         # right button up, end panning state
