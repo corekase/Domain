@@ -291,6 +291,27 @@ class DomainManager:
         else:
             return None
 
+    def check_win(self):
+        # if all the pickup items are in the same cell then the game is won
+        matched = True
+        last_item = None
+        objects = self.object_manager.objects('pickups')
+        # if the avatar has an item in their inventory then include it
+        if self.avatar.inventory != None:
+            objects.append(self.avatar.inventory)
+        # compare cell coordinates for all items, if any don't match then the check fails
+        # the last item in the avatar inventory doesn't count until it's placed on the map
+        # because its coordinates aren't updated until then
+        for item in objects:
+            if last_item == None:
+                last_item = item
+                continue
+            if (item.coord[0] != last_item.coord[0]) or (item.coord[1] != last_item.coord[1]):
+                matched = False
+                break
+        # if true then won
+        return matched
+
     def pick_cell(self, x, y):
         # renderer view_rect size at a given zoom must not be larger than renderer map_rect size
         # at the same zoom. if greater, pick_cell() gives invalid results.

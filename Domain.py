@@ -167,7 +167,7 @@ class Main:
                 self.screen.fill(colours['background'], widget.rect)
             # check for winning conditions after gui damage has been filled as the gui context may be changed
             if not self.won:
-                if self.check_win():
+                if self.domain_manager.check_win():
                     # display winning screen here
                     self.gui_manager.lock_context('win_context')
                     self.won = True
@@ -283,27 +283,6 @@ class Main:
         else:
             # not inside the surface rect
             self.status = "N/A"
-
-    def check_win(self):
-        # if all the pickup items are in the same cell then the game is won
-        matched = True
-        last_item = None
-        objects = self.domain_manager.object_manager.objects('pickups')
-        # if the avatar has an item in their inventory then include it
-        if self.domain_manager.avatar.inventory != None:
-            objects.append(self.domain_manager.avatar.inventory)
-        # compare cell coordinates for all items, if any don't match then the check fails
-        # the last item in the avatar inventory doesn't count until it's placed on the map
-        # because its coordinates aren't updated until then
-        for item in objects:
-            if last_item == None:
-                last_item = item
-                continue
-            if (item.coord[0] != last_item.coord[0]) or (item.coord[1] != last_item.coord[1]):
-                matched = False
-                break
-        # if true then won
-        return matched
 
     def draw_info_panel(self, fps):
         # bring in needed functions
