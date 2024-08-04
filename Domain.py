@@ -126,12 +126,12 @@ class Main:
         while self.running:
             # main loop
             self.cycle += 1
+            # handle events
+            self.handle_events()
             # manage time
             now_time = time.time()
             elapsed_time = now_time - previous_time
             previous_time = now_time
-            # handle events
-            self.handle_events()
             # update domain state
             if not self.won:
                 self.domain_manager.update_domain(elapsed_time)
