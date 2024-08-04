@@ -50,21 +50,8 @@ class DomainObject(Sprite):
         # subclasess must call either sync_coordinate or sync_cell before they exit their __init__
 
     def update(self, elapsed_time):
-        # handle animation frames
-        if self.frames > 1:
-            # add elapsed time to timer time
-            self.timer += elapsed_time
-            # if timer time is greater than frame time interval
-            if self.timer >= self.interval:
-                # remove the interval leaving the remainer for future times
-                self.timer -= self.interval
-                # adjust the frame of the domain object
-                self.frame += 1
-                # limit frames within indexes
-                if self.frame >= self.frames:
-                    self.frame = 0
-                # update sprite image from frame
-                self.image = self.animations[self.frame]
+        # update animation frame
+        self.update_image(elapsed_time)
         # check the command queue for any commands
         if len(self.command_queue) > 0:
             # there is a command, get it
@@ -171,3 +158,20 @@ class DomainObject(Sprite):
         self.frames = len(self.animations)
         self.image = self.animations[self.frame]
         self.rect = self.animations[self.frame].get_rect()
+
+    def update_image(self, elapsed_time):
+        # handle animation frames
+        if self.frames > 1:
+            # add elapsed time to timer time
+            self.timer += elapsed_time
+            # if timer time is greater than frame time interval
+            if self.timer >= self.interval:
+                # remove the interval leaving the remainer for future times
+                self.timer -= self.interval
+                # adjust the frame of the domain object
+                self.frame += 1
+                # limit frames within indexes
+                if self.frame >= self.frames:
+                    self.frame = 0
+                # update sprite image from frame
+                self.image = self.animations[self.frame]
