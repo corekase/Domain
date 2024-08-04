@@ -306,7 +306,7 @@ class DomainManager:
             if last_item == None:
                 last_item = item
                 continue
-            if (item.coord[0] != last_item.coord[0]) or (item.coord[1] != last_item.coord[1]):
+            if item.coord != last_item.coord:
                 matched = False
                 break
         # if true then won
