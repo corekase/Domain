@@ -33,10 +33,7 @@ class Scrollbar(Frame):
         if ((event.type == MOUSEMOTION) or (event.type == MOUSEBUTTONDOWN)) and self.dragging:
             # adjust postion
             x, y = event.pos
-            if self.horizontal:
-                graphical_range = self.graphic_rect.width
-            else:
-                graphical_range = self.graphic_rect.height
+            graphical_range = self.graphical_range()
             size = self.total_range / graphical_range
             if self.horizontal:
                 new_coord = int(x * size)
@@ -61,17 +58,21 @@ class Scrollbar(Frame):
         # return scrollbar start position
         return self.start_pos
 
+    def graphical_range(self):
+        # return the appropriate range depending on whether the scrollbar is horizontal or vertical
+        if self.horizontal:
+            return self.graphic_rect.width
+        else:
+            return self.graphic_rect.height
+
     def draw(self):
         # draw the frame
         super().draw()
         # calculate percentages from the start and end positions
         start_percent = (self.start_pos * 100) / self.total_range
         end_percent = (self.end_pos * 100) / self.total_range
-        if self.horizontal:
-            graphical_range = self.graphic_rect.width
-        else:
-            graphical_range = self.graphic_rect.height
         # calculate where the percentages are within the graphical area
+        graphical_range = self.graphical_range()
         start_point = int((start_percent * graphical_range) / 100)
         end_point = int((end_percent * graphical_range) / 100)
         from pygame import Rect
