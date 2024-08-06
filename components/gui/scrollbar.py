@@ -17,7 +17,7 @@ class Scrollbar(Frame):
     def handle_event(self, event):
         # bring in mouse-related events
         from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
-        if not (event.type in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN)):
+        if event.type not in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN):
             # no matching events for scrollbar logic
             return False
         # is the mouse position within the scrollbar rect
