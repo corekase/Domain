@@ -22,7 +22,7 @@ class Button(Frame):
         from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
         # bring in State from the base Frame
         from .frame import State
-        if not (event.type in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN)):
+        if event.type not in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN):
             # no matching events for button logic
             return False
         # is the mouse position within the button rect
