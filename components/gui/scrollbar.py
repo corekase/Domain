@@ -20,12 +20,10 @@ class Scrollbar(Frame):
         if event.type not in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN):
             # no matching events for scrollbar logic
             return False
-        # is the mouse position within the scrollbar rect
-        collision = self.rect.collidepoint(event.pos)
         # bring in State from the base Frame
         from .frame import State
         # manage the state of the scrollbar
-        if (event.type == MOUSEBUTTONDOWN) and collision:
+        if (event.type == MOUSEBUTTONDOWN) and self.rect.collidepoint(event.pos):
             if event.button == 1:
                 # begin dragging the scrollbar
                 self.state = State.HOVER
@@ -82,7 +80,5 @@ class Scrollbar(Frame):
             rec = Rect(self.graphic_rect.x, self.graphic_rect.y + start_point, self.graphic_rect.width, end_point)
         from components.gui.guimanager import colours
         from pygame.draw import rect
-        # lock surface and draw the rectangle
-        self.surface.lock()
+        # fill graphical area to represent the start and end point range
         rect(self.surface, colours['full'], rec, 0)
-        self.surface.unlock()
