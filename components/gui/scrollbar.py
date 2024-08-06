@@ -33,8 +33,7 @@ class Scrollbar(Frame):
         if ((event.type == MOUSEMOTION) or (event.type == MOUSEBUTTONDOWN)) and self.dragging:
             # adjust postion
             x, y = event.pos
-            graphical_range = self.graphical_range()
-            size = self.total_range / graphical_range
+            size = self.total_range / self.graphical_range()
             if self.horizontal:
                 new_coord = int(x * size)
             else:
