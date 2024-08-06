@@ -122,7 +122,7 @@ class Main:
         import time, pygame
         # maximum frames-per-second, 0 for unlimited
         fps = 0
-        # mininimum fps, if below this switch to non-realtime movement
+        # maximum frame time, if above this switch to non-realtime movement
         if fps != 0:
             max_time = 1000 / fps
         else:
