@@ -122,6 +122,9 @@ class Main:
         import time, pygame
         # maximum frames-per-second, 0 for unlimited
         fps = 0
+        # mininimum fps, if below this switch to non-realtime movement
+        if fps != 0:
+            max_time = 1000 / fps
         # instantiate a pygame clock for frame maximum limits
         clock = pygame.time.Clock()
         # track elapsed_time with more accurate os clock
@@ -136,6 +139,10 @@ class Main:
             now_time = time.time()
             elapsed_time = now_time - previous_time
             previous_time = now_time
+            # if a frame takes longer than the max time then switch to non-realtime movement
+            if fps != 0:
+                if elapsed_time > max_time:
+                    elapsed_time = max_time
             # update domain state
             if not self.won:
                 self.domain_manager.update_domain(elapsed_time)
