@@ -47,15 +47,15 @@ class DomainManager:
         DomainObject.object_manager = self.object_manager
         # map constants
         self.floor_tiles = 60
-        floors = int(self.map_object.width / self.floor_tiles)
+        self.floors = int(self.map_object.width / self.floor_tiles)
         # each floor_ports is a rect which has the boundaries for the floor
         self.floor_ports = []
         # size of the floor port, square maps and tiles are assumed here, adjust if needed
-        floor_size = self.floor_tiles * self.map_object.tilewidth
+        self.floor_size = self.floor_tiles * self.map_object.tilewidth
         # define a rect for each floor port
-        for floor in range(floors):
-            x_base = floor * floor_size
-            self.floor_ports.append(Rect(x_base, 0, floor_size, floor_size))
+        for floor in range(self.floors):
+            x_base = floor * self.floor_size
+            self.floor_ports.append(Rect(x_base, 0, self.floor_size, self.floor_size))
         # initial floor_port is none
         self.floor_port = None
         # initial floor is none
@@ -82,7 +82,7 @@ class DomainManager:
             self.object_manager.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
-            for floor in range(floors):
+            for floor in range(self.floors):
                 for _ in range(number):
                     position = self.random_position_floor(self.tile_gid[FLOOR], floor)
                     # instantiate from the class

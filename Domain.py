@@ -11,9 +11,9 @@ class Main:
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
         # dimensions of the viewport
-        view_xpos, view_ypos, view_width, view_height = 10, 10, 1680, 1060
+        view_xpos, view_ypos, view_width, view_height = 10, 10, 1600, 1040
         # area for gui elements
-        gui_xpos = view_xpos + view_width + 10
+        gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
         # bring in reference
         from components import utility
@@ -55,7 +55,7 @@ class Main:
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = pygame.Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect that outlines view_surface_rect
-        self.view_surface_outline_rect = pygame.Rect(view_xpos - 1, view_ypos - 1, view_width + 2, view_height + 2)
+        self.view_surface_outline_rect = pygame.Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
         # create domain manager
         self.domain_manager = DomainManager(self.view_surface)
         # give domain objects a reference to the domain manager
@@ -73,7 +73,7 @@ class Main:
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         button_width, button_height = int(gui_width / 2), 20
-        button_exit_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height,
+        button_exit_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 20,
                                        button_width, button_height)
         exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
         button_rect = pygame.Rect(gui_xpos, floor_1_button_rect.bottom + 2, button_width, button_height)
@@ -87,8 +87,15 @@ class Main:
         self.gui_manager.add_widget('win_context', Button(self.screen, 'won', button_exit_rect, 'Won!'))
         # default context
         self.gui_manager.add_widget('default', exit_button)
+        from components.gui.scrollbar import Scrollbar
+        self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
+        self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         # add the floor group controls to all contexts
         for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
+            self.gui_manager.add_widget(context, self.vbar)
+            self.gui_manager.add_widget(context, self.hbar)
+            self.gui_manager.add_widget(context, Frame(self.screen, 'frame',
+                                    (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17)))
             self.gui_manager.add_widget(context, floor_label)
             self.gui_manager.add_widget(context, self.floor_group['0'])
             self.gui_manager.add_widget(context, self.floor_group['1'])
@@ -142,7 +149,15 @@ class Main:
             pygame.draw.rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
             self.domain_manager.draw_domain()
-            # and copy that surface into the main screen surface
+            # get the view and map rects for the scrollbars
+            view_rect = self.domain_manager.renderer.view_rect
+            map_rect = self.domain_manager.renderer.map_rect
+            # update the vertical scrollbar data
+            self.vbar.set(map_rect.height, view_rect.y, view_rect.height)
+            # update the horizontal scrollbar data, subtract the floor from the view rect then the hbar is normalized
+            self.hbar.set(map_rect.width / self.domain_manager.floors,
+                          view_rect.x - (self.domain_manager.floor * self.domain_manager.floor_size), view_rect.width)
+            # copy domain view surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw gui widgets
             self.gui_manager.draw_widgets()
@@ -179,7 +194,7 @@ class Main:
         import pygame
         # used constants
         from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
-        from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_1, K_2, K_F1
+        from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_F1
         # handle event queue
         for event in pygame.event.get():
             gui_event = self.gui_manager.handle_event(event)
@@ -193,6 +208,12 @@ class Main:
                         self.domain_manager.switch_floor(0)
                     elif gui_event == 'floor2':
                         self.domain_manager.switch_floor(1)
+                elif gui_event == 'vbar':
+                    # the vbar was changed, update viewport
+                    self.domain_manager.main_viewport[1] = self.vbar.get()
+                elif gui_event == 'hbar':
+                    # hbar changed, add floor back into the view port and update
+                    self.domain_manager.main_viewport[0] = self.hbar.get() + self.domain_manager.floor * self.domain_manager.floor_size
                 elif gui_event == 'pick_up':
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
@@ -217,7 +238,14 @@ class Main:
                     x, y = pygame.mouse.get_pos()
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
-                        if event.button == 2:
+                        if event.button == 1:
+                            # left button up, which is destination point for avatar
+                            x, y = event.pos
+                            # if mouse is inside the view rect
+                            if self.view_surface_rect.collidepoint(x, y):
+                                position = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
+                                self.domain_manager.avatar.move_to(position)
+                        elif event.button == 2:
                             # switch to the avatar floor and centre the main viewport on it
                             self.domain_manager.switch_floor(self.domain_manager.get_floor(self.domain_manager.avatar.coord))
                             self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
@@ -240,14 +268,7 @@ class Main:
                             # wheel scroll down, decrease zoom index
                             self.domain_manager.set_zoom_index(-1)
                 elif event.type == MOUSEBUTTONUP:
-                    if event.button == 1:
-                        # left button up, which is destination point for avatar
-                        x, y = event.pos
-                        # if mouse is inside the view rect
-                        if self.view_surface_rect.collidepoint(x, y):
-                            position = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
-                            self.domain_manager.avatar.move_to(position)
-                    elif event.button == 3:
+                    if event.button == 3:
                         # right button up, end panning state
                         self.panning_state = False
                 # panning state actions
