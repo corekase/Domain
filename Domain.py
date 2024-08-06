@@ -296,7 +296,6 @@ class Main:
     def draw_info_panel(self, fps):
         # bring in needed functions
         from components.utility import padding, render_text
-        # gather information into text strings
         fps = f'FPS: {int(round(fps))}'
         # draw frame
         self.information_frame.draw()
