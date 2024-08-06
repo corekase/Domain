@@ -23,7 +23,7 @@ class Main:
         # padding function from utility
         from components.utility import padding
         # create a frame for the information panel
-        information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(3))
+        information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(2))
         # set up the floor group buttons
         self.floor_group = {}
         floor_select_size = 20
@@ -113,8 +113,6 @@ class Main:
         self.status = None
         # is the game won flag
         self.won = False
-        # cycle counter
-        self.cycle = -1
         # Set the state of the application to "running"
         self.running = True
 
@@ -131,8 +129,6 @@ class Main:
         self.screen.fill(colours['background'])
         # continue while the running flag is true
         while self.running:
-            # main loop
-            self.cycle += 1
             # handle events
             self.handle_events()
             # manage time
@@ -301,16 +297,14 @@ class Main:
         # bring in needed functions
         from components.utility import padding, render_text
         # gather information into text strings
-        cycle = f'Cycle: {self.cycle}'
         fps = f'FPS: {int(round(fps))}'
         # draw frame
         self.information_frame.draw()
         # layout coordinates
         x_pos, y_pos, _, _ = self.information_frame.rect
         # draw each text line onto the screen
-        self.screen.blit(render_text(cycle), (x_pos + 3, y_pos + padding(0)))
-        self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(1)))
-        self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(2)))
+        self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(0)))
+        self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(1)))
 
     def draw_mouse(self, x, y):
         # draw mouse cursor
