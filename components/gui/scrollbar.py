@@ -23,13 +23,11 @@ class Scrollbar(Frame):
         # bring in State from the base Frame
         from .frame import State
         # manage the state of the scrollbar
-        if (event.type == MOUSEBUTTONDOWN) and self.graphic_rect.collidepoint(event.pos):
+        if (event.type == MOUSEBUTTONDOWN) and self.handle_area().collidepoint(event.pos):
             if event.button == 1:
-                # if within area bar within scroll bar
-                if self.get_area_rect().collidepoint(event.pos):
-                    # begin dragging the scrollbar
-                    self.state = State.HOVER
-                    self.dragging = True
+                # begin dragging the scrollbar
+                self.state = State.HOVER
+                self.dragging = True
         if ((event.type == MOUSEMOTION) or (event.type == MOUSEBUTTONDOWN)) and self.dragging:
             # adjust postion
             x, y = event.pos
@@ -86,7 +84,7 @@ class Scrollbar(Frame):
         else:
             return self.graphic_rect.height
 
-    def get_area_rect(self):
+    def handle_area(self):
         # calculate percentages from the start and end positions
         start_percent = (self.start_pos * 100) / self.total_range
         end_percent = (self.end_pos * 100) / self.total_range
@@ -108,4 +106,4 @@ class Scrollbar(Frame):
         from components.gui.guimanager import colours
         from pygame.draw import rect
         # fill graphical area to represent the start and end point range
-        rect(self.surface, colours['full'], self.get_area_rect(), 0)
+        rect(self.surface, colours['full'], self.handle_area(), 0)
