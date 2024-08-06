@@ -213,7 +213,7 @@ class Main:
                     self.domain_manager.main_viewport[1] = self.vbar.get()
                 elif gui_event == 'hbar':
                     # hbar changed, add floor back into the view port and update
-                    self.domain_manager.main_viewport[0] = self.hbar.get() + self.domain_manager.floor * self.domain_manager.floor_size
+                    self.domain_manager.main_viewport[0] = self.hbar.get() + (self.domain_manager.floor * self.domain_manager.floor_size)
                 elif gui_event == 'pick_up':
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
