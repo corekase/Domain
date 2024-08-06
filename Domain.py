@@ -89,12 +89,12 @@ class Main:
         # default context
         self.gui_manager.add_widget('default', exit_button)
         from components.gui.scrollbar import Scrollbar
-        self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
+        self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
         # add the floor group controls to all contexts
         for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
-            self.gui_manager.add_widget(context, self.vbar)
             self.gui_manager.add_widget(context, self.hbar)
+            self.gui_manager.add_widget(context, self.vbar)
             self.gui_manager.add_widget(context, Frame(self.screen, 'frame',
                                     (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17)))
             self.gui_manager.add_widget(context, floor_label)
@@ -157,11 +157,11 @@ class Main:
             # get the view and map rects for the scrollbars
             view_rect = self.domain_manager.renderer.view_rect
             map_rect = self.domain_manager.renderer.map_rect
-            # update the vertical scrollbar data
-            self.vbar.set(map_rect.height, view_rect.y, view_rect.height)
             # update the horizontal scrollbar data, subtract the floor from the view rect then the hbar is normalized
             self.hbar.set(map_rect.width / self.domain_manager.floors,
                           view_rect.x - (self.domain_manager.floor * self.domain_manager.floor_size), view_rect.width)
+            # update the vertical scrollbar data
+            self.vbar.set(map_rect.height, view_rect.y, view_rect.height)
             # copy domain view surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw gui widgets
@@ -213,14 +213,14 @@ class Main:
                         self.domain_manager.switch_floor(0)
                     elif gui_event == 'floor2':
                         self.domain_manager.switch_floor(1)
-                elif gui_event == 'vbar':
-                    # the vbar was changed, update viewport
-                    self.follow_state = False
-                    self.domain_manager.main_viewport[1] = self.vbar.get()
                 elif gui_event == 'hbar':
                     # hbar changed, add floor back into the view port and update
                     self.follow_state = False
                     self.domain_manager.main_viewport[0] = self.hbar.get() + (self.domain_manager.floor * self.domain_manager.floor_size)
+                elif gui_event == 'vbar':
+                    # the vbar was changed, update viewport
+                    self.follow_state = False
+                    self.domain_manager.main_viewport[1] = self.vbar.get()
                 elif gui_event == 'pick_up':
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
