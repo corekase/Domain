@@ -42,29 +42,20 @@ class Scrollbar(Frame):
                 mouse_pos = int(y * mouse_pos_ratio)
             if self.last_pos == None:
                 self.last_pos = mouse_pos
-
-            # get the differences of the mouse range coordinate and start_pos and make that new_pos
-            bar_size = self.end_pos - self.start_pos
-
             mouse_delta = mouse_pos - self.last_pos
-
+            bar_size = int(self.end_pos - self.start_pos)
             new_start_pos = int(self.start_pos + mouse_delta)
             new_end_pos = int(new_start_pos + bar_size)
-
-            if new_start_pos >= self.total_range - bar_size:
-                new_start_pos = self.total_range - bar_size
-                new_end_pos = self.total_range
             if new_start_pos < 0:
                 new_start_pos = 0
                 new_end_pos = bar_size
-
-            self.last_pos = mouse_pos
-
+            if new_start_pos + bar_size > self.total_range:
+                new_start_pos = self.total_range - bar_size
+                new_end_pos = self.total_range
             # store new positions
             self.start_pos = new_start_pos
             self.end_pos = new_end_pos
-            # self.total_range = None
-
+            self.last_pos = mouse_pos
             # signal that there was a change
             return True
         if event.type == MOUSEBUTTONUP and self.dragging:
@@ -112,5 +103,8 @@ class Scrollbar(Frame):
         super().draw()
         from components.gui.guimanager import colours
         from pygame.draw import rect
+        area = self.graphic_rect
+        self.surface.set_clip(area)
         # fill graphical area to represent the start and end point range
         rect(self.surface, colours['full'], self.handle_area(), 0)
+        self.surface.set_clip(None)
