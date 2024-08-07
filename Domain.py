@@ -154,14 +154,6 @@ class Main:
             pygame.draw.rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
             self.domain_manager.draw_domain()
-            # get the view and map rects for the scrollbars
-            view_rect = self.domain_manager.renderer.view_rect
-            map_rect = self.domain_manager.renderer.map_rect
-            # update the horizontal scrollbar data, subtract the floor from the view rect then the hbar is normalized
-            self.hbar.set(map_rect.width / self.domain_manager.floors,
-                          view_rect.x - (self.domain_manager.floor * self.domain_manager.floor_size), view_rect.width)
-            # update the vertical scrollbar data
-            self.vbar.set(map_rect.height, view_rect.y, view_rect.height)
             # copy domain view surface into the main screen surface
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw gui widgets
@@ -200,6 +192,8 @@ class Main:
         # used constants
         from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
         from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_F1
+        # update scroll bar states
+        self.update_scroll_bar_states()
         # handle event queue
         for event in pygame.event.get():
             gui_event = self.gui_manager.handle_event(event)
@@ -213,16 +207,17 @@ class Main:
                         self.domain_manager.switch_floor(0)
                     elif gui_event == 'floor2':
                         self.domain_manager.switch_floor(1)
-                elif gui_event == 'hbar':
-                    # hbar changed, add floor back into the view port and update
-                    self.follow_state = False
-                    self.domain_manager.renderer.view_rect.left = self.hbar.get() + (self.domain_manager.floor * self.domain_manager.floor_size)
-                    self.domain_manager.main_viewport = list(self.domain_manager.renderer.view_rect.center)
-                elif gui_event == 'vbar':
-                    # the vbar was changed, update viewport
-                    self.follow_state = False
-                    self.domain_manager.renderer.view_rect.top = self.vbar.get()
-                    self.domain_manager.main_viewport = list(self.domain_manager.renderer.view_rect.center)
+                elif gui_event in ('hbar', 'vbar'):
+                    if gui_event == 'hbar':
+                        # hbar changed, add floor back into the view port and update
+                        self.follow_state = False
+                        self.domain_manager.renderer.view_rect.left = self.hbar.get() + (self.domain_manager.floor * self.domain_manager.floor_size)
+                        self.domain_manager.main_viewport = list(self.domain_manager.renderer.view_rect.center)
+                    elif gui_event == 'vbar':
+                        # the vbar was changed, update viewport
+                        self.follow_state = False
+                        self.domain_manager.renderer.view_rect.top = self.vbar.get()
+                        self.domain_manager.main_viewport = list(self.domain_manager.renderer.view_rect.center)
                 elif gui_event == 'pick_up':
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
@@ -289,6 +284,16 @@ class Main:
                         self.domain_manager.main_viewport[0] += x - self.panning_state_position[0]
                         self.domain_manager.main_viewport[1] += y - self.panning_state_position[1]
                         pygame.mouse.set_pos(self.panning_state_position)
+
+    def update_scroll_bar_states(self):
+        # get the view and map rects for the scrollbars
+        view_rect = self.domain_manager.renderer.view_rect
+        map_rect = self.domain_manager.renderer.map_rect
+        # update the horizontal scrollbar data, subtract the floor from the view rect then the hbar is normalized
+        self.hbar.set(map_rect.width / self.domain_manager.floors,
+                        view_rect.x - (self.domain_manager.floor * self.domain_manager.floor_size), view_rect.width)
+        # update the vertical scrollbar data
+        self.vbar.set(map_rect.height, view_rect.y, view_rect.height)
 
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
