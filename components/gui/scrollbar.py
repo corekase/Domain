@@ -13,6 +13,7 @@ class Scrollbar(Frame):
         self.horizontal = horizontal
         # state to track if the scrollbar is currently dragging
         self.dragging = False
+        # previous position the last time the event was handled
         self.last_pos = None
 
     def handle_event(self, event):
@@ -40,16 +41,20 @@ class Scrollbar(Frame):
                 mouse_pos = int(x * mouse_pos_ratio)
             else:
                 mouse_pos = int(y * mouse_pos_ratio)
+            # if there is no last mouse position make it this one
             if self.last_pos == None:
                 self.last_pos = mouse_pos
+            # find the difference in mouse movement between handle calls
             mouse_delta = mouse_pos - self.last_pos
-            bar_size = int(self.end_pos - self.start_pos)
-            new_start_pos = int(self.start_pos + mouse_delta)
-            new_end_pos = int(new_start_pos + bar_size)
+            # calculate bar size and new positions
+            bar_size = self.end_pos - self.start_pos
+            new_start_pos = self.start_pos + mouse_delta
+            new_end_pos = new_start_pos + bar_size
+            # limit positions
             if new_start_pos < 0:
                 new_start_pos = 0
                 new_end_pos = bar_size
-            if new_start_pos + bar_size > self.total_range:
+            if new_start_pos + bar_size >= self.total_range:
                 new_start_pos = self.total_range - bar_size
                 new_end_pos = self.total_range
             # store new positions
@@ -60,7 +65,7 @@ class Scrollbar(Frame):
             return True
         if event.type == MOUSEBUTTONUP and self.dragging:
             if event.button == 1:
-                # mouse button released, stop dragging the scrollbar
+                # mouse button released, reset states to default values
                 self.state = State.IDLE
                 self.dragging = False
                 self.last_pos = None
@@ -103,8 +108,7 @@ class Scrollbar(Frame):
         super().draw()
         from components.gui.guimanager import colours
         from pygame.draw import rect
-        area = self.graphic_rect
-        self.surface.set_clip(area)
+        self.surface.set_clip(self.graphic_rect)
         # fill graphical area to represent the start and end point range
         rect(self.surface, colours['full'], self.handle_area(), 0)
         self.surface.set_clip(None)
