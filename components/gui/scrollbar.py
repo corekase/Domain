@@ -13,7 +13,7 @@ class Scrollbar(Frame):
         self.horizontal = horizontal
         # state to track if the scrollbar is currently dragging
         self.dragging = False
-        # previous position the last time the event was handled
+        # previous mouse position the last time the event was handled
         self.last_mouse_pos = None
 
     def handle_event(self, event):
