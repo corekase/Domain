@@ -31,7 +31,6 @@ class Scrollbar(Frame):
                 self.state = State.HOVER
                 self.dragging = True
         if ((event.type == MOUSEMOTION) or (event.type == MOUSEBUTTONDOWN)) and self.dragging:
-            # adjust postion
             x, y = event.pos
             # normalize x and y to graphic drawing area
             x, y = x - self.graphic_rect.x, y - self.graphic_rect.y
@@ -46,6 +45,7 @@ class Scrollbar(Frame):
             if escape:
                 # outside of bounds, reset
                 self.reset()
+                # signal no change
                 return False
             # convert mouse coordinate to total range coordinate
             mouse_pos_ratio = self.total_range / self.graphical_range()
@@ -78,7 +78,9 @@ class Scrollbar(Frame):
             if event.button == 1:
                 # return to default state
                 self.reset()
-        # no changes
+                # signal there was a change
+                return True
+        # signal no changes
         return False
 
     def set(self, total_range, start_pos, end_pos):
