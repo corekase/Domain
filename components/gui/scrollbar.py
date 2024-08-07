@@ -35,15 +35,18 @@ class Scrollbar(Frame):
             x, y = event.pos
             # normalize x and y to graphic drawing area
             x, y = x - self.graphic_rect.x, y - self.graphic_rect.y
-            # limit mouse coordinates
-            if x < 0:
-                x = 0
-            elif x > self.graphic_rect.width:
-                x = self.graphic_rect.width
-            if y < 0:
-                y = 0
-            elif y > self.graphic_rect.height:
-                y = self.graphic_rect.height
+            # test bounds for dragging
+            escape = False
+            if self.horizontal:
+                if x < 0 or x > self.graphic_rect.width:
+                    escape = True
+            else:
+                if y < 0 or y > self.graphic_rect.height:
+                    escape = True
+            if escape:
+                # outside of bounds, reset
+                self.reset()
+                return False
             # convert mouse coordinate to total range coordinate
             mouse_pos_ratio = self.total_range / self.graphical_range()
             if self.horizontal:
@@ -74,10 +77,8 @@ class Scrollbar(Frame):
             return True
         if event.type == MOUSEBUTTONUP and self.dragging:
             if event.button == 1:
-                # mouse button released, reset states to default values
-                self.state = State.IDLE
-                self.dragging = False
-                self.last_mouse_pos = None
+                # return to default state
+                self.reset()
         # no changes
         return False
 
@@ -88,6 +89,13 @@ class Scrollbar(Frame):
     def get(self):
         # return scrollbar start position
         return self.start_pos
+
+    def reset(self):
+        from .frame import State
+        # mouse button released, reset states to default values
+        self.state = State.IDLE
+        self.dragging = False
+        self.last_mouse_pos = None
 
     def graphical_range(self):
         # return the appropriate range depending on whether the scrollbar is horizontal or vertical
