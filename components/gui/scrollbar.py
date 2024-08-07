@@ -59,15 +59,14 @@ class Scrollbar(Frame):
             # find the difference in mouse movement between handle calls
             mouse_delta = mouse_pos - self.last_mouse_pos
             # calculate bar size and new positions
-            bar_size = self.end_pos - self.start_pos
             new_start_pos = self.start_pos + mouse_delta
-            new_end_pos = new_start_pos + bar_size
+            new_end_pos = new_start_pos + self.bar_size
             # limit positions
             if new_start_pos < 0:
                 new_start_pos = 0
-                new_end_pos = bar_size
-            if new_start_pos + bar_size >= self.total_range:
-                new_start_pos = self.total_range - bar_size
+                new_end_pos = self.bar_size
+            if new_start_pos + self.bar_size > self.total_range:
+                new_start_pos = self.total_range - self.bar_size
                 new_end_pos = self.total_range
             # store new positions
             self.start_pos = new_start_pos
@@ -85,6 +84,7 @@ class Scrollbar(Frame):
     def set(self, total_range, start_pos, end_pos):
         # set scrollbar data
         self.total_range, self.start_pos, self.end_pos = total_range, start_pos, end_pos
+        self.bar_size = self.end_pos - self.start_pos
 
     def get(self):
         # return scrollbar start position
