@@ -14,7 +14,7 @@ class Scrollbar(Frame):
         # state to track if the scrollbar is currently dragging
         self.dragging = False
         # previous position the last time the event was handled
-        self.last_pos = None
+        self.last_mouse_pos = None
 
     def handle_event(self, event):
         # bring in mouse-related events
@@ -35,6 +35,15 @@ class Scrollbar(Frame):
             x, y = event.pos
             # normalize x and y to graphic drawing area
             x, y = x - self.graphic_rect.x, y - self.graphic_rect.y
+            # limit mouse coordinates
+            if x < 0:
+                x = 0
+            elif x > self.graphic_rect.width:
+                x = self.graphic_rect.width
+            if y < 0:
+                y = 0
+            elif y > self.graphic_rect.height:
+                y = self.graphic_rect.height
             # convert mouse coordinate to total range coordinate
             mouse_pos_ratio = self.total_range / self.graphical_range()
             if self.horizontal:
@@ -42,10 +51,10 @@ class Scrollbar(Frame):
             else:
                 mouse_pos = int(y * mouse_pos_ratio)
             # if there is no last mouse position make it this one
-            if self.last_pos == None:
-                self.last_pos = mouse_pos
+            if self.last_mouse_pos == None:
+                self.last_mouse_pos = mouse_pos
             # find the difference in mouse movement between handle calls
-            mouse_delta = mouse_pos - self.last_pos
+            mouse_delta = mouse_pos - self.last_mouse_pos
             # calculate bar size and new positions
             bar_size = self.end_pos - self.start_pos
             new_start_pos = self.start_pos + mouse_delta
@@ -60,7 +69,7 @@ class Scrollbar(Frame):
             # store new positions
             self.start_pos = new_start_pos
             self.end_pos = new_end_pos
-            self.last_pos = mouse_pos
+            self.last_mouse_pos = mouse_pos
             # signal that there was a change
             return True
         if event.type == MOUSEBUTTONUP and self.dragging:
@@ -68,7 +77,7 @@ class Scrollbar(Frame):
                 # mouse button released, reset states to default values
                 self.state = State.IDLE
                 self.dragging = False
-                self.last_pos = None
+                self.last_mouse_pos = None
         # no changes
         return False
 
