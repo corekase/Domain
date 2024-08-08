@@ -8,7 +8,7 @@ class Scrollbar(Frame):
         # maximum area that can be filled
         self.graphic_rect = Rect(self.rect.left + 4, self.rect.top + 4, self.rect.width - 8, self.rect.height - 8)
         # total size, start and end positions, and bar size within the graphic rect
-        self.total_range, self.start_pos, self.end_pos, self.bar_size = None, None, None, None
+        self.total_range = self.start_pos = self.end_pos = self.bar_size = None
         # whether the scrollbar is horizontal or vertical
         self.horizontal = horizontal
         # state to track if the scrollbar is currently dragging
@@ -86,7 +86,7 @@ class Scrollbar(Frame):
     def set(self, total_range, start_pos, end_pos):
         # set scrollbar data
         self.total_range, self.start_pos, self.end_pos = total_range, start_pos, end_pos
-        self.bar_size = self.end_pos - self.start_pos
+        self.bar_size = end_pos - start_pos
 
     def get(self):
         # return scrollbar start position
