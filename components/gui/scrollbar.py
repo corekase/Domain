@@ -65,7 +65,7 @@ class Scrollbar(Frame):
             if new_start_pos < 0:
                 new_start_pos = 0
                 new_end_pos = self.bar_size
-            if new_start_pos + self.bar_size > self.total_range:
+            if new_start_pos > self.total_range - self.bar_size:
                 new_start_pos = self.total_range - self.bar_size
                 new_end_pos = self.total_range
             # store new positions
