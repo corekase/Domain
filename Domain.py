@@ -135,6 +135,8 @@ class Main:
         self.screen.fill(colours['background'])
         # continue while the running flag is true
         while self.running:
+            # update scroll bar states
+            self.update_scroll_bar_states()
             # handle events
             self.handle_events()
             # manage time
@@ -192,8 +194,6 @@ class Main:
         # used constants
         from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
         from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_F1
-        # update scroll bar states
-        self.update_scroll_bar_states()
         # handle event queue
         for event in pygame.event.get():
             gui_event = self.gui_manager.handle_event(event)
