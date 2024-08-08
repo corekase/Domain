@@ -109,8 +109,8 @@ class Scrollbar(Frame):
     def handle_area(self):
         # calculate where the points are within the graphical area
         graphical_range = self.graphical_range()
-        start_point = (self.start_pos * graphical_range) / self.total_range
-        end_point = (self.end_pos * graphical_range) / self.total_range
+        start_point = int((self.start_pos * graphical_range) / self.total_range)
+        end_point = int((self.end_pos * graphical_range) / self.total_range)
         from pygame import Rect
         # define a rectangle for the filled area
         if self.horizontal:
