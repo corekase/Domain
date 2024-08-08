@@ -8,7 +8,7 @@ class Scrollbar(Frame):
         # maximum area that can be filled
         self.graphic_rect = Rect(self.rect.left + 4, self.rect.top + 4, self.rect.width - 8, self.rect.height - 8)
         # total size, start and end positions, and bar size within the graphic rect
-        self.total_range = self.start_pos = self.end_pos = self.bar_size = None
+        self.total_range = self.start_pos = self.bar_size = None
         # whether the scrollbar is horizontal or vertical
         self.horizontal = horizontal
         # state to track if the scrollbar is currently dragging
@@ -54,26 +54,25 @@ class Scrollbar(Frame):
             else:
                 mouse_pos = int(y * mouse_pos_ratio)
             # if there is no last mouse position make it this one
-            if self.last_mouse_pos == None:
+            if self.last_mouse_pos != None:
+                # find the difference in mouse movement between handle calls
+                mouse_delta = mouse_pos - self.last_mouse_pos
+                # calculate bar size and new positions
+                new_start_pos = self.start_pos + mouse_delta
+                # limit positions
+                if new_start_pos < 0:
+                    new_start_pos = 0
+                if new_start_pos > self.total_range - self.bar_size:
+                    new_start_pos = self.total_range - self.bar_size
+                # store new positions
+                self.start_pos = new_start_pos
                 self.last_mouse_pos = mouse_pos
-            # find the difference in mouse movement between handle calls
-            mouse_delta = mouse_pos - self.last_mouse_pos
-            # calculate bar size and new positions
-            new_start_pos = self.start_pos + mouse_delta
-            new_end_pos = new_start_pos + self.bar_size
-            # limit positions
-            if new_start_pos < 0:
-                new_start_pos = 0
-                new_end_pos = self.bar_size
-            if new_start_pos > self.total_range - self.bar_size:
-                new_start_pos = self.total_range - self.bar_size
-                new_end_pos = self.total_range
-            # store new positions
-            self.start_pos = new_start_pos
-            self.end_pos = new_end_pos
-            self.last_mouse_pos = mouse_pos
-            # signal that there was a change
-            return True
+                # signal that there was a change
+                return True
+            else:
+                self.last_mouse_pos = mouse_pos
+                return False
+
         if event.type == MOUSEBUTTONUP and self.dragging:
             if event.button == 1:
                 # return to default state
@@ -85,7 +84,7 @@ class Scrollbar(Frame):
 
     def set(self, total_range, start_pos, end_pos):
         # set scrollbar data
-        self.total_range, self.start_pos, self.end_pos = total_range, start_pos, end_pos
+        self.total_range, self.start_pos = total_range, start_pos
         self.bar_size = end_pos - start_pos
 
     def get(self):
@@ -110,7 +109,7 @@ class Scrollbar(Frame):
         # calculate where the points are within the graphical area
         graphical_range = self.graphical_range()
         start_point = int((self.start_pos * graphical_range) / self.total_range)
-        end_point = int((self.end_pos * graphical_range) / self.total_range)
+        end_point = int(((self.start_pos + self.bar_size) * graphical_range) / self.total_range)
         from pygame import Rect
         # define a rectangle for the filled area
         if self.horizontal:
