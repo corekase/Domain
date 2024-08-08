@@ -107,13 +107,10 @@ class Scrollbar(Frame):
             return self.graphic_rect.height
 
     def handle_area(self):
-        # calculate percentages from the start and end positions
-        start_percent = (self.start_pos * 100) / self.total_range
-        end_percent = (self.end_pos * 100) / self.total_range
-        # calculate where the percentages are within the graphical area
+        # calculate where the points are within the graphical area
         graphical_range = self.graphical_range()
-        start_point = int((start_percent * graphical_range) / 100)
-        end_point = int((end_percent * graphical_range) / 100)
+        start_point = (self.start_pos * graphical_range) / self.total_range
+        end_point = (self.end_pos * graphical_range) / self.total_range
         from pygame import Rect
         # define a rectangle for the filled area
         if self.horizontal:
