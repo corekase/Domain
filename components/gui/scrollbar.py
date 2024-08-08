@@ -52,6 +52,7 @@ class Scrollbar(Frame):
                 # signal no change
                 return False
             if self.last_mouse_pos != None:
+                # there is a previous mouse position, find the change
                 mouse_pos = self.graphical_to_total(point)
                 # find the difference in mouse movement between handle calls
                 mouse_delta = mouse_pos - self.last_mouse_pos
@@ -82,10 +83,9 @@ class Scrollbar(Frame):
         # signal no changes
         return False
 
-    def set(self, total_range, start_pos, end_pos):
+    def set(self, total_range, start_pos, bar_size):
         # set scrollbar data
-        self.total_range, self.start_pos = total_range, start_pos
-        self.bar_size = end_pos - start_pos
+        self.total_range, self.start_pos, self.bar_size = total_range, start_pos, bar_size
 
     def get(self):
         # return scrollbar start position
@@ -114,7 +114,7 @@ class Scrollbar(Frame):
     def handle_area(self):
         # calculate where the points are within the graphical area
         start_point = self.total_to_graphical(self.start_pos)
-        end_point = self.total_to_graphical(self.start_pos + self.bar_size)
+        end_point = self.total_to_graphical(self.bar_size)
         from pygame import Rect
         # define a rectangle for the filled area
         if self.horizontal:
@@ -128,7 +128,5 @@ class Scrollbar(Frame):
         super().draw()
         from components.gui.guimanager import colours
         from pygame.draw import rect
-        self.surface.set_clip(self.graphic_rect)
         # fill graphical area to represent the start and end point range
         rect(self.surface, colours['full'], self.handle_area(), 0)
-        self.surface.set_clip(None)
