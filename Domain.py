@@ -306,7 +306,7 @@ class Main:
             self.status = f'X:{x_coord}, Y:{y_coord}'
         else:
             # not inside the surface rect
-            self.status = "N/A"
+            self.status = 'N/A'
 
     def draw_info_panel(self, fps):
         # bring in needed functions
