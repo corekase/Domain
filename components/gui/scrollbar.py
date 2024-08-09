@@ -56,9 +56,9 @@ class Scrollbar(Frame):
                 mouse_pos = self.graphical_to_total(point)
                 # find the difference in mouse movement between handle calls
                 mouse_delta = mouse_pos - self.last_mouse_pos
-                # calculate bar size and new positions
+                # calculate new position
                 new_start_pos = self.start_pos + mouse_delta
-                # limit positions
+                # limit position
                 if new_start_pos < 0:
                     new_start_pos = 0
                 if new_start_pos > self.total_range - self.bar_size:
