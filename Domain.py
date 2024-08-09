@@ -91,12 +91,12 @@ class Main:
         from components.gui.scrollbar import Scrollbar
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
+        frame = Frame(self.screen, 'none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
         # add the floor group controls to all contexts
         for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
             self.gui_manager.add_widget(context, self.hbar)
             self.gui_manager.add_widget(context, self.vbar)
-            self.gui_manager.add_widget(context, Frame(self.screen, 'frame',
-                                    (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17)))
+            self.gui_manager.add_widget(context, frame)
             self.gui_manager.add_widget(context, floor_label)
             self.gui_manager.add_widget(context, self.floor_group['0'])
             self.gui_manager.add_widget(context, self.floor_group['1'])
