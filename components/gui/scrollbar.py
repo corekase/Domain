@@ -127,5 +127,5 @@ class Scrollbar(Frame):
         super().draw()
         from components.gui.guimanager import colours
         from pygame.draw import rect
-        # fill graphical area to represent the start and end point range
+        # fill graphical area to represent the start position and size
         rect(self.surface, colours['full'], self.handle_area(), 0)
