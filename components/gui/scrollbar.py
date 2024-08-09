@@ -34,6 +34,8 @@ class Scrollbar(Frame):
                 self.state = State.HOVER
                 self.dragging = True
         if ((event.type == MOUSEMOTION) or (event.type == MOUSEBUTTONDOWN)) and self.dragging:
+            # 'or mouse button down' is so that the previous state change, begin dragging scrollbar,
+            # also follows through in this state change. otherwise motion doesn't start until a position change
             x, y = event.pos
             # normalize x and y to graphic drawing area
             x, y = x - self.graphic_rect.x, y - self.graphic_rect.y
