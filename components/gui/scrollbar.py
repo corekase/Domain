@@ -76,7 +76,7 @@ class Scrollbar(Frame):
                 self.last_mouse_pos = self.graphical_to_total(point)
                 # signal no change
                 return False
-        if event.type == MOUSEBUTTONUP and self.dragging:
+        if (event.type == MOUSEBUTTONUP) and self.dragging:
             if event.button == 1:
                 # return to default state
                 self.reset_state()
