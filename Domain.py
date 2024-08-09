@@ -112,14 +112,14 @@ class Main:
         self.coordinate_toggle = True
         # text status containing the x and y map indexes of the mouse position
         self.status = None
-        # is the game won flag
-        self.won = False
         # Set the state of the application to "running"
         self.running = True
 
     def run(self):
         from components.gui.guimanager import colours
         import time, pygame
+        # is the game won flag
+        won = False
         # maximum frames-per-second, 0 for unlimited
         fps = 0
         # maximum frame time, if above this switch to non-realtime movement
@@ -144,7 +144,7 @@ class Main:
             if elapsed_time > max_time:
                 elapsed_time = max_time
             # update domain state
-            if not self.won:
+            if not won:
                 self.domain_manager.update_domain(elapsed_time)
             # if follow_state centre on avatar, after update_domain to fix jitter
             if self.follow_state:
@@ -177,11 +177,11 @@ class Main:
             for widget in self.gui_manager.widgets[self.gui_manager.context]:
                 self.screen.fill(colours['background'], widget.rect)
             # check for winning conditions after gui damage has been filled as the gui context may be changed
-            if not self.won:
+            if not won:
                 if self.domain_manager.check_win():
                     # display winning screen here
                     self.gui_manager.lock_context('win_context')
-                    self.won = True
+                    won = True
         # release resources
         pygame.quit()
 
