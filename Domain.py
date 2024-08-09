@@ -240,7 +240,7 @@ class Main:
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 1:
-                            # left button up, which is destination point for avatar
+                            # left button click, which is destination point for avatar
                             x, y = event.pos
                             # if mouse is inside the view rect
                             if self.view_surface_rect.collidepoint(x, y):
