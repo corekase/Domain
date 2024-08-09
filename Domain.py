@@ -123,10 +123,7 @@ class Main:
         # maximum frames-per-second, 0 for unlimited
         fps = 0
         # maximum frame time, if above this switch to non-realtime movement
-        if fps != 0:
-            max_time = 1000 / fps
-        else:
-            max_time = 1000 / 60
+        max_time = 1000 / 60
         # instantiate a pygame clock for frame maximum limits
         clock = pygame.time.Clock()
         # track elapsed_time with more accurate os clock
