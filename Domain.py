@@ -84,7 +84,6 @@ class Main:
         self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down'))
         # game won context
         self.gui_manager.add_widget('win_context', Button(self.screen, 'won', exit_button_rect, 'Won!'))
-        # default context
         from components.gui.scrollbar import Scrollbar
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
