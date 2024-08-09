@@ -88,7 +88,7 @@ class Main:
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
         frame = Frame(self.screen, 'none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
-        # add the floor group controls to all contexts
+        # add common controls to all contexts, also creates default context
         for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
             self.gui_manager.add_widget(context, self.hbar)
             self.gui_manager.add_widget(context, self.vbar)
