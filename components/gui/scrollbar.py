@@ -16,7 +16,7 @@ class Scrollbar(Frame):
         # previous mouse position the last time the event was handled
         self.last_mouse_pos = None
         # before handle_event() is called, set() must be called at least once to initialize state
-        # -> self.set(total_range, start_position, bar_size)
+        # -> set(total_range, start_position, bar_size)
         # once initialized then the scrollbar operates as intended
 
     def handle_event(self, event):
