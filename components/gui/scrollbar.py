@@ -101,7 +101,7 @@ class Scrollbar(Frame):
         self.total_range, self.start_pos, self.bar_size = total_range, start_pos, bar_size
 
     def handle_area(self):
-        # calculate where the start point is and what the graphical size is in graphical units
+        # calculate where the start point is and what the size is in graphical units
         start_point = self.total_to_graphical(self.start_pos)
         graphical_size = self.total_to_graphical(self.bar_size)
         from pygame import Rect
