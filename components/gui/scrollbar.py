@@ -21,8 +21,8 @@ class Scrollbar(Frame):
 
     def handle_event(self, event):
         # bring in mouse-related events
-        from pygame.locals import MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
-        if event.type not in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN):
+        from pygame.locals import MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP
+        if event.type not in (MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP):
             # no matching events for scrollbar logic
             return False
         # bring in State from the base Frame
