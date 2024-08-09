@@ -48,7 +48,7 @@ class Scrollbar(Frame):
                     point = y
             if escape:
                 # outside of bounds, reset
-                self.reset()
+                self.reset_state()
                 # signal no change
                 return False
             if self.last_mouse_pos != None:
@@ -73,43 +73,29 @@ class Scrollbar(Frame):
                 self.last_mouse_pos = self.graphical_to_total(point)
                 # signal no change
                 return False
-
         if event.type == MOUSEBUTTONUP and self.dragging:
             if event.button == 1:
                 # return to default state
-                self.reset()
+                self.reset_state()
                 # signal there was a change
                 return True
         # signal no changes
         return False
 
-    def set(self, total_range, start_pos, bar_size):
-        # set scrollbar data
-        self.total_range, self.start_pos, self.bar_size = total_range, start_pos, bar_size
+    def reset_state(self):
+        from .frame import State
+        # reset states to default values
+        self.state = State.IDLE
+        self.dragging = False
+        self.last_mouse_pos = None
 
     def get(self):
         # return scrollbar start position
         return self.start_pos
 
-    def graphical_to_total(self, point):
-        return int((point * self.total_range) / self.graphical_range())
-
-    def total_to_graphical(self, point):
-        return int((point * self.graphical_range()) / self.total_range)
-
-    def reset(self):
-        from .frame import State
-        # mouse button released, reset states to default values
-        self.state = State.IDLE
-        self.dragging = False
-        self.last_mouse_pos = None
-
-    def graphical_range(self):
-        # return the appropriate range depending on whether the scrollbar is horizontal or vertical
-        if self.horizontal:
-            return self.graphic_rect.width
-        else:
-            return self.graphic_rect.height
+    def set(self, total_range, start_pos, bar_size):
+        # set scrollbar data
+        self.total_range, self.start_pos, self.bar_size = total_range, start_pos, bar_size
 
     def handle_area(self):
         # calculate where the points are within the graphical area
@@ -122,6 +108,19 @@ class Scrollbar(Frame):
         else:
             rec = Rect(self.graphic_rect.x, self.graphic_rect.y + start_point, self.graphic_rect.width, graphical_size)
         return rec
+
+    def graphical_to_total(self, point):
+        return int((point * self.total_range) / self.graphical_range())
+
+    def total_to_graphical(self, point):
+        return int((point * self.graphical_range()) / self.total_range)
+
+    def graphical_range(self):
+        # return the appropriate range depending on whether the scrollbar is horizontal or vertical
+        if self.horizontal:
+            return self.graphic_rect.width
+        else:
+            return self.graphic_rect.height
 
     def draw(self):
         # draw the frame
