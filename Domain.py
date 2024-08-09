@@ -74,20 +74,17 @@ class Main:
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
         button_width, button_height = int(gui_width / 2), 20
-        button_exit_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 20,
+        exit_button_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 20,
                                        button_width, button_height)
-        exit_button = Button(self.screen, 'exit', button_exit_rect, 'Exit')
+        exit_button = Button(self.screen, 'exit', exit_button_rect, 'Exit')
         button_rect = pygame.Rect(gui_xpos, floor_1_button_rect.bottom + 2, button_width, button_height)
         # pickup button context
         self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
-        self.gui_manager.add_widget('pickup_context', exit_button)
         # putdown button context
         self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down'))
-        self.gui_manager.add_widget('putdown_context', exit_button)
         # game won context
-        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', button_exit_rect, 'Won!'))
+        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', exit_button_rect, 'Won!'))
         # default context
-        self.gui_manager.add_widget('default', exit_button)
         from components.gui.scrollbar import Scrollbar
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
@@ -100,6 +97,8 @@ class Main:
             self.gui_manager.add_widget(context, floor_label)
             self.gui_manager.add_widget(context, self.floor_group['0'])
             self.gui_manager.add_widget(context, self.floor_group['1'])
+            if context != 'win_context':
+                self.gui_manager.add_widget(context, exit_button)
         # switch to default context
         self.gui_manager.switch_context('default')
         # state for whether or not panning the view
