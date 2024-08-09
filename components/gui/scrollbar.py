@@ -7,7 +7,7 @@ class Scrollbar(Frame):
         from pygame import Rect
         # maximum area that can be filled
         self.graphic_rect = Rect(self.rect.left + 4, self.rect.top + 4, self.rect.width - 8, self.rect.height - 8)
-        # total size, start and end positions, and bar size within the graphic rect
+        # total size, start position, and bar size within the graphic rect
         self.total_range = self.start_pos = self.bar_size = None
         # whether the scrollbar is horizontal or vertical
         self.horizontal = horizontal
@@ -15,6 +15,9 @@ class Scrollbar(Frame):
         self.dragging = False
         # previous mouse position the last time the event was handled
         self.last_mouse_pos = None
+        # before handle_event() is called, set() must be called to initialize state
+        # -> self.set(total_range, start_position, bar_size)
+        # once initialized then the scrollbar operates as intended
 
     def handle_event(self, event):
         # bring in mouse-related events
@@ -52,7 +55,7 @@ class Scrollbar(Frame):
                 # signal no change
                 return False
             if self.last_mouse_pos != None:
-                # there is a previous mouse position, find the change
+                # convert mouse position to total range units
                 mouse_pos = self.graphical_to_total(point)
                 # find the difference in mouse movement between handle calls
                 mouse_delta = mouse_pos - self.last_mouse_pos
@@ -84,7 +87,7 @@ class Scrollbar(Frame):
 
     def reset_state(self):
         from .frame import State
-        # reset states to default values
+        # reset state to default values
         self.state = State.IDLE
         self.dragging = False
         self.last_mouse_pos = None
@@ -98,16 +101,15 @@ class Scrollbar(Frame):
         self.total_range, self.start_pos, self.bar_size = total_range, start_pos, bar_size
 
     def handle_area(self):
-        # calculate where the points are within the graphical area
+        # calculate where the start point is and what the graphical size is in graphical units
         start_point = self.total_to_graphical(self.start_pos)
         graphical_size = self.total_to_graphical(self.bar_size)
         from pygame import Rect
         # define a rectangle for the filled area
         if self.horizontal:
-            rec = Rect(self.graphic_rect.x + start_point, self.graphic_rect.y, graphical_size, self.graphic_rect.height)
+            return Rect(self.graphic_rect.x + start_point, self.graphic_rect.y, graphical_size, self.graphic_rect.height)
         else:
-            rec = Rect(self.graphic_rect.x, self.graphic_rect.y + start_point, self.graphic_rect.width, graphical_size)
-        return rec
+            return Rect(self.graphic_rect.x, self.graphic_rect.y + start_point, self.graphic_rect.width, graphical_size)
 
     def graphical_to_total(self, point):
         return int((point * self.total_range) / self.graphical_range())
