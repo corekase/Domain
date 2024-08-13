@@ -1,4 +1,6 @@
 from .button import Button
+from .frame import State
+from pygame.locals import MOUSEMOTION, MOUSEBUTTONDOWN
 
 class PushButtonGroup(Button):
     # dictionary of key:value -> key is the name of the group. value is a list of
@@ -13,9 +15,6 @@ class PushButtonGroup(Button):
         PushButtonGroup.groups[group].append(self)
 
     def handle_event(self, event):
-        from .frame import State
-        # bring in mouse-related events
-        from pygame.locals import MOUSEMOTION, MOUSEBUTTONDOWN
         if event.type not in (MOUSEMOTION, MOUSEBUTTONDOWN):
             # no matching events for push button logic
             return False
@@ -36,7 +35,6 @@ class PushButtonGroup(Button):
         return False
 
     def select(self):
-        from .frame import State
         # clear all other armed states in the group
         for item in PushButtonGroup.groups[self.group]:
             item.state = State.IDLE

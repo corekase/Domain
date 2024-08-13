@@ -1,3 +1,5 @@
+from random import randint
+
 # named indexes for tiles to map the correct gid
 EMPTY, WALL, FLOOR = 0, 1, 2
 
@@ -110,7 +112,6 @@ class DomainManager:
         self.main_viewport = list(self.avatar.rect.center)
 
     def random_position(self, gid, x_min, y_min, width, height):
-        from random import randint
         # return a random empty cell position which is a specific tile gid
         while True:
             # random position

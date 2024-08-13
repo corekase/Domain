@@ -1,10 +1,13 @@
-from .frame import Frame
+from .frame import Frame, State
+from components.gui.guimanager import colours
+from pygame import Rect
+from pygame.draw import rect
+from pygame.locals import MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP
 
 class Scrollbar(Frame):
     def __init__(self, surface, id, rect, horizontal):
         # initialize common widget values
         super().__init__(surface, id, rect)
-        from pygame import Rect
         # maximum area that can be filled
         self.graphic_rect = Rect(self.rect.left + 4, self.rect.top + 4, self.rect.width - 8, self.rect.height - 8)
         # total size, start position, and bar size within the graphic rect
@@ -20,19 +23,16 @@ class Scrollbar(Frame):
         # once initialized then the scrollbar operates as intended
 
     def handle_event(self, event):
-        # bring in mouse-related events
-        from pygame.locals import MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP
         if event.type not in (MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP):
             # no matching events for scrollbar logic
             return False
-        # bring in State from the base Frame
-        from .frame import State
         # manage the state of the scrollbar
         if (event.type == MOUSEBUTTONDOWN) and self.handle_area().collidepoint(event.pos):
             if event.button == 1:
                 # begin dragging the scrollbar
                 self.state = State.HOVER
                 self.dragging = True
+                return False
         if (event.type == MOUSEMOTION) and self.dragging:
             x, y = event.pos
             # normalize x and y to graphic drawing area
@@ -86,7 +86,6 @@ class Scrollbar(Frame):
         return False
 
     def reset_state(self):
-        from .frame import State
         # reset state to default values
         self.state = State.IDLE
         self.dragging = False
@@ -104,7 +103,6 @@ class Scrollbar(Frame):
         # calculate where the start point is and what the size is in graphical units
         start_point = self.total_to_graphical(self.start_pos)
         graphical_size = self.total_to_graphical(self.bar_size)
-        from pygame import Rect
         # define a rectangle for the filled area
         if self.horizontal:
             return Rect(self.graphic_rect.x + start_point, self.graphic_rect.y, graphical_size, self.graphic_rect.height)
@@ -127,7 +125,5 @@ class Scrollbar(Frame):
     def draw(self):
         # draw the frame
         super().draw()
-        from components.gui.guimanager import colours
-        from pygame.draw import rect
         # fill graphical area to represent the start position and size
         rect(self.surface, colours['full'], self.handle_area(), 0)

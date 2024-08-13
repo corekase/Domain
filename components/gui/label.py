@@ -1,8 +1,8 @@
 from .widget import Widget
+from ..utility import render_text
 
 class Label(Widget):
     def __init__(self, surface, position, text):
-        from ..utility import render_text
         self.position = position
         # text bitmap
         self.text_bitmap = render_text(text)

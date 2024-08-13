@@ -1,3 +1,18 @@
+import time, pygame
+from components.domain.domainmanager import DomainManager
+from components.object.domainobject import DomainObject
+from components.gui.guimanager import GuiManager
+from components.gui.guimanager import colours
+from components import utility
+from components.utility import padding, render_text
+from components.gui.frame import Frame
+from components.gui.button import Button
+from components.gui.pushbuttongroup import PushButtonGroup
+from components.gui.scrollbar import Scrollbar
+from components.gui.label import Label
+from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
+from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_F1
+
 class Main:
     def __init__(self):
         # - Each index value in tile_gid is a gid, then the indexes can be named:
@@ -6,7 +21,6 @@ class Main:
         # - gid values are defined once right here, if map data changes only here needs to be changed
         tile_gid = (0, 1, 2)
         # initialize pygame
-        import pygame
         pygame.init()
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
@@ -16,28 +30,21 @@ class Main:
         gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
         # bring in reference
-        from components import utility
         # set the default font for utility functions
         utility.font_size = 16
         utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
-        # padding function from utility
-        from components.utility import padding
         # create a frame for the information panel
         information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(2))
         # set up the floor group buttons
         self.floor_group = {}
         floor_select_size = 20
-        from components.gui.label import Label
         floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 3), 'Floor: ')
-        from components.gui.pushbuttongroup import PushButtonGroup
         floor_1_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1, information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
         floor_2_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1 + floor_select_size + 1,
                                           information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
         self.floor_group['0'] = PushButtonGroup(self.screen, 'floor1', floor_1_button_rect, '1', 'floors')
         self.floor_group['1'] = PushButtonGroup(self.screen, 'floor2', floor_2_button_rect, '2', 'floors')
         # bring in references so that class variables can be set
-        from components.domain.domainmanager import DomainManager
-        from components.object.domainobject import DomainObject
         # give the domain manager a referece to the floor group
         DomainManager.floor_group = self.floor_group
         # give both the domain manager and domain objects the tile_gid tuple
@@ -62,14 +69,10 @@ class Main:
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
         # bring in reference
-        from components.gui.guimanager import GuiManager
         # instantiate a gui manager
         self.gui_manager = GuiManager()
         # give domain objects a reference to the gui
         DomainObject.gui_manager = self.gui_manager
-        # needed gui widgets
-        from components.gui.frame import Frame
-        from components.gui.button import Button
         # create information frame
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create buttons and add them to gui context widgets lists
@@ -84,7 +87,6 @@ class Main:
         self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', button_rect, 'Put Down'))
         # game won context
         self.gui_manager.add_widget('win_context', Button(self.screen, 'won', exit_button_rect, 'Won!'))
-        from components.gui.scrollbar import Scrollbar
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
         frame = Frame(self.screen, 'none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
@@ -114,8 +116,6 @@ class Main:
         self.running = True
 
     def run(self):
-        from components.gui.guimanager import colours
-        import time, pygame
         # is the game won flag
         won = False
         # maximum frames-per-second, 0 for unlimited
@@ -184,11 +184,6 @@ class Main:
         pygame.quit()
 
     def handle_events(self):
-        # bring in pygame reference
-        import pygame
-        # used constants
-        from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
-        from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_F1
         # handle event queue
         for event in pygame.event.get():
             gui_event = self.gui_manager.handle_event(event)
@@ -307,8 +302,6 @@ class Main:
             self.status = 'N/A'
 
     def draw_info_panel(self, fps):
-        # bring in needed functions
-        from components.utility import padding, render_text
         fps = f'FPS: {int(round(fps))}'
         # draw frame
         self.information_frame.draw()

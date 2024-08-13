@@ -3,6 +3,9 @@ from components.bundled.pytmx import TiledMap
 from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
+import sys
+from math import cos, sin, radians, atan2, degrees, sqrt
+from ..utility import sprite_sheet
 
 from collections import namedtuple
 # commands and their parameters for the command queue
@@ -65,7 +68,6 @@ class DomainObject(Sprite):
                 # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
-                import sys
                 if self.find_distance(destination) <= 1.0 + sys.float_info.epsilon:
                     # arrived at destination
                     self.sync_coordinate(destination)
@@ -116,19 +118,16 @@ class DomainObject(Sprite):
         return type(command).__name__
 
     def move(self, degree, elapsed_time):
-        from math import cos, sin, radians
        # move in the direction of degree
         degree %= 360
         self.sync_coordinate((self.centre_xpos + (cos(radians(degree)) * self.speed) * elapsed_time,
                               self.centre_ypos + (sin(radians(degree)) * self.speed) * elapsed_time))
 
     def find_bearing_angle(self, position):
-        from math import atan2, degrees
         # find bearing angle on position
         return degrees(atan2(position[1] - self.centre_ypos, position[0] - self.centre_xpos)) % 360
 
     def find_distance(self, position):
-        from math import sqrt
         # find distance between self and position
         return sqrt((abs(self.centre_xpos - position[0]) ** 2) + (abs(self.centre_ypos - position[1]) ** 2))
 
@@ -151,7 +150,6 @@ class DomainObject(Sprite):
         self.coord = position
 
     def load_sheet(self, *image):
-        from ..utility import sprite_sheet
         # load the sprite sheet for this domain object
         self.animations = sprite_sheet(*image)
         self.frame = 0

@@ -1,5 +1,5 @@
-# a cell with a teleporter object may not have any other objects
 from .domainobject import DomainObject
+from .domainobject import Stall
 
 class Teleporter(DomainObject):
     def __init__(self, graphic, position, destination):
@@ -15,5 +15,4 @@ class Teleporter(DomainObject):
         self.destination = destination
 
     def process(self):
-        from .domainobject import Stall
         self.command(Stall(None))
