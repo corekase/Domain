@@ -3,7 +3,7 @@ from components.bundled.pytmx import TiledMap
 from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
-from math import cos, sin, radians, atan2, degrees, sqrt
+from math import cos, sin, atan2, sqrt, degrees, radians
 from ..utility import sprite_sheet
 import sys
 eps = sys.float_info.epsilon
