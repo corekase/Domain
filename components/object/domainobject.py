@@ -3,9 +3,10 @@ from components.bundled.pytmx import TiledMap
 from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
-import sys
 from math import cos, sin, radians, atan2, degrees, sqrt
 from ..utility import sprite_sheet
+import sys
+eps = sys.float_info.epsilon
 
 from collections import namedtuple
 # commands and their parameters for the command queue
@@ -68,7 +69,7 @@ class DomainObject(Sprite):
                 # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
-                if self.find_distance(destination) <= 1.0 + sys.float_info.epsilon:
+                if self.find_distance(destination) <= 1.0 + eps:
                     # arrived at destination
                     self.sync_coordinate(destination)
                     # remove this command item from the queue
