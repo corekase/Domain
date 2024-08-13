@@ -1,8 +1,7 @@
 import time, pygame
 from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
-from components.gui.guimanager import GuiManager
-from components.gui.guimanager import colours
+from components.gui.guimanager import GuiManager, colours
 from components import utility
 from components.utility import padding, render_text
 from components.gui.frame import Frame
