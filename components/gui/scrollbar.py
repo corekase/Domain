@@ -32,6 +32,7 @@ class Scrollbar(Frame):
                 # begin dragging the scrollbar
                 self.state = State.HOVER
                 self.dragging = True
+                # signal no change
                 return False
         if (event.type == MOUSEMOTION) and self.dragging:
             x, y = event.pos
