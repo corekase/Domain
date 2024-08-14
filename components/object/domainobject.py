@@ -80,6 +80,15 @@ class DomainObject(Sprite):
                 else:
                     # move towards destination
                     self.move(self.find_bearing_angle(destination), elapsed_time)
+            elif command_name == 'Teleport':
+                # teleport to a new position
+                destination, follow = command.destination, command.follow
+                self.sync_cell(destination)
+                self.command_queue.pop(0)
+                # if follow then switch floor and main_viewport as well, done within a single command queue item
+                if follow:
+                    self.domain_manager.switch_floor(self.domain_manager.get_floor(destination))
+                    self.domain_manager.main_viewport = list(self.rect.center)
             elif command_name == 'Path_To':
                 # from current coordinate follow path
                 path = command.path
@@ -94,15 +103,6 @@ class DomainObject(Sprite):
                     elif kind == 'teleport':
                         is_avatar = self is self.domain_manager.avatar
                         self.command_queue.insert(0, Teleport(value, is_avatar))
-            elif command_name == 'Teleport':
-                # teleport to a new position
-                destination, follow = command.destination, command.follow
-                self.sync_cell(destination)
-                self.command_queue.pop(0)
-                # if follow then switch floor and main_viewport as well, done within a single command queue item
-                if follow:
-                    self.domain_manager.switch_floor(self.domain_manager.get_floor(destination))
-                    self.domain_manager.main_viewport = list(self.rect.center)
             else:
                 raise Exception(f'Command: {command_name} not implemented')
         else:
