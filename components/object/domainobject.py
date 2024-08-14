@@ -3,8 +3,11 @@ from components.bundled.pytmx import TiledMap
 from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
+# functions used for movement
 from math import cos, sin, atan2, sqrt, degrees, radians
+# sprite sheet loader for animation
 from ..utility import sprite_sheet
+# machine epsilon, smallest difference between floats
 import sys
 eps = sys.float_info.epsilon
 
