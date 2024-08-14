@@ -123,8 +123,8 @@ class DomainObject(Sprite):
 
     def move(self, degree, elapsed_time):
        # move towards degree in radians, by speed, and by elapsed time
-        self.sync_coordinate((self.centre_xpos + (cos(degree) * self.speed) * elapsed_time,
-                              self.centre_ypos + (sin(degree) * self.speed) * elapsed_time))
+        self.sync_coordinate((self.centre_xpos + ((cos(degree) * self.speed) * elapsed_time),
+                              self.centre_ypos + ((sin(degree) * self.speed) * elapsed_time)))
 
     def find_bearing_angle(self, position):
         # find bearing angle on position
