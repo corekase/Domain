@@ -67,7 +67,7 @@ class DomainObject(Sprite):
             # command evaluations
             if command_name == 'Stall':
                 # stall does nothing and doesn't remove itself so it effectively suspends the object
-                pass
+                return
             elif command_name == 'Move_To':
                 # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
