@@ -13,6 +13,12 @@ class DomainManager:
     tile_gid = None
     # reference to gui objects for floor control
     floor_group = None
+    # an ordered 9 element list where indexes are delta x and y coordinates around a centre point
+    neighbours = ((-1, -1), (0, -1), (1, -1),
+                  (-1,  0), (0,  0), (1,  0),
+                  (-1,  1), (0,  1), (1,  1))
+    # order to return the neighbours in, this affects how straight the paths are
+    indexes = (1, 5, 7, 3, 2, 8, 6, 0)
 
     def __init__(self, view_surface):
         # needed functions for initialization
@@ -229,20 +235,15 @@ class DomainManager:
 
     def adjacents(self, position):
         x, y = position
-        # an ordered 9 element list where indexes are mapped to neighbours which are
-        # tuples of delta x and y coordinates around a centre point
-        neighbours = ((-1, -1), (0, -1), (1, -1),
-                      (-1,  0), (0,  0), (1,  0),
-                      (-1,  1), (0,  1), (1,  1))
         adjacents = []
         # fill in ordered list with cell positions by adding neighbour deltas to each axis
-        for neighbour in neighbours:
+        for neighbour in self.neighbours:
             adjacents.append(self.cell_gid((x + neighbour[0], y + neighbour[1])))
-        # the list indexes map by the neighbour deltas as given in this diagram:
+        # the list indexes map as given in this diagram:
         # 0 1 2
         # 3 4 5
         # 6 7 8
-        # with the layout order, block out invalid orthographic moves due to walls
+        # block out invalid orthographic moves due to walls
         if adjacents[1] == self.tile_gid[WALL]:
             adjacents[0] = None
             adjacents[2] = None
@@ -255,13 +256,11 @@ class DomainManager:
         if adjacents[3] == self.tile_gid[WALL]:
             adjacents[0] = None
             adjacents[6] = None
-        # order to return the adjacents in, this affects how appealing the paths look
-        indexes = (1, 5, 7, 3, 2, 8, 6, 0)
         # build list of neighbours that are floor tiles in index order
         valid_neighbours = []
-        for index in indexes:
+        for index in self.indexes:
             if adjacents[index] == self.tile_gid[FLOOR]:
-                new_x, new_y = x + neighbours[index][0], y + neighbours[index][1]
+                new_x, new_y = x + self.neighbours[index][0], y + self.neighbours[index][1]
                 # if the neighbour is on the same floor then it is valid
                 if self.get_floor(position) == self.get_floor((new_x, new_y)):
                     valid_neighbours.append((new_x, new_y))
