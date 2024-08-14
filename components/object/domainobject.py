@@ -4,7 +4,7 @@ from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
 # functions used for movement
-from math import cos, sin, atan2, sqrt, degrees, radians
+from math import cos, sin, atan2, sqrt
 # sprite sheet loader for animation
 from ..utility import sprite_sheet
 # machine epsilon, smallest difference between floats
@@ -122,14 +122,13 @@ class DomainObject(Sprite):
         return type(command).__name__
 
     def move(self, degree, elapsed_time):
-       # move in the direction of degree
-        degree %= 360
-        self.sync_coordinate((self.centre_xpos + (cos(radians(degree)) * self.speed) * elapsed_time,
-                              self.centre_ypos + (sin(radians(degree)) * self.speed) * elapsed_time))
+       # move towards degree in radians, by speed, and by elapsed time
+        self.sync_coordinate((self.centre_xpos + (cos(degree) * self.speed) * elapsed_time,
+                              self.centre_ypos + (sin(degree) * self.speed) * elapsed_time))
 
     def find_bearing_angle(self, position):
         # find bearing angle on position
-        return degrees(atan2(position[1] - self.centre_ypos, position[0] - self.centre_xpos)) % 360
+        return atan2(position[1] - self.centre_ypos, position[0] - self.centre_xpos)
 
     def find_distance(self, position):
         # find distance between self and position
