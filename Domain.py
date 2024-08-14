@@ -138,7 +138,7 @@ class Main:
             now_time = time.time()
             elapsed_time = now_time - previous_time
             previous_time = now_time
-            # if a frame takes longer than the max time then switch to non-realtime movement
+            # if a frame takes longer than max time then switch to non-realtime movement
             if elapsed_time > max_time:
                 elapsed_time = max_time
             # update domain state
