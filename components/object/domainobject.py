@@ -79,7 +79,7 @@ class DomainObject(Sprite):
                     self.command_queue.pop(0)
                 else:
                     # move towards destination
-                    self.move(self.find_bearing_angle(destination), elapsed_time)
+                    self.move(destination, elapsed_time)
             elif command_name == 'Teleport':
                 # teleport to a new position
                 destination, follow = command.destination, command.follow
@@ -121,14 +121,12 @@ class DomainObject(Sprite):
         # return the name of the tuple which is the command
         return type(command).__name__
 
-    def move(self, degree, elapsed_time):
-       # move towards degree in radians, by speed, and by elapsed time
-        self.sync_coordinate((self.centre_xpos + ((cos(degree) * self.speed) * elapsed_time),
-                              self.centre_ypos + ((sin(degree) * self.speed) * elapsed_time)))
-
-    def find_bearing_angle(self, position):
-        # find bearing angle on position
-        return atan2(position[1] - self.centre_ypos, position[0] - self.centre_xpos)
+    def move(self, destination, elapsed_time):
+        # find the angle in radians to the destination
+        angle = atan2(destination[1] - self.centre_ypos, destination[0] - self.centre_xpos)
+        # move towards that angle in radians, by speed, and by elapsed time
+        self.sync_coordinate((self.centre_xpos + ((cos(angle) * self.speed) * elapsed_time),
+                              self.centre_ypos + ((sin(angle) * self.speed) * elapsed_time)))
 
     def find_distance(self, position):
         # find distance between self and position
