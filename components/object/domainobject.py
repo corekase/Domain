@@ -72,14 +72,14 @@ class DomainObject(Sprite):
                 # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of location
-                if self.find_distance(destination) <= 1.0 + eps:
+                if self.distance_from(destination) <= 1.0 + eps:
                     # arrived at destination
                     self.sync_coordinate(destination)
                     # remove this command item from the queue
                     self.command_queue.pop(0)
                 else:
                     # move towards destination
-                    self.move(destination, elapsed_time)
+                    self.move_towards(destination, elapsed_time)
             elif command_name == 'Teleport':
                 # teleport to a new position
                 destination, follow = command.destination, command.follow
@@ -121,14 +121,14 @@ class DomainObject(Sprite):
         # return the name of the tuple which is the command
         return type(command).__name__
 
-    def move(self, destination, elapsed_time):
+    def move_towards(self, destination, elapsed_time):
         # find the angle in radians to the destination
         angle = atan2(destination[1] - self.centre_ypos, destination[0] - self.centre_xpos)
         # move towards that angle in radians, by speed, and by elapsed time
         self.sync_coordinate((self.centre_xpos + ((cos(angle) * self.speed) * elapsed_time),
                               self.centre_ypos + ((sin(angle) * self.speed) * elapsed_time)))
 
-    def find_distance(self, position):
+    def distance_from(self, position):
         # find distance between self and position
         return sqrt((abs(self.centre_xpos - position[0]) ** 2) + (abs(self.centre_ypos - position[1]) ** 2))
 
