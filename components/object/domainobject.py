@@ -121,16 +121,16 @@ class DomainObject(Sprite):
         # return the name of the tuple which is the command
         return type(command).__name__
 
+    def distance_from(self, position):
+        # distance between self and position
+        return sqrt((abs(self.centre_xpos - position[0]) ** 2) + (abs(self.centre_ypos - position[1]) ** 2))
+
     def move_towards(self, destination, elapsed_time):
         # find the angle in radians to the destination
         angle = atan2(destination[1] - self.centre_ypos, destination[0] - self.centre_xpos)
         # move towards that angle in radians, by speed, and by elapsed time
         self.sync_coordinate((self.centre_xpos + ((cos(angle) * self.speed) * elapsed_time),
                               self.centre_ypos + ((sin(angle) * self.speed) * elapsed_time)))
-
-    def distance_from(self, position):
-        # find distance between self and position
-        return sqrt((abs(self.centre_xpos - position[0]) ** 2) + (abs(self.centre_ypos - position[1]) ** 2))
 
     def pixel_centre(self, location):
         # given a tile x and y cell coordinate return the graphical x and y center point in renderer map rect pixels
