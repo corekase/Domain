@@ -1,4 +1,4 @@
-from .domainobject import DomainObject
+from .domainobject import DomainObject, Path
 
 # named indexes for tiles to map the correct gid
 EMPTY, WALL, FLOOR = 0, 1, 2
@@ -24,9 +24,8 @@ class Agent(DomainObject):
                 path, self.destination_object = self.domain_manager.find_path(
                     self.coord, self.object_manager.objects('generic'))
                 if path != None:
-                    from .domainobject import Path_To
                     self.object_manager.object_remove('generic', self.destination_object)
-                    self.command(Path_To(path))
+                    self.command(Path(path))
         else:
             from .generic import Generic
             floor = self.domain_manager.get_floor(self.destination_object.coord)

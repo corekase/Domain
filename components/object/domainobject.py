@@ -21,7 +21,7 @@ from collections import namedtuple
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
 Teleport = namedtuple('Teleport', 'destination follow')
-Path_To = namedtuple('Path_To', 'path')
+Path = namedtuple('Path', 'path')
 
 # all domain objects are subclasses of Sprite
 from pygame.sprite import Sprite
@@ -95,8 +95,8 @@ class DomainObject(Sprite):
                 if follow:
                     self.domain_manager.switch_floor(self.domain_manager.get_floor(destination))
                     self.domain_manager.main_viewport = list(self.rect.center)
-            elif command_name == 'Path_To':
-                # from current coordinate follow path
+            elif command_name == 'Path':
+                # insert a path into the command queue
                 path = command.path
                 # remove this command from the queue
                 self.command_queue.pop(0)

@@ -1,7 +1,7 @@
 # named indexes for tiles to map the correct gid
 EMPTY, WALL, FLOOR = 0, 1, 2
 
-from .domainobject import DomainObject
+from .domainobject import DomainObject, Path
 from components.domain.domainmanager import Coordinate
 
 class Avatar(DomainObject):
@@ -46,8 +46,7 @@ class Avatar(DomainObject):
                 # switch to default context while moving
                 self.gui_manager.switch_context('default')
                 # add path to the command queue
-                from .domainobject import Path_To
-                self.command(Path_To(path))
+                self.command(Path(path))
 
     def reset_queue(self):
         # clear the queue except for the first in-progress move to
