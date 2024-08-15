@@ -15,8 +15,8 @@ from collections import namedtuple
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
-Path_To = namedtuple('Path_To', 'path')
 Teleport = namedtuple('Teleport', 'destination follow')
+Path_To = namedtuple('Path_To', 'path')
 
 from pygame.sprite import Sprite
 
