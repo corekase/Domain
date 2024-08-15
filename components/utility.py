@@ -1,4 +1,5 @@
-import os, pygame
+import os
+import pygame
 from pygame import Rect
 from .gui.guimanager import colours
 

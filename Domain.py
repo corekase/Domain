@@ -1,4 +1,5 @@
-import time, pygame
+import time
+import pygame
 from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
 from components.gui.guimanager import GuiManager, colours

@@ -1,16 +1,16 @@
+# machine epsilon, smallest difference between floats
+import sys
+eps = sys.float_info.epsilon
+# functions used for movement
+from math import sqrt, atan2, cos, sin
 # bring in class references
 from components.bundled.pytmx import TiledMap
 from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
-# functions used for movement
-from math import sqrt, atan2, cos, sin
 # sprite sheet loader for animation
 from ..utility import sprite_sheet
-# machine epsilon, smallest difference between floats
-import sys
-eps = sys.float_info.epsilon
-
+# the name of the namedtuple is the name of the command
 from collections import namedtuple
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
