@@ -4,7 +4,7 @@ from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
 # functions used for movement
-from math import cos, sin, atan2, sqrt
+from math import sqrt, atan2, cos, sin
 # sprite sheet loader for animation
 from ..utility import sprite_sheet
 # machine epsilon, smallest difference between floats
