@@ -1,23 +1,29 @@
 # machine epsilon, smallest difference between floats
 import sys
 eps = sys.float_info.epsilon
+
 # functions used for movement
 from math import sqrt, atan2, cos, sin
+
 # bring in class references
 from components.bundled.pytmx import TiledMap
 from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
+
 # sprite sheet loader for animation
 from ..utility import sprite_sheet
+
 # the name of the namedtuple is the name of the command
 from collections import namedtuple
+
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
 Teleport = namedtuple('Teleport', 'destination follow')
 Path_To = namedtuple('Path_To', 'path')
 
+# all domain objects are subclasses of Sprite
 from pygame.sprite import Sprite
 
 class DomainObject(Sprite):
