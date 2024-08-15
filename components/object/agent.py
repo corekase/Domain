@@ -32,7 +32,8 @@ class Agent(DomainObject):
             # remove reference to old object
             self.object_manager.delete('generic', self.destination_object)
             # create a new generic object
-            position = self.domain_manager.random_position_floor(self.tile_gid[FLOOR], floor)
+            position = self.domain_manager.random_position(self.tile_gid[FLOOR], 0, 0,
+                                                           self.map_object.width, self.map_object.height)
             item_object = Generic(position)
             item_object.layer = 1
             # track the generic item
