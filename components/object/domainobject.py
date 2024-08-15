@@ -71,7 +71,7 @@ class DomainObject(Sprite):
             elif command_name == 'Move_To':
                 # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
-                # check to see if within 1 pixel of location
+                # check to see if within 1 pixel of destination
                 if self.distance_from(destination) <= 1.0 + eps:
                     # arrived at destination
                     self.sync_coordinate(destination)
