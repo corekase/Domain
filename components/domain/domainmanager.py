@@ -260,10 +260,10 @@ class DomainManager:
         valid_neighbours = []
         for index in self.indexes:
             if adjacents[index] == self.tile_gid[FLOOR]:
-                new_x, new_y = x + self.neighbours[index][0], y + self.neighbours[index][1]
+                new_position = x + self.neighbours[index][0], y + self.neighbours[index][1]
                 # if the neighbour is on the same floor then it is valid
-                if self.get_floor(position) == self.get_floor((new_x, new_y)):
-                    valid_neighbours.append((new_x, new_y))
+                if self.get_floor(position) == self.get_floor(new_position):
+                    valid_neighbours.append(new_position)
         # return neighbours which are floor tiles as cell positions, in order
         return valid_neighbours
 
