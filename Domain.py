@@ -72,10 +72,10 @@ class Main:
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create gui widgets and contexts
         button_width, button_height = int(gui_width / 2), 22
-        exit_button_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
-                                       button_width, button_height)
         button_rect = pygame.Rect(gui_xpos, floor_1_button_rect.bottom + 2, button_width, button_height)
         # exit button
+        exit_button_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
+                                       button_width, button_height)
         exit_button = Button(self.screen, 'exit', exit_button_rect, 'Exit')
         # pickup button context
         self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
