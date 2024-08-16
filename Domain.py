@@ -4,7 +4,7 @@ from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
 from components.gui.guimanager import GuiManager, colours
 from components import utility
-from components.utility import padding, render_text
+from components.utility import file_resource, padding, render_text
 from components.gui.frame import Frame
 from components.gui.button import Button
 from components.gui.pushbuttongroup import PushButtonGroup
@@ -32,13 +32,13 @@ class Main:
         # bring in reference
         # set the default font for utility functions
         utility.font_size = 16
-        utility.font_object = pygame.font.Font(pygame.font.get_default_font(), utility.font_size)
+        utility.font_object = pygame.font.Font(file_resource('fonts', 'Ubuntu', 'Ubuntu-Medium.ttf'), utility.font_size)
         # create a frame for the information panel
-        information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(2))
+        information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(2) + 4)
         # set up the floor group buttons
         self.floor_group = {}
         floor_select_size = 20
-        floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 3), 'Floor: ')
+        floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 2), 'Floor: ')
         floor_1_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1, information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
         floor_2_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1 + floor_select_size + 1,
                                           information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
