@@ -1,4 +1,5 @@
 from .domainobject import DomainObject, Path
+from .generic import Generic
 
 # named indexes for tiles to map the correct gid
 EMPTY, WALL, FLOOR = 0, 1, 2
@@ -27,7 +28,6 @@ class Agent(DomainObject):
                     self.object_manager.object_remove('generic', self.destination_object)
                     self.command(Path(path))
         else:
-            from .generic import Generic
             # remove reference to old object
             self.object_manager.delete('generic', self.destination_object)
             # create a new generic object

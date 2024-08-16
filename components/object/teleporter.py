@@ -1,5 +1,4 @@
-from .domainobject import DomainObject
-from .domainobject import Stall
+from .domainobject import DomainObject, Stall
 
 class Teleporter(DomainObject):
     def __init__(self, graphic, position, destination):
