@@ -180,6 +180,16 @@ class Main:
         # release resources
         pygame.quit()
 
+    def update_scroll_bar_states(self):
+        # get the view and map rects for the scrollbars
+        view_rect = self.domain_manager.renderer.view_rect
+        map_rect = self.domain_manager.renderer.map_rect
+        # update the horizontal scrollbar data, subtract the floor from the view rect then the hbar is normalized
+        self.hbar.set(map_rect.width / self.domain_manager.floors,
+                        view_rect.x - (self.domain_manager.floor * self.domain_manager.floor_size), view_rect.width)
+        # update the vertical scrollbar data
+        self.vbar.set(map_rect.height, view_rect.y, view_rect.height)
+
     def handle_events(self):
         # handle event queue
         for event in pygame.event.get():
@@ -271,16 +281,6 @@ class Main:
                         self.domain_manager.main_viewport[0] += x - self.panning_state_position[0]
                         self.domain_manager.main_viewport[1] += y - self.panning_state_position[1]
                         pygame.mouse.set_pos(self.panning_state_position)
-
-    def update_scroll_bar_states(self):
-        # get the view and map rects for the scrollbars
-        view_rect = self.domain_manager.renderer.view_rect
-        map_rect = self.domain_manager.renderer.map_rect
-        # update the horizontal scrollbar data, subtract the floor from the view rect then the hbar is normalized
-        self.hbar.set(map_rect.width / self.domain_manager.floors,
-                        view_rect.x - (self.domain_manager.floor * self.domain_manager.floor_size), view_rect.width)
-        # update the vertical scrollbar data
-        self.vbar.set(map_rect.height, view_rect.y, view_rect.height)
 
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
