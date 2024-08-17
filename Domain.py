@@ -19,7 +19,7 @@ class Main:
         pygame.init()
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
-        # dimensions of the viewport
+        # dimensions of the map viewport
         view_xpos, view_ypos, view_width, view_height = 10, 10, 1600, 1040
         # tile_gid is a ordered tuple containing Tiled map gid numbers.
         # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
@@ -39,7 +39,7 @@ class Main:
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = pygame.Rect(view_xpos, view_ypos, view_width, view_height)
-        # create a rect that outlines view_surface_rect
+        # create a rect that outlines view_surface_rect and the scrollbars
         self.view_surface_outline_rect = pygame.Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
         # set the default font for utility functions
         utility.font_size = 18
@@ -52,10 +52,10 @@ class Main:
         # set up the floor group buttons
         self.floor_group = {}
         floor_select_size = 22
-        floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 2), 'Floor: ')
-        floor_1_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1, information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
-        floor_2_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 1 + floor_select_size + 1,
-                                          information_frame_rect.bottom + 2, floor_select_size, floor_select_size)
+        floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
+        floor_1_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 4, information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
+        floor_2_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 4 + floor_select_size + 4,
+                                          information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
         self.floor_group['0'] = PushButtonGroup(self.screen, 'floor1', floor_1_button_rect, '1', 'floors')
         self.floor_group['1'] = PushButtonGroup(self.screen, 'floor2', floor_2_button_rect, '2', 'floors')
         # give the domain manager a reference to the floor group
@@ -72,7 +72,7 @@ class Main:
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create gui widgets and contexts
         button_width, button_height = int(gui_width / 2), 22
-        button_rect = pygame.Rect(gui_xpos, floor_1_button_rect.bottom + 2, button_width, button_height)
+        button_rect = pygame.Rect(gui_xpos, floor_1_button_rect.bottom + 4, button_width, button_height)
         # exit button
         exit_button_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
                                        button_width, button_height)
