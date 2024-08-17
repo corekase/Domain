@@ -1,17 +1,18 @@
 import time
 import pygame
+from pygame import Rect
 from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
 from components.gui.guimanager import GuiManager, colours
 from components import utility
 from components.utility import file_resource, padding, render_text
+from components.gui.label import Label
+from components.gui.pushbuttongroup import PushButtonGroup
 from components.gui.frame import Frame
 from components.gui.button import Button
-from components.gui.pushbuttongroup import PushButtonGroup
 from components.gui.scrollbar import Scrollbar
-from components.gui.label import Label
-from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_F1
+from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 
 class Main:
     def __init__(self):
@@ -38,9 +39,9 @@ class Main:
         # create a surface of the view width and height size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
-        self.view_surface_rect = pygame.Rect(view_xpos, view_ypos, view_width, view_height)
+        self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect that outlines view_surface_rect and the scrollbars
-        self.view_surface_outline_rect = pygame.Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
+        self.view_surface_outline_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
         # set the default font for utility functions
         utility.font_size = 18
         utility.font_object = pygame.font.Font(file_resource('fonts', 'Ubuntu', 'Ubuntu-Medium.ttf'), utility.font_size)
@@ -48,14 +49,14 @@ class Main:
         gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
         # create a frame for the information panel
-        information_frame_rect = pygame.Rect(gui_xpos, 10, gui_width, padding(2) + 4)
+        information_frame_rect = Rect(gui_xpos, 10, gui_width, padding(2) + 4)
         # set up the floor group buttons
         self.floor_group = {}
         floor_select_size = 22
         floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
-        floor_1_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 4, information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
-        floor_2_button_rect = pygame.Rect(gui_xpos + floor_label.rect.width + 4 + floor_select_size + 4,
-                                          information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
+        floor_1_button_rect = Rect(gui_xpos + floor_label.rect.width + 4, information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
+        floor_2_button_rect = Rect(gui_xpos + floor_label.rect.width + 4 + floor_select_size + 4,
+                                   information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
         self.floor_group['0'] = PushButtonGroup(self.screen, 'floor1', floor_1_button_rect, '1', 'floors')
         self.floor_group['1'] = PushButtonGroup(self.screen, 'floor2', floor_2_button_rect, '2', 'floors')
         # give the domain manager a reference to the floor group
@@ -72,10 +73,10 @@ class Main:
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create gui widgets and contexts
         button_width, button_height = int(gui_width / 2), 22
-        button_rect = pygame.Rect(gui_xpos, floor_1_button_rect.bottom + 4, button_width, button_height)
+        button_rect = Rect(gui_xpos, floor_1_button_rect.bottom + 4, button_width, button_height)
         # exit button
-        exit_button_rect = pygame.Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
-                                       button_width, button_height)
+        exit_button_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
+                                button_width, button_height)
         exit_button = Button(self.screen, 'exit', exit_button_rect, 'Exit')
         # pickup button context
         self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', button_rect, 'Pick Up'))
@@ -155,7 +156,7 @@ class Main:
             # poll for mouse position
             x, y = pygame.mouse.get_pos()
             # mouse damage to background. tracking damage is much faster than filling entire screen
-            damaged_rect = pygame.Rect(x - 6, y, 16, 16)
+            damaged_rect = Rect(x - 6, y, 16, 16)
             # update self.status for the information panel
             self.update_status(x, y)
             # draw information panel
