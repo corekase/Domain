@@ -54,9 +54,8 @@ class Main:
         self.floor_group = {}
         floor_select_size = 22
         floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
-        floor_1_button_rect = Rect(gui_xpos + floor_label.rect.width + 4, information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
-        floor_2_button_rect = Rect(gui_xpos + floor_label.rect.width + 4 + floor_select_size + 4,
-                                   information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
+        floor_1_button_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
+        floor_2_button_rect = Rect(floor_1_button_rect.right + 4, information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
         self.floor_group['0'] = PushButtonGroup(self.screen, 'floor1', floor_1_button_rect, '1', 'floors')
         self.floor_group['1'] = PushButtonGroup(self.screen, 'floor2', floor_2_button_rect, '2', 'floors')
         # give the domain manager a reference to the floor group
