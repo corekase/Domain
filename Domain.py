@@ -30,7 +30,7 @@ class Main:
         # set window icon
         pygame.display.set_icon(utility.image_alpha('icon.png'))
         # load images for custom mouse pointer
-        self.cursor_interface_image = utility.image_alpha('cursors', 'normal.png')
+        self.cursor_image = utility.image_alpha('cursors', 'normal.png')
         # tile_gid is a ordered tuple containing Tiled map gid numbers.
         # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
         tile_gid = (0, 1, 2)
@@ -311,10 +311,10 @@ class Main:
     def draw_mouse(self, x, y):
         # draw mouse cursor
         if self.panning_state:
-            self.screen.blit(self.cursor_interface_image,
+            self.screen.blit(self.cursor_image,
                             (self.panning_state_position[0] - 6, self.panning_state_position[1]))
         else:
-            self.screen.blit(self.cursor_interface_image, (x - 6, y))
+            self.screen.blit(self.cursor_image, (x - 6, y))
 
 if __name__ == '__main__':
     Main().run()
