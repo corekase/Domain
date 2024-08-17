@@ -18,16 +18,11 @@ class Main:
     def __init__(self):
         # initialize pygame
         pygame.init()
+        # set the default font for utility functions
+        utility.font_size = 18
+        utility.font_object = pygame.font.Font(file_resource('fonts', 'Ubuntu', 'Ubuntu-Medium.ttf'), utility.font_size)
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
-        # dimensions of the map viewport
-        view_xpos, view_ypos, view_width, view_height = 10, 10, 1600, 1040
-        # tile_gid is a ordered tuple containing Tiled map gid numbers.
-        # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
-        tile_gid = (0, 1, 2)
-        # give both the domain manager and domain objects the tile_gid tuple
-        DomainManager.tile_gid = tile_gid
-        DomainObject.tile_gid = tile_gid
         # set window caption
         pygame.display.set_caption('Domain')
         # hide system mouse pointer
@@ -36,15 +31,20 @@ class Main:
         pygame.display.set_icon(utility.image_alpha('icon.png'))
         # load images for custom mouse pointer
         self.cursor_interface_image = utility.image_alpha('cursors', 'normal.png')
+        # tile_gid is a ordered tuple containing Tiled map gid numbers.
+        # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
+        tile_gid = (0, 1, 2)
+        # give both the domain manager and domain objects the tile_gid tuple
+        DomainManager.tile_gid = tile_gid
+        DomainObject.tile_gid = tile_gid
+        # dimensions of the map viewport
+        view_xpos, view_ypos, view_width, view_height = 10, 10, 1600, 1040
         # create a surface of the view width and height size for rendering
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect that outlines view_surface_rect and the scrollbars
         self.view_surface_outline_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
-        # set the default font for utility functions
-        utility.font_size = 18
-        utility.font_object = pygame.font.Font(file_resource('fonts', 'Ubuntu', 'Ubuntu-Medium.ttf'), utility.font_size)
         # area for gui elements
         gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
