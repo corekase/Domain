@@ -5,7 +5,7 @@ from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
 from components.gui.guimanager import GuiManager, colours
 from components import utility
-from components.utility import file_resource, padding, render_text
+from components.utility import file_resource, image_alpha, padding, render_text
 from components.gui.frame import Frame
 from components.gui.label import Label
 from components.gui.pushbuttongroup import PushButtonGroup
@@ -34,9 +34,9 @@ class Main:
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
         # set window icon
-        pygame.display.set_icon(utility.image_alpha('icon.png'))
+        pygame.display.set_icon(image_alpha('icon.png'))
         # load images for custom mouse pointer
-        self.cursor_image = utility.image_alpha('cursors', 'normal.png')
+        self.cursor_image = image_alpha('cursors', 'normal.png')
         # dimensions of the map viewport
         view_xpos, view_ypos, view_width, view_height = 10, 10, 1600, 1040
         # create a surface of the view width and height size for rendering
