@@ -204,8 +204,6 @@ class Main:
                         self.domain_manager.switch_floor(0)
                     else:
                         self.domain_manager.switch_floor(1)
-                    # update which button is selected
-                    self.floors[self.domain_manager.floor].select()
                 elif gui_event in ('hbar', 'vbar'):
                     # stop following if a scrollbar is adjusted
                     self.follow_state = False
