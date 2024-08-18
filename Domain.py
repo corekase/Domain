@@ -16,6 +16,12 @@ from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 
 class Main:
     def __init__(self):
+        # tile_gid is a ordered tuple containing Tiled map gid numbers. if gid's change only here needs to be updated
+        # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
+        tile_gid = (0, 1, 2)
+        # give both the domain manager and domain objects the tile_gid tuple
+        DomainManager.tile_gid = tile_gid
+        DomainObject.tile_gid = tile_gid
         # initialize pygame
         pygame.init()
         # set the default font for utility functions
@@ -39,12 +45,6 @@ class Main:
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect that outlines view_surface_rect and the scrollbars
         self.view_surface_outline_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
-        # tile_gid is a ordered tuple containing Tiled map gid numbers. if gid's change only here needs to be updated
-        # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
-        tile_gid = (0, 1, 2)
-        # give both the domain manager and domain objects the tile_gid tuple
-        DomainManager.tile_gid = tile_gid
-        DomainObject.tile_gid = tile_gid
         # create domain manager
         self.domain_manager = DomainManager(self.view_surface)
         # give domain objects a reference to the domain manager
