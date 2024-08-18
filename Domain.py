@@ -68,8 +68,9 @@ class Main:
         floor_1_rect = Rect(floor_0_rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
         floor_0 = PushButtonGroup(self.screen, 'floor0', floor_0_rect, '1', 'floors')
         floor_1 = PushButtonGroup(self.screen, 'floor1', floor_1_rect, '2', 'floors')
-        # push the button for which floor is active
-        [floor_0, floor_1][self.domain_manager.floor].select()
+        # pass the group push button widgets to the domain object and push the button for which floor is active
+        DomainObject.floors = [floor_0, floor_1]
+        DomainObject.floors[self.domain_manager.floor].select()
         # scrollbars
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
