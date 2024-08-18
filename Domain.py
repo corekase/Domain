@@ -6,11 +6,11 @@ from components.object.domainobject import DomainObject
 from components.gui.guimanager import GuiManager, colours
 from components import utility
 from components.utility import file_resource, padding, render_text
+from components.gui.frame import Frame
 from components.gui.label import Label
 from components.gui.pushbuttongroup import PushButtonGroup
-from components.gui.frame import Frame
-from components.gui.button import Button
 from components.gui.scrollbar import Scrollbar
+from components.gui.button import Button
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_F1
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 
