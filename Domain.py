@@ -68,8 +68,9 @@ class Main:
         floor_2_rect = Rect(floor_1_rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
         floor0 = PushButtonGroup(self.screen, 'floor0', floor_1_rect, '1', 'floors')
         floor1 = PushButtonGroup(self.screen, 'floor1', floor_2_rect, '2', 'floors')
-        self.floors = [floor0, floor1]
-        self.floors[self.domain_manager.floor].select()
+        # push the button for which floor is active
+        floors = [floor0, floor1]
+        floors[self.domain_manager.floor].select()
         # scrollbars
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
@@ -90,8 +91,8 @@ class Main:
         # add common controls to all contexts, also creates default context
         for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
             self.gui_manager.add_widget(context, floor_label)
-            self.gui_manager.add_widget(context, self.floors[0])
-            self.gui_manager.add_widget(context, self.floors[1])
+            self.gui_manager.add_widget(context, floor0)
+            self.gui_manager.add_widget(context, floor1)
             self.gui_manager.add_widget(context, self.hbar)
             self.gui_manager.add_widget(context, self.vbar)
             self.gui_manager.add_widget(context, frame)
