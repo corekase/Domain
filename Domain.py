@@ -313,8 +313,7 @@ class Main:
     def draw_mouse(self, x, y):
         # draw mouse cursor
         if self.panning_state:
-            self.screen.blit(self.cursor_image,
-                            (self.panning_state_position[0] - 6, self.panning_state_position[1]))
+            self.screen.blit(self.cursor_image, (self.panning_state_position[0] - 6, self.panning_state_position[1]))
         else:
             self.screen.blit(self.cursor_image, (x - 6, y))
 
