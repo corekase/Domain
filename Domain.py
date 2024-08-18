@@ -31,10 +31,6 @@ class Main:
         pygame.display.set_icon(utility.image_alpha('icon.png'))
         # load images for custom mouse pointer
         self.cursor_image = utility.image_alpha('cursors', 'normal.png')
-        # create a gui manager
-        self.gui_manager = GuiManager()
-        # give domain objects a reference to the gui manager
-        DomainObject.gui_manager = self.gui_manager
         # dimensions of the map viewport
         view_xpos, view_ypos, view_width, view_height = 10, 10, 1600, 1040
         # create a surface of the view width and height size for rendering
@@ -43,7 +39,7 @@ class Main:
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect that outlines view_surface_rect and the scrollbars
         self.view_surface_outline_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
-        # tile_gid is a ordered tuple containing Tiled map gid numbers.
+        # tile_gid is a ordered tuple containing Tiled map gid numbers. if gid's change only here needs to be updated
         # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
         tile_gid = (0, 1, 2)
         # give both the domain manager and domain objects the tile_gid tuple
@@ -53,6 +49,10 @@ class Main:
         self.domain_manager = DomainManager(self.view_surface)
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
+        # create a gui manager
+        self.gui_manager = GuiManager()
+        # give domain objects a reference to the gui manager
+        DomainObject.gui_manager = self.gui_manager
         # area for gui elements
         gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
