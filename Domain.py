@@ -64,18 +64,18 @@ class Main:
         button_width, button_height = int(gui_width / 2), 22
         # set up the floor buttons
         floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
-        floor_1_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
-        floor_2_rect = Rect(floor_1_rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
-        floor0 = PushButtonGroup(self.screen, 'floor0', floor_1_rect, '1', 'floors')
-        floor1 = PushButtonGroup(self.screen, 'floor1', floor_2_rect, '2', 'floors')
+        floor_0_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
+        floor_1_rect = Rect(floor_0_rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
+        floor_0 = PushButtonGroup(self.screen, 'floor0', floor_0_rect, '1', 'floors')
+        floor_1 = PushButtonGroup(self.screen, 'floor1', floor_1_rect, '2', 'floors')
         # push the button for which floor is active
-        [floor0, floor1][self.domain_manager.floor].select()
+        [floor_0, floor_1][self.domain_manager.floor].select()
         # scrollbars
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
         frame = Frame(self.screen, 'none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
         # pickup and putdown rect
-        area_1_rect = Rect(gui_xpos, floor_1_rect.bottom + 4, button_width, button_height)
+        area_1_rect = Rect(gui_xpos, floor_0_rect.bottom + 4, button_width, button_height)
         # won and exit rect, '22' accounts for the scroll bar
         area_2_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
                           button_width, button_height)
@@ -90,8 +90,8 @@ class Main:
         # add common controls to all contexts, also creates default context
         for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
             self.gui_manager.add_widget(context, floor_label)
-            self.gui_manager.add_widget(context, floor0)
-            self.gui_manager.add_widget(context, floor1)
+            self.gui_manager.add_widget(context, floor_0)
+            self.gui_manager.add_widget(context, floor_1)
             self.gui_manager.add_widget(context, self.hbar)
             self.gui_manager.add_widget(context, self.vbar)
             self.gui_manager.add_widget(context, frame)
