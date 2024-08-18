@@ -48,7 +48,7 @@ class Main:
         # area for gui elements
         gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
-        # create a frame for the information panel
+        # create a rect for the information panel
         information_frame_rect = Rect(gui_xpos, 10, gui_width, padding(2) + 4)
         # set up the floor group buttons
         self.floor_group = {}
