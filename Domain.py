@@ -78,7 +78,7 @@ class Main:
         area_1_rect = Rect(gui_xpos, floor_0_rect.bottom + 4, button_width, button_height)
         # won and exit rect, '22' accounts for the scroll bar
         area_2_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
-                          button_width, button_height)
+                           button_width, button_height)
         # pickup button context
         self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', area_1_rect, 'Pick Up'))
         # putdown button context
