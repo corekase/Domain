@@ -12,8 +12,8 @@ class Button(Frame):
         self.text_bitmap = render_text(text)
         self.text_highlight_bitmap = render_text(text, True)
         # get centred dimensions for both x and y ranges
-        text_x = self.rect.x + centre(self.rect.width, self.text_bitmap.get_rect().width)
-        text_y = self.rect.y + centre(self.rect.height, self.text_bitmap.get_rect().height)
+        text_x = self.rect.x + centre(self.rect.width, self.text_bitmap.get_rect().width) - 1
+        text_y = self.rect.y + centre(self.rect.height, self.text_bitmap.get_rect().height) - 1
         # store the position for later blitting
         self.position = text_x, text_y
 
