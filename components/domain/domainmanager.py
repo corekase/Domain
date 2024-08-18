@@ -21,6 +21,8 @@ class DomainManager:
                   (-1,  1), (0,  1), (1,  1))
     # order to return the neighbours in, this affects how straight the paths are
     indexes = (1, 5, 7, 3, 2, 8, 6, 0)
+    # floor push button group
+    floor_group = None
 
     def __init__(self, view_surface):
         # needed functions for initialization
@@ -157,6 +159,10 @@ class DomainManager:
         # add the difference to new centre of floor
         x, y = self.floor_port.center
         self.main_viewport[0], self.main_viewport[1] = x + difx, y + dify
+        # if there is a floor group then update it
+        if self.floor_group != None:
+            # update the floor push button group selection
+            self.floor_group[self.floor].select()
 
     def find_path(self, start_position, destination_objects):
         frontier = [start_position]

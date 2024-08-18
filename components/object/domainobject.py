@@ -37,8 +37,6 @@ class DomainObject(Sprite):
     domain_manager: DomainManager
     # tile_gid tuple, useful for subclasses
     tile_gid = None
-    # floor push button group
-    floors = None
 
     def __init__(self):
         super().__init__()
@@ -97,8 +95,6 @@ class DomainObject(Sprite):
                 if follow:
                     # switch the to the floor
                     self.domain_manager.switch_floor(self.domain_manager.get_floor(destination))
-                    # update the floor push button group
-                    self.floors[self.domain_manager.floor].select()
                     # centre the main viewport on self
                     self.domain_manager.main_viewport = list(self.rect.center)
             elif command_name == 'Path':
