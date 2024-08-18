@@ -75,18 +75,18 @@ class Main:
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
         frame = Frame(self.screen, 'none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
         # pickup and putdown rect
-        area1_rect = Rect(gui_xpos, floor_1_rect.bottom + 4, button_width, button_height)
+        area_1_rect = Rect(gui_xpos, floor_1_rect.bottom + 4, button_width, button_height)
         # won and exit rect, '22' accounts for the scroll bar
-        area2_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
+        area_2_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
                           button_width, button_height)
         # pickup button context
-        self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', area1_rect, 'Pick Up'))
+        self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', area_1_rect, 'Pick Up'))
         # putdown button context
-        self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', area1_rect, 'Put Down'))
+        self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', area_1_rect, 'Put Down'))
         # game won context
-        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', area2_rect, 'Won!'))
+        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', area_2_rect, 'Won!'))
         # exit button
-        exit_button = Button(self.screen, 'exit', area2_rect, 'Exit')
+        exit_button = Button(self.screen, 'exit', area_2_rect, 'Exit')
         # add common controls to all contexts, also creates default context
         for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
             self.gui_manager.add_widget(context, floor_label)
