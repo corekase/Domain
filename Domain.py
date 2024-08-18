@@ -69,8 +69,7 @@ class Main:
         floor0 = PushButtonGroup(self.screen, 'floor0', floor_1_rect, '1', 'floors')
         floor1 = PushButtonGroup(self.screen, 'floor1', floor_2_rect, '2', 'floors')
         # push the button for which floor is active
-        floors = [floor0, floor1]
-        floors[self.domain_manager.floor].select()
+        [floor0, floor1][self.domain_manager.floor].select()
         # scrollbars
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
