@@ -58,7 +58,7 @@ class Main:
         gui_width = 1920 - gui_xpos - 10
         # create a rect for the information panel
         information_frame_rect = Rect(gui_xpos, 10, gui_width, padding(2) + 4)
-        # create information frame
+        # create information panel frame
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create gui widgets and contexts
         button_width, button_height = int(gui_width / 2), 22
@@ -66,8 +66,8 @@ class Main:
         floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
         floor_1_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
         floor_2_rect = Rect(floor_1_rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
-        floor0 = PushButtonGroup(self.screen, 'floor1', floor_1_rect, '1', 'floors')
-        floor1 = PushButtonGroup(self.screen, 'floor2', floor_2_rect, '2', 'floors')
+        floor0 = PushButtonGroup(self.screen, 'floor0', floor_1_rect, '1', 'floors')
+        floor1 = PushButtonGroup(self.screen, 'floor1', floor_2_rect, '2', 'floors')
         self.floors = [floor0, floor1]
         self.floors[self.domain_manager.floor].select()
         button_rect = Rect(gui_xpos, floor_1_rect.bottom + 4, button_width, button_height)
@@ -194,14 +194,14 @@ class Main:
             gui_event = self.gui_manager.handle_event(event)
             if gui_event != None:
                 # handle gui events
-                if gui_event in ('floor1', 'floor2'):
+                if gui_event in ('floor0', 'floor1'):
                     # stop following on any floor switch
                     self.follow_state = False
                     # switch floors
-                    if gui_event == 'floor1':
+                    if gui_event == 'floor0':
                         self.floors[0].select()
                         self.domain_manager.switch_floor(0)
-                    elif gui_event == 'floor2':
+                    elif gui_event == 'floor1':
                         self.floors[1].select()
                         self.domain_manager.switch_floor(1)
                 elif gui_event in ('hbar', 'vbar'):
