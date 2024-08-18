@@ -62,7 +62,7 @@ class Main:
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # button width and height
         button_width, button_height = int(gui_width / 2), 22
-        # set up the floor group buttons
+        # set up the floor buttons
         floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
         floor_1_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
         floor_2_rect = Rect(floor_1_rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
