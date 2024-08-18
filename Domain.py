@@ -31,12 +31,10 @@ class Main:
         pygame.display.set_icon(utility.image_alpha('icon.png'))
         # load images for custom mouse pointer
         self.cursor_image = utility.image_alpha('cursors', 'normal.png')
-        # tile_gid is a ordered tuple containing Tiled map gid numbers.
-        # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
-        tile_gid = (0, 1, 2)
-        # give both the domain manager and domain objects the tile_gid tuple
-        DomainManager.tile_gid = tile_gid
-        DomainObject.tile_gid = tile_gid
+        # create a gui manager
+        self.gui_manager = GuiManager()
+        # give domain objects a reference to the gui manager
+        DomainObject.gui_manager = self.gui_manager
         # dimensions of the map viewport
         view_xpos, view_ypos, view_width, view_height = 10, 10, 1600, 1040
         # create a surface of the view width and height size for rendering
@@ -45,35 +43,35 @@ class Main:
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
         # create a rect that outlines view_surface_rect and the scrollbars
         self.view_surface_outline_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
+        # tile_gid is a ordered tuple containing Tiled map gid numbers.
+        # indexes are named: EMPTY, WALL, FLOOR = 0, 1, 2 (for the values of 0, 1, 2 in tile_gid)
+        tile_gid = (0, 1, 2)
+        # give both the domain manager and domain objects the tile_gid tuple
+        DomainManager.tile_gid = tile_gid
+        DomainObject.tile_gid = tile_gid
+        # create domain manager
+        self.domain_manager = DomainManager(self.view_surface)
+        # give domain objects a reference to the domain manager
+        DomainObject.domain_manager = self.domain_manager
         # area for gui elements
         gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
         # create a rect for the information panel
         information_frame_rect = Rect(gui_xpos, 10, gui_width, padding(2) + 4)
-        # set up the floor group buttons
-        self.floor_group = {}
-        floor_select_size = 22
-        floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
-        floor_1_button_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
-        floor_2_button_rect = Rect(floor_1_button_rect.right + 4, information_frame_rect.bottom + 4, floor_select_size, floor_select_size)
-        self.floor_group['0'] = PushButtonGroup(self.screen, 'floor1', floor_1_button_rect, '1', 'floors')
-        self.floor_group['1'] = PushButtonGroup(self.screen, 'floor2', floor_2_button_rect, '2', 'floors')
-        # give the domain manager a reference to the floor group
-        DomainManager.floor_group = self.floor_group
-        # create domain manager
-        self.domain_manager = DomainManager(self.view_surface)
-        # give domain objects a reference to the domain manager
-        DomainObject.domain_manager = self.domain_manager
-        # create a gui manager
-        self.gui_manager = GuiManager()
-        # give domain objects a reference to the gui manager
-        DomainObject.gui_manager = self.gui_manager
         # create information frame
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # create gui widgets and contexts
         button_width, button_height = int(gui_width / 2), 22
-        button_rect = Rect(gui_xpos, floor_1_button_rect.bottom + 4, button_width, button_height)
-        # exit button
+        # set up the floor group buttons
+        floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
+        floor_1_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
+        floor_2_rect = Rect(floor_1_rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
+        floor0 = PushButtonGroup(self.screen, 'floor1', floor_1_rect, '1', 'floors')
+        floor1 = PushButtonGroup(self.screen, 'floor2', floor_2_rect, '2', 'floors')
+        self.floors = [floor0, floor1]
+        self.floors[self.domain_manager.floor].select()
+        button_rect = Rect(gui_xpos, floor_1_rect.bottom + 4, button_width, button_height)
+        # exit button, "22" accounts for the scroll bar
         exit_button_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
                                 button_width, button_height)
         exit_button = Button(self.screen, 'exit', exit_button_rect, 'Exit')
@@ -93,8 +91,8 @@ class Main:
             self.gui_manager.add_widget(context, self.vbar)
             self.gui_manager.add_widget(context, frame)
             self.gui_manager.add_widget(context, floor_label)
-            self.gui_manager.add_widget(context, self.floor_group['0'])
-            self.gui_manager.add_widget(context, self.floor_group['1'])
+            self.gui_manager.add_widget(context, self.floors[0])
+            self.gui_manager.add_widget(context, self.floors[1])
             if context != 'win_context':
                 self.gui_manager.add_widget(context, exit_button)
         # switch to default context
@@ -201,8 +199,10 @@ class Main:
                     self.follow_state = False
                     # switch floors
                     if gui_event == 'floor1':
+                        self.floors[0].select()
                         self.domain_manager.switch_floor(0)
                     elif gui_event == 'floor2':
+                        self.floors[1].select()
                         self.domain_manager.switch_floor(1)
                 elif gui_event in ('hbar', 'vbar'):
                     if gui_event == 'hbar':
