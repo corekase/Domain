@@ -20,7 +20,7 @@ from collections import namedtuple
 # commands and their parameters for the command queue
 Stall = namedtuple('Stall', 'none')
 Move_To = namedtuple('Move_To', 'destination')
-Teleport = namedtuple('Teleport', 'destination follow')
+Teleport = namedtuple('Teleport', 'destination')
 Path = namedtuple('Path', 'path')
 
 # all domain objects are subclasses of Sprite
@@ -60,6 +60,8 @@ class DomainObject(Sprite):
         self.frame = 0
         # total number of frames
         self.frames = 0
+        # whether to follow the domain object through a teleporter
+        self.follow = False
         # subclasess must call either sync_coordinate or sync_cell before they exit their __init__
 
     def update(self, elapsed_time):
@@ -88,11 +90,11 @@ class DomainObject(Sprite):
                     self.move_towards(destination, elapsed_time)
             elif command_name == 'Teleport':
                 # teleport to a new position
-                destination, follow = command.destination, command.follow
+                destination = command.destination
                 self.sync_cell(destination)
                 self.command_queue.pop(0)
                 # if follow then switch floor and main_viewport as well, done within a single command queue item
-                if follow:
+                if self.follow:
                     # switch the to the floor
                     self.domain_manager.switch_floor(self.domain_manager.get_floor(destination))
                     # centre the main viewport on self
@@ -109,8 +111,7 @@ class DomainObject(Sprite):
                         # convert to renderer map rect pixel coordinates for each position in the path
                         self.command_queue.insert(0, Move_To(self.pixel_centre(value)))
                     elif kind == 'teleport':
-                        is_avatar = self is self.domain_manager.avatar
-                        self.command_queue.insert(0, Teleport(value, is_avatar))
+                        self.command_queue.insert(0, Teleport(value))
             else:
                 raise Exception(f'Command: {command_name} not implemented')
         else:

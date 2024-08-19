@@ -139,6 +139,8 @@ class Main:
             # if a frame takes longer than max time then switch to non-realtime movement
             if elapsed_time > max_time:
                 elapsed_time = max_time
+            # update whether to follow the avatar through teleporters
+            self.domain_manager.avatar.follow = self.follow_state
             # update domain state
             if not won:
                 self.domain_manager.update_domain(elapsed_time)
