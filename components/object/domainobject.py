@@ -97,8 +97,6 @@ class DomainObject(Sprite):
                 if self.follow:
                     # switch the to the floor
                     self.domain_manager.switch_floor(self.domain_manager.get_floor(destination))
-                    # centre the main viewport on self
-                    self.domain_manager.main_viewport = list(self.rect.center)
             elif command_name == 'Path':
                 # insert a path into the command queue
                 path = command.path

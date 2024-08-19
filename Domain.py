@@ -139,14 +139,14 @@ class Main:
             # if a frame takes longer than max time then switch to non-realtime movement
             if elapsed_time > max_time:
                 elapsed_time = max_time
-            # update whether to follow the avatar through teleporters
-            self.domain_manager.avatar.follow = self.follow_state
-            # update domain state
             if not won:
+                # update whether to follow the avatar through teleporters
+                self.domain_manager.avatar.follow = self.follow_state
+                # update domain state
                 self.domain_manager.update_domain(elapsed_time)
-            # if follow_state centre on avatar, after update_domain to fix jitter
-            if self.follow_state:
-                self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
+                # if follow_state centre on avatar, after update_domain to avoid jitter
+                if self.follow_state:
+                    self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
             # draw the outline around the main viewport
             pygame.draw.rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
