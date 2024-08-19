@@ -25,7 +25,7 @@ class Main:
         # initialize pygame
         pygame.init()
         # set the default font for utility functions
-        utility.font_size = 18
+        utility.font_size = 20
         utility.font_object = pygame.font.Font(file_resource('fonts', 'Ubuntu', 'Ubuntu-Medium.ttf'), utility.font_size)
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
@@ -61,7 +61,7 @@ class Main:
         # create information panel frame
         self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
         # button width and height
-        button_width, button_height = int(gui_width / 2), 22
+        button_width, button_height = int(gui_width / 2), 26
         # set up the floor buttons
         floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 4), 'Floor:')
         floor_0_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
