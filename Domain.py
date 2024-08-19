@@ -129,7 +129,7 @@ class Main:
         # continue while the running flag is true
         while self.running:
             # update scroll bar states
-            self.update_scroll_bar_states()
+            self.update_scroll_bars()
             # handle events
             self.handle_events()
             # manage time
@@ -183,7 +183,7 @@ class Main:
         # release resources
         pygame.quit()
 
-    def update_scroll_bar_states(self):
+    def update_scroll_bars(self):
         # get the view and map rects for the scrollbars
         view_rect = self.domain_manager.renderer.view_rect
         map_rect = self.domain_manager.renderer.map_rect
