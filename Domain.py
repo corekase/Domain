@@ -101,11 +101,11 @@ class Main:
         # switch to default context
         self.gui_manager.switch_context('default')
         # state for whether or not panning the view
-        self.panning_state = False
+        self.panning = False
         # when panning lock mouse position to this position
-        self.panning_state_position = None
-        # toggle state for following the avatar
-        self.follow_state = False
+        self.panning_position = None
+        # toggle for following the avatar
+        self.follow = False
         # whether to show absolute x and y, or x and y relative to floor
         self.coordinate_toggle = True
         # text status containing the x and y map indexes of the mouse position
@@ -141,11 +141,11 @@ class Main:
                 elapsed_time = max_time
             if not won:
                 # update whether to follow the avatar through teleporters
-                self.domain_manager.avatar.follow = self.follow_state
+                self.domain_manager.avatar.follow = self.follow
                 # update domain state
                 self.domain_manager.update_domain(elapsed_time)
-                # if follow_state centre on avatar, after update_domain to avoid jitter
-                if self.follow_state:
+                # if follow centre on avatar, after update_domain to avoid jitter
+                if self.follow:
                     self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
             # draw the outline around the main viewport
             pygame.draw.rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
@@ -201,7 +201,7 @@ class Main:
                 # handle gui events
                 if gui_event in ('floor0', 'floor1'):
                     # stop following on any floor switch
-                    self.follow_state = False
+                    self.follow = False
                     # switch floors
                     if gui_event == 'floor0':
                         self.domain_manager.switch_floor(0)
@@ -209,7 +209,7 @@ class Main:
                         self.domain_manager.switch_floor(1)
                 elif gui_event in ('hbar', 'vbar'):
                     # stop following if a scrollbar is adjusted
-                    self.follow_state = False
+                    self.follow = False
                     if gui_event == 'hbar':
                         # hbar changed, add floor back into the view port and update
                         self.domain_manager.renderer.view_rect.left = self.hbar.get() + (self.domain_manager.floor * self.domain_manager.floor_size)
@@ -253,37 +253,33 @@ class Main:
                             # switch to the avatar floor and centre the main viewport on it
                             self.domain_manager.switch_floor(self.domain_manager.get_floor(self.domain_manager.avatar.coord))
                             self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
-                            # toggle between follow_state true and false
-                            self.follow_state = not self.follow_state
+                            # toggle between follow true and false
+                            self.follow = not self.follow
                         elif event.button == 3:
-                            # cancel follow_state
-                            self.follow_state = False
-                            # right button down, begin panning state
-                            self.panning_state = True
-                            self.panning_state_position = x, y
+                            # cancel follow
+                            self.follow = False
+                            # right button down, begin panning
+                            self.panning = True
+                            self.panning_position = x, y
                         elif event.button == 4:
                             # wheel scroll up, increase zoom index
                             self.domain_manager.set_zoom_index(1)
-                            # if right-mouse button is also pressed begin panning
-                            if pygame.mouse.get_pressed()[2]:
-                                self.panning_state = True
-                                self.panning_state_position = x, y
                         elif event.button == 5:
                             # wheel scroll down, decrease zoom index
                             self.domain_manager.set_zoom_index(-1)
                 elif event.type == MOUSEBUTTONUP:
                     if event.button == 3:
-                        # right button up, end panning state
-                        self.panning_state = False
-                # panning state actions
-                if self.panning_state:
+                        # right button up, end panning
+                        self.panning = False
+                # panning actions
+                if self.panning:
                     # if the mouse is moving
                     if event.type == MOUSEMOTION:
                         # move the centre of the viewport
                         x, y = event.pos
-                        self.domain_manager.main_viewport[0] += x - self.panning_state_position[0]
-                        self.domain_manager.main_viewport[1] += y - self.panning_state_position[1]
-                        pygame.mouse.set_pos(self.panning_state_position)
+                        self.domain_manager.main_viewport[0] += x - self.panning_position[0]
+                        self.domain_manager.main_viewport[1] += y - self.panning_position[1]
+                        pygame.mouse.set_pos(self.panning_position)
 
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
@@ -313,8 +309,8 @@ class Main:
 
     def draw_mouse(self, x, y):
         # draw mouse cursor
-        if self.panning_state:
-            self.screen.blit(self.cursor_image, (self.panning_state_position[0] - 6, self.panning_state_position[1]))
+        if self.panning:
+            self.screen.blit(self.cursor_image, (self.panning_position[0] - 6, self.panning_position[1]))
         else:
             self.screen.blit(self.cursor_image, (x - 6, y))
 
