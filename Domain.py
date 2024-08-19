@@ -105,7 +105,7 @@ class Main:
         # when dragging lock mouse position to this position
         self.dragging_position = None
         # toggle for following the avatar
-        self.follow = False
+        self.follow_avatar = False
         # whether to show absolute x and y, or x and y relative to floor
         self.coordinate_toggle = True
         # text status containing the x and y map indexes of the mouse position
@@ -141,11 +141,11 @@ class Main:
                 elapsed_time = max_time
             if not won:
                 # update whether to follow the avatar through teleporters
-                self.domain_manager.avatar.follow = self.follow
+                self.domain_manager.avatar.follow = self.follow_avatar
                 # update domain state
                 self.domain_manager.update_domain(elapsed_time)
-                # if follow centre on avatar, after update_domain to avoid jitter
-                if self.follow:
+                # if follow_avatar centre on avatar, after update_domain to avoid jitter
+                if self.follow_avatar:
                     self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
             # draw the outline around the main viewport
             pygame.draw.rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
@@ -201,7 +201,7 @@ class Main:
                 # handle gui events
                 if gui_event in ('floor0', 'floor1'):
                     # stop following on any floor switch
-                    self.follow = False
+                    self.follow_avatar = False
                     # switch floors
                     if gui_event == 'floor0':
                         self.domain_manager.switch_floor(0)
@@ -209,7 +209,7 @@ class Main:
                         self.domain_manager.switch_floor(1)
                 elif gui_event in ('hbar', 'vbar'):
                     # stop following if a scrollbar is adjusted
-                    self.follow = False
+                    self.follow_avatar = False
                     if gui_event == 'hbar':
                         # hbar changed, add floor back into the view port and update
                         self.domain_manager.renderer.view_rect.left = self.hbar.get() + (self.domain_manager.floor * self.domain_manager.floor_size)
@@ -253,11 +253,11 @@ class Main:
                             # switch to the avatar floor and centre the main viewport on it
                             self.domain_manager.switch_floor(self.domain_manager.get_floor(self.domain_manager.avatar.coord))
                             self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
-                            # toggle between follow true and false
-                            self.follow = not self.follow
+                            # toggle follow_avatar between true and false
+                            self.follow_avatar = not self.follow_avatar
                         elif event.button == 3:
                             # cancel follow
-                            self.follow = False
+                            self.follow_avatar = False
                             # right button down, begin dragging
                             self.dragging = True
                             self.dragging_position = x, y
