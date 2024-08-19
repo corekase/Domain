@@ -1,6 +1,6 @@
 import time
 import pygame
-from pygame import Rect
+from pygame import Rect, FULLSCREEN, SCALED
 from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
 from components.gui.guimanager import GuiManager, colours
@@ -28,7 +28,7 @@ class Main:
         utility.font_size = 20
         utility.font_object = pygame.font.Font(file_resource('fonts', 'Ubuntu', 'Ubuntu-Medium.ttf'), utility.font_size)
         # create main window surface
-        self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN | pygame.SCALED)
+        self.screen = pygame.display.set_mode((1920, 1080), FULLSCREEN | SCALED)
         # set window caption
         pygame.display.set_caption('Domain')
         # hide system mouse pointer
