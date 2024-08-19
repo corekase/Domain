@@ -100,10 +100,10 @@ class Main:
                 self.gui_manager.add_widget(context, exit_button)
         # switch to default context
         self.gui_manager.switch_context('default')
-        # state for whether or not panning the view
-        self.panning = False
-        # when panning lock mouse position to this position
-        self.panning_position = None
+        # state for whether or not dragging the view
+        self.dragging = False
+        # when dragging lock mouse position to this position
+        self.dragging_position = None
         # toggle for following the avatar
         self.follow = False
         # whether to show absolute x and y, or x and y relative to floor
@@ -258,9 +258,9 @@ class Main:
                         elif event.button == 3:
                             # cancel follow
                             self.follow = False
-                            # right button down, begin panning
-                            self.panning = True
-                            self.panning_position = x, y
+                            # right button down, begin dragging
+                            self.dragging = True
+                            self.dragging_position = x, y
                         elif event.button == 4:
                             # wheel scroll up, increase zoom index
                             self.domain_manager.set_zoom_index(1)
@@ -269,17 +269,17 @@ class Main:
                             self.domain_manager.set_zoom_index(-1)
                 elif event.type == MOUSEBUTTONUP:
                     if event.button == 3:
-                        # right button up, end panning
-                        self.panning = False
-                # panning actions
-                if self.panning:
+                        # right button up, end dragging
+                        self.dragging = False
+                # dragging actions
+                if self.dragging:
                     # if the mouse is moving
                     if event.type == MOUSEMOTION:
                         # move the centre of the viewport
                         x, y = event.pos
-                        self.domain_manager.main_viewport[0] += x - self.panning_position[0]
-                        self.domain_manager.main_viewport[1] += y - self.panning_position[1]
-                        pygame.mouse.set_pos(self.panning_position)
+                        self.domain_manager.main_viewport[0] += x - self.dragging_position[0]
+                        self.domain_manager.main_viewport[1] += y - self.dragging_position[1]
+                        pygame.mouse.set_pos(self.dragging_position)
 
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
@@ -309,8 +309,8 @@ class Main:
 
     def draw_mouse(self, x, y):
         # draw mouse cursor
-        if self.panning:
-            self.screen.blit(self.cursor_image, (self.panning_position[0] - 6, self.panning_position[1]))
+        if self.dragging:
+            self.screen.blit(self.cursor_image, (self.dragging_position[0] - 6, self.dragging_position[1]))
         else:
             self.screen.blit(self.cursor_image, (x - 6, y))
 
