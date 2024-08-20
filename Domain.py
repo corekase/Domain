@@ -310,10 +310,10 @@ class Main:
     def draw_mouse(self, x, y):
         # draw mouse cursor
         if self.dragging:
-            pos = self.dragging_position[0] - 6, self.dragging_position[1]
+            position = self.dragging_position[0] - 6, self.dragging_position[1]
         else:
-            pos = x - 6, y
-        self.screen.blit(self.cursor_image, pos)
+            position = x - 6, y
+        self.screen.blit(self.cursor_image, position)
 
 if __name__ == '__main__':
     Main().run()
