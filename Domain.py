@@ -200,24 +200,25 @@ class Main:
             if gui_event != None:
                 # handle gui events
                 if gui_event in ('floor0', 'floor1'):
-                    # stop following on any floor switch
-                    self.follow_avatar = False
                     # switch floors
                     if gui_event == 'floor0':
                         self.domain_manager.switch_floor(0)
                     else:
                         self.domain_manager.switch_floor(1)
-                elif gui_event in ('hbar', 'vbar'):
-                    # stop following if a scrollbar is adjusted
+                    # stop following avatar
                     self.follow_avatar = False
+                elif gui_event in ('hbar', 'vbar'):
+                    # scrollbar adjusted
                     if gui_event == 'hbar':
-                        # hbar changed, add floor back into the view port and update
+                        # hbar changed, add floor back into the view port and update viewport
                         self.domain_manager.renderer.view_rect.left = self.hbar.get() + (self.domain_manager.floor * self.domain_manager.floor_size)
                     else:
                         # the vbar was changed, update viewport
                         self.domain_manager.renderer.view_rect.top = self.vbar.get()
                     # update the main viewport after scrollbar adjustment
                     self.domain_manager.main_viewport = list(self.domain_manager.renderer.view_rect.center)
+                    # stop following avatar
+                    self.follow_avatar = False
                 elif gui_event == 'pick_up':
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
@@ -243,11 +244,11 @@ class Main:
                     # is mouse inside the view surface rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 1:
-                            # left-click, attempt to move avatar to that position
+                            # left button, attempt to move avatar to that position
                             position = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
                             self.domain_manager.avatar.move_to(position)
                         elif event.button == 2:
-                            # switch to the avatar floor and centre the main viewport on it
+                            # mouse-wheel button, switch to the avatar floor and centre the main viewport on it
                             self.domain_manager.switch_floor(self.domain_manager.get_floor(self.domain_manager.avatar.coord))
                             self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
                             # toggle follow_avatar between true and false
@@ -268,7 +269,7 @@ class Main:
                     if event.button == 3:
                         # right button up, end dragging
                         self.dragging = False
-                # dragging actions
+                # dragging action
                 if self.dragging:
                     # if the mouse is moving
                     if event.type == MOUSEMOTION:
