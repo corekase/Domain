@@ -312,11 +312,9 @@ class DomainManager:
         return matched
 
     def screen_to_cell(self, x, y):
-        # renderer view_rect size at a given zoom must not be larger than renderer map_rect size
-        # at the same zoom. if greater, pick_cell() gives invalid results.
-        # normalize x and y mouse position to the screen coordinates of the surface
+        # normalize x and y mouse position to the centre of the view surface rect, in screen pixels
         x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
-        # get all the needed information from the map and renderer
+        # get all the needed information from the map and renderer, scaled to screen pixels
         x_tile_size = self.map_object.tilewidth * self.renderer.zoom
         y_tile_size = self.map_object.tileheight * self.renderer.zoom
         map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
