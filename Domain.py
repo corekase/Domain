@@ -240,7 +240,7 @@ class Main:
                 # mouse buttons
                 elif event.type == MOUSEBUTTONDOWN:
                     x, y = event.pos
-                    # if mouse is inside the view rect
+                    # is mouse inside the view surface rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 1:
                             # left-click, attempt to move avatar to that position
