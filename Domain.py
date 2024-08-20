@@ -308,11 +308,12 @@ class Main:
         self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(1)))
 
     def draw_mouse(self, x, y):
-        # draw mouse cursor
+        # find position relative to the cursor image hot-spot which is (x - 6, y) here.
         if self.dragging:
             position = self.dragging_position[0] - 6, self.dragging_position[1]
         else:
             position = x - 6, y
+        # blit the cursor image surface to the screen surface
         self.screen.blit(self.cursor_image, position)
 
 if __name__ == '__main__':
