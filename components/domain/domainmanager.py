@@ -24,7 +24,7 @@ class DomainManager:
     # floor push button group
     floor_group = None
 
-    def __init__(self, view_surface):
+    def __init__(self, surface):
         # needed functions for initialization
         from components.bundled.pytmx.util_pygame import load_pygame
         from components.utility import file_resource
@@ -44,9 +44,9 @@ class DomainManager:
         # give DomainObject subclasses a common reference to the map
         DomainObject.map_object = self.map_object
         # surface to draw on
-        self.view_surface = view_surface
-        self.view_surface_rect = view_surface.get_rect()
-        size = self.view_surface_rect.width, self.view_surface_rect.height
+        self.surface = surface
+        self.surface_rect = surface.get_rect()
+        size = self.surface_rect.width, self.surface_rect.height
         # reference to the renderer
         self.renderer = BufferedRenderer(TiledMapData(self.map_object), size, False)
         # set the zoom levels for the renderer
@@ -312,8 +312,8 @@ class DomainManager:
         return matched
 
     def screen_to_cell(self, x, y):
-        # normalize x and y mouse position to the centre of the view surface rect, in screen pixels
-        x_pos, y_pos = x - self.view_surface_rect.centerx, y - self.view_surface_rect.centery
+        # normalize x and y mouse position to the centre of the surface rect, in screen pixels
+        x_pos, y_pos = x - self.surface_rect.centerx, y - self.surface_rect.centery
         # get all the needed information from the map and renderer, scaled to screen pixels
         x_tile_size = self.map_object.tilewidth * self.renderer.zoom
         y_tile_size = self.map_object.tileheight * self.renderer.zoom
@@ -367,4 +367,4 @@ class DomainManager:
         # reupdate the viewport, viewport is updated here in case the bounds were modified
         self.renderer.center(self.main_viewport)
         # draw map and group objects to surface
-        self.object_manager.domain().draw(self.view_surface)
+        self.object_manager.domain().draw(self.surface)

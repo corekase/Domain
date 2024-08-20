@@ -244,8 +244,11 @@ class Main:
                     # is mouse inside the view surface rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 1:
-                            # left button, attempt to move avatar to that position
-                            position = self.domain_manager.screen_to_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
+                            # left button, normalize mouse position to view surface rect screen position
+                            view_x, view_y = x - self.view_surface_rect.x, y - self.view_surface_rect.y
+                            # get cell position from normalized position
+                            position = self.domain_manager.screen_to_cell(view_x, view_y)
+                            # attempt to move avatar to that position
                             self.domain_manager.avatar.move_to(position)
                         elif event.button == 2:
                             # mouse-wheel button, switch to the avatar floor and centre the main viewport on it
