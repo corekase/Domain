@@ -345,14 +345,14 @@ class DomainManager:
         # centre on desired viewport
         self.renderer.center(self.main_viewport)
         # if horizontal out-of-bounds limit them
-        if self.renderer.view_rect.left <= self.floor_port.left:
+        if self.renderer.view_rect.left < self.floor_port.left:
             self.renderer.view_rect.left = self.floor_port.left
-        elif self.renderer.view_rect.right >= self.floor_port.right:
+        elif self.renderer.view_rect.right > self.floor_port.right:
             self.renderer.view_rect.right = self.floor_port.right
         # if vertical out-of-bounds limit them
-        if self.renderer.view_rect.top <= self.floor_port.top:
+        if self.renderer.view_rect.top < self.floor_port.top:
             self.renderer.view_rect.top = self.floor_port.top
-        elif self.renderer.view_rect.bottom >= self.floor_port.bottom:
+        elif self.renderer.view_rect.bottom > self.floor_port.bottom:
             self.renderer.view_rect.bottom = self.floor_port.bottom
         # get main viewport coordinates from the renderer view rect
         self.main_viewport[0], self.main_viewport[1] = list(self.renderer.view_rect.center)
