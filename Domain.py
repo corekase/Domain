@@ -239,16 +239,13 @@ class Main:
                         self.coordinate_toggle = not self.coordinate_toggle
                 # mouse buttons
                 elif event.type == MOUSEBUTTONDOWN:
-                    x, y = pygame.mouse.get_pos()
+                    x, y = event.pos
                     # if mouse is inside the view rect
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 1:
-                            # left button click, which is destination point for avatar
-                            x, y = event.pos
-                            # if mouse is inside the view rect
-                            if self.view_surface_rect.collidepoint(x, y):
-                                position = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
-                                self.domain_manager.avatar.move_to(position)
+                            # left-click, attempt to move avatar to that position
+                            position = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
+                            self.domain_manager.avatar.move_to(position)
                         elif event.button == 2:
                             # switch to the avatar floor and centre the main viewport on it
                             self.domain_manager.switch_floor(self.domain_manager.get_floor(self.domain_manager.avatar.coord))
