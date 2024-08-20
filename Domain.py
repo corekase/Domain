@@ -285,7 +285,7 @@ class Main:
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
         if self.view_surface_rect.collidepoint(x, y):
-            # inside the view_surface_rect, pick the cell coordinates
+            # inside the view_surface_rect, get the cell coordinate
             x_coord, y_coord = self.domain_manager.pixel_to_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
             # show relative-to-floor or absolute coordinates
             if self.coordinate_toggle:
