@@ -324,12 +324,12 @@ class DomainManager:
         # go through each geometry frame ending at the x and y mouse position
         relative_x = map_centre_x - view_centre_x - x_pos
         relative_y = map_centre_y - view_centre_y - y_pos
-        # divide those into tile sizes to get a coordinate
+        # divide those into tile sizes to get cartesian coordinates
         x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
-        # convert that screen coordinate into an array coordinate for programming
+        # convert cartesian coordinates into array indexes for programming
         x_coord = int(-x_coord + (self.map_object.width / 2))
         y_coord = int(-y_coord + (self.map_object.height / 2))
-        # coordinates are now in map array indexes
+        # coordinates are now in array indexes
         return x_coord, y_coord
 
     def set_zoom_delta(self, index_delta):
