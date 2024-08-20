@@ -327,8 +327,8 @@ class DomainManager:
         # divide those into tile sizes to get a coordinate
         x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
         # convert that screen coordinate into an array coordinate for programming
-        x_coord = int(-x_coord + self.map_object.width / 2)
-        y_coord = int(-y_coord + self.map_object.height / 2)
+        x_coord = int(-x_coord + (self.map_object.width / 2))
+        y_coord = int(-y_coord + (self.map_object.height / 2))
         # coordinates are now in map array indexes
         return x_coord, y_coord
 
