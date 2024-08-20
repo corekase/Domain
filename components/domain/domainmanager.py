@@ -355,8 +355,8 @@ class DomainManager:
         # if horizontal out-of-bounds limit them
         if self.renderer.view_rect.left <= self.floor_port.left:
             self.renderer.view_rect.left = self.floor_port.left
-        elif self.renderer.view_rect.right >= self.floor_ports[self.floor].x + self.floor_port.width:
-            self.renderer.view_rect.right = self.floor_ports[self.floor].x + self.floor_port.width
+        elif self.renderer.view_rect.right >= self.floor_port.right:
+            self.renderer.view_rect.right = self.floor_port.right
         # if vertical out-of-bounds limit them
         if self.renderer.view_rect.top <= self.floor_port.top:
             self.renderer.view_rect.top = self.floor_port.top
