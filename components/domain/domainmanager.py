@@ -201,14 +201,36 @@ class DomainManager:
                         came_from[destination] = current
                         # track teleport coordinate for the path
                         teleport_destinations[destination] = destination
-            # get list of valid neighbours from the current cell
-            neighbours = self.adjacents(current)
-            # add each valid neighbour into the frontier
-            for next in neighbours:
-                if next not in came_from:
-                    frontier.append(next)
-                    # track the flow of the cell
-                    came_from[next] = current
+            # create list of valid neighbours from the current cell
+            adjacents = []
+            # fill list with cell positions by adding neighbour deltas to each axis
+            for neighbour in self.neighbours:
+                adjacents.append(self.cell_gid((current[0] + neighbour[0], current[1] + neighbour[1])))
+            # block out invalid moves due to walls
+            if adjacents[1] == self.tile_gid[WALL]:
+                adjacents[0] = None
+                adjacents[2] = None
+            if adjacents[5] == self.tile_gid[WALL]:
+                adjacents[2] = None
+                adjacents[8] = None
+            if adjacents[7] == self.tile_gid[WALL]:
+                adjacents[6] = None
+                adjacents[8] = None
+            if adjacents[3] == self.tile_gid[WALL]:
+                adjacents[0] = None
+                adjacents[6] = None
+            # add neighbours that are floor tiles to the frontier in indexes order
+            for index in self.indexes:
+                # if it is a floor tile
+                if adjacents[index] == self.tile_gid[FLOOR]:
+                    new_position = current[0] + self.neighbours[index][0], current[1] + self.neighbours[index][1]
+                    # if the neighbour is on the same floor then it is valid
+                    if self.get_floor(current) == self.get_floor(new_position):
+                        # if the cell hasn't been previously visited then add it to the frontier
+                        if new_position not in came_from:
+                            frontier.append(new_position)
+                            # track the flow of the cell
+                            came_from[new_position] = current
         if found:
             # path between goal and start
             path = []
@@ -235,36 +257,6 @@ class DomainManager:
         else:
             # no valid path found
             return None, None
-
-    def adjacents(self, position):
-        x, y = position
-        adjacents = []
-        # fill in ordered list with cell positions by adding neighbour deltas to each axis
-        for neighbour in self.neighbours:
-            adjacents.append(self.cell_gid((x + neighbour[0], y + neighbour[1])))
-        # block out invalid orthographic moves due to walls
-        if adjacents[1] == self.tile_gid[WALL]:
-            adjacents[0] = None
-            adjacents[2] = None
-        if adjacents[5] == self.tile_gid[WALL]:
-            adjacents[2] = None
-            adjacents[8] = None
-        if adjacents[7] == self.tile_gid[WALL]:
-            adjacents[6] = None
-            adjacents[8] = None
-        if adjacents[3] == self.tile_gid[WALL]:
-            adjacents[0] = None
-            adjacents[6] = None
-        # build list of neighbours that are floor tiles in index order
-        valid_neighbours = []
-        for index in self.indexes:
-            if adjacents[index] == self.tile_gid[FLOOR]:
-                new_position = x + self.neighbours[index][0], y + self.neighbours[index][1]
-                # if the neighbour is on the same floor then it is valid
-                if self.get_floor(position) == self.get_floor(new_position):
-                    valid_neighbours.append(new_position)
-        # return neighbours which are floor tiles as cell positions, in order
-        return valid_neighbours
 
     def cell_gid(self, position):
         # get the tile gid for a cell position
