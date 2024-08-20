@@ -311,7 +311,7 @@ class DomainManager:
         # if true then won
         return matched
 
-    def pick_cell(self, x, y):
+    def screen_to_cell(self, x, y):
         # renderer view_rect size at a given zoom must not be larger than renderer map_rect size
         # at the same zoom. if greater, pick_cell() gives invalid results.
         # normalize x and y mouse position to the screen coordinates of the surface
@@ -334,7 +334,7 @@ class DomainManager:
         # coordinates are now in map array indexes
         return x_coord, y_coord
 
-    def set_zoom_index(self, index_delta):
+    def set_zoom_delta(self, index_delta):
         # clamp index inside zoom_amounts list.
         old_index = self.zoom_amounts_index
         self.zoom_amounts_index = max(0, min(self.zoom_amounts_index + index_delta,

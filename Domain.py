@@ -245,7 +245,7 @@ class Main:
                     if self.view_surface_rect.collidepoint(x, y):
                         if event.button == 1:
                             # left button, attempt to move avatar to that position
-                            position = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
+                            position = self.domain_manager.screen_to_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
                             self.domain_manager.avatar.move_to(position)
                         elif event.button == 2:
                             # mouse-wheel button, switch to the avatar floor and centre the main viewport on it
@@ -261,10 +261,10 @@ class Main:
                             self.follow_avatar = False
                         elif event.button == 4:
                             # wheel scroll up, increase zoom index
-                            self.domain_manager.set_zoom_index(1)
+                            self.domain_manager.set_zoom_delta(1)
                         elif event.button == 5:
                             # wheel scroll down, decrease zoom index
-                            self.domain_manager.set_zoom_index(-1)
+                            self.domain_manager.set_zoom_delta(-1)
                 elif event.type == MOUSEBUTTONUP:
                     if event.button == 3:
                         # right button up, end dragging
@@ -283,7 +283,7 @@ class Main:
         # update the x and y map indexes for the information panel
         if self.view_surface_rect.collidepoint(x, y):
             # inside the view_surface_rect, pick the cell coordinates
-            x_coord, y_coord = self.domain_manager.pick_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
+            x_coord, y_coord = self.domain_manager.screen_to_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
             # show relative-to-floor or absolute coordinates
             if self.coordinate_toggle:
                 # these coordinates are relative-to-floor
