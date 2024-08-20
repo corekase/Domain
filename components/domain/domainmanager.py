@@ -355,7 +355,7 @@ class DomainManager:
         elif self.renderer.view_rect.bottom > self.floor_port.bottom:
             self.renderer.view_rect.bottom = self.floor_port.bottom
         # get main viewport coordinates from the renderer view rect
-        self.main_viewport[0], self.main_viewport[1] = list(self.renderer.view_rect.center)
+        self.main_viewport[0], self.main_viewport[1] = self.renderer.view_rect.center
         # reupdate the viewport, viewport is updated here in case the bounds were modified
         self.renderer.center(self.main_viewport)
         # draw map and group objects to surface
