@@ -253,11 +253,11 @@ class Main:
                             # toggle follow_avatar between true and false
                             self.follow_avatar = not self.follow_avatar
                         elif event.button == 3:
-                            # cancel follow
-                            self.follow_avatar = False
                             # right button down, begin dragging
                             self.dragging = True
-                            self.dragging_position = x, y
+                            self.dragging_position = event.pos
+                            # cancel follow
+                            self.follow_avatar = False
                         elif event.button == 4:
                             # wheel scroll up, increase zoom index
                             self.domain_manager.set_zoom_index(1)
