@@ -247,7 +247,7 @@ class Main:
                             # left button, normalize mouse position to view surface rect screen position
                             view_x, view_y = x - self.view_surface_rect.x, y - self.view_surface_rect.y
                             # get cell position from normalized position
-                            position = self.domain_manager.screen_to_cell(view_x, view_y)
+                            position = self.domain_manager.pixel_to_cell(view_x, view_y)
                             # attempt to move avatar to that position
                             self.domain_manager.avatar.move_to(position)
                         elif event.button == 2:
@@ -286,7 +286,7 @@ class Main:
         # update the x and y map indexes for the information panel
         if self.view_surface_rect.collidepoint(x, y):
             # inside the view_surface_rect, pick the cell coordinates
-            x_coord, y_coord = self.domain_manager.screen_to_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
+            x_coord, y_coord = self.domain_manager.pixel_to_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
             # show relative-to-floor or absolute coordinates
             if self.coordinate_toggle:
                 # these coordinates are relative-to-floor

@@ -311,7 +311,7 @@ class DomainManager:
         # if true then won
         return matched
 
-    def screen_to_cell(self, x, y):
+    def pixel_to_cell(self, x, y):
         # normalize x and y mouse position to the centre of the surface rect, in screen pixels
         x_pos, y_pos = x - self.surface_rect.centerx, y - self.surface_rect.centery
         # get all the needed information from the map and renderer, scaled to screen pixels
