@@ -239,17 +239,17 @@ class DomainManager:
             if teleporter != None:
                 # if so, add that teleport to the path
                 destination = teleporter.destination
-                path.append(['teleport', destination])
+                path.append(('teleport', destination))
             # get a list of the tracked teleport coordinates
             teleports = teleport_destinations.keys()
             # follow the flow back to the start
             while goal != start_position:
                 # is this cell a teleport?
                 if goal in teleports:
-                    path.append(['teleport', teleport_destinations[goal]])
+                    path.append(('teleport', teleport_destinations[goal]))
                 # otherwise it's a move
                 else:
-                    path.append(['move', goal])
+                    path.append(('move', goal))
                 # follow flow
                 goal = came_from[goal]
             # path is in reverse order, goal to start
