@@ -1,6 +1,6 @@
 # named colour values, in one location to change everywhere
-colours = {'full': (255, 255, 255), 'light': (0, 200, 200), 'medium': (0, 140, 140), 'dark': (0, 80, 80), 'none': (0, 0, 0),
-           'text': (255, 255, 255), 'highlight': (238, 230, 0), 'background': (0, 100, 100)}
+colours = {'full': (255, 255, 255), 'light': (202, 126, 59), 'medium': (158, 89, 0), 'dark': (46, 13, 0), 'none': (0, 0, 0),
+           'text': (255, 255, 255), 'highlight': (238, 230, 0), 'background': (82, 31, 0)}
 
 class GuiManager:
     def __init__(self):
