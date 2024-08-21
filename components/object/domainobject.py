@@ -93,9 +93,8 @@ class DomainObject(Sprite):
                 destination = command.destination
                 self.sync_cell(destination)
                 self.command_queue.pop(0)
-                # if follow then switch floor and main_viewport as well, done within a single command queue item
+                # if follow then switch floor
                 if self.follow:
-                    # switch the to the floor
                     self.domain_manager.switch_floor(self.domain_manager.get_floor(destination))
             elif command_name == 'Path':
                 # insert a path into the command queue
