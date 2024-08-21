@@ -41,7 +41,6 @@ class DomainManager:
         from components.object.avatar import Avatar
         # load the map, map is a keyword so this has _object added
         self.map_object = load_pygame(file_resource('domains', 'harness.tmx'))
-        print(self.cell_gid((0, 0)), self.cell_gid((0, 3)))
         # give DomainObject subclasses a common reference to the map
         DomainObject.map_object = self.map_object
         # surface to draw on
