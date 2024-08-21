@@ -1,7 +1,7 @@
 from random import randint
 
 # named indexes for tiles to map the correct gid
-EMPTY, WALL, FLOOR = 0, 1, 2
+FLOOR, WALL = 0, 1
 
 class Coordinate:
     # coordinate container for find_path() when only one destination is needed
@@ -40,7 +40,8 @@ class DomainManager:
         from components.object.agent import Agent
         from components.object.avatar import Avatar
         # load the map, map is a keyword so this has _object added
-        self.map_object = load_pygame(file_resource('domains', 'domain.tmx'))
+        self.map_object = load_pygame(file_resource('domains', 'harness.tmx'))
+        print(self.cell_gid((0, 0)), self.cell_gid((0, 3)))
         # give DomainObject subclasses a common reference to the map
         DomainObject.map_object = self.map_object
         # surface to draw on
@@ -82,8 +83,8 @@ class DomainManager:
                        (61, 58): ['down', (1, 58)],
                        (58, 58): ['up', (118, 58)],
                        (118, 58): ['down', (58, 58)],
-                       (29, 28): ['up', (89, 28)],
-                       (89, 28): ['down', (29, 28)]}
+                       (29, 29): ['up', (89, 29)],
+                       (89, 29): ['down', (29, 29)]}
         for position, info in teleporters.items():
             # whether to show an up or down graphic and destination coordinate for the teleport in cells
             up_down, destination = info

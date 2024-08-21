@@ -2,7 +2,7 @@ from .domainobject import DomainObject, Path
 from components.domain.domainmanager import Coordinate
 
 # named indexes for tiles to map the correct gid
-EMPTY, WALL, FLOOR = 0, 1, 2
+FLOOR, WALL = 0, 1
 
 class Avatar(DomainObject):
     def __init__(self, position):
