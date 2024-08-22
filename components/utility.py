@@ -22,7 +22,7 @@ def cut_tile(tile):
         surface = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)
         surface.blit(tiles, (0, 0), Rect(x * tile_size, y * tile_size, tile_size, tile_size))
         tile_images[tile] = surface
-        return surface
+        return tile_images[tile]
 
 def image_alpha(*names):
     # load, convert with an alpha channel, and return an image surface
