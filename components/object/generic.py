@@ -5,7 +5,6 @@ class Generic(DomainObject):
     def __init__(self, position):
         super().__init__()
         # load image
-        #self.load_sheet('sprites', 'item', 'item_generic.png')
         self.image = cut_tile(51, 49)
         self.rect = self.image.get_rect()
         # sync position state
