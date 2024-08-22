@@ -1,6 +1,5 @@
 from .domainobject import DomainObject, Path
 from components.domain.domainmanager import Coordinate
-from ..utility import cut_tile
 
 # named indexes for tiles to map the correct gid
 FLOOR, WALL = 0, 1
