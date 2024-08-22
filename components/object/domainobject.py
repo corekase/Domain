@@ -156,7 +156,7 @@ class DomainObject(Sprite):
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
         self.coord = position
 
-    def animation_tiles(self, tiles):
+    def load_tiles(self, tiles):
         # load a tile sequence from tile sheet as an animation
         self.animations = []
         for tile in tiles:

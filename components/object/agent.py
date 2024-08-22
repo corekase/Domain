@@ -1,6 +1,5 @@
 from .domainobject import DomainObject, Path
 from .generic import Generic
-from ..utility import cut_tile
 
 # named indexes for tiles to map the correct gid
 FLOOR, WALL = 0, 1
@@ -8,9 +7,8 @@ FLOOR, WALL = 0, 1
 class Agent(DomainObject):
     def __init__(self, position):
         super().__init__()
-        # load image
-        self.image = cut_tile((50, 67))
-        self.rect = self.image.get_rect()
+        # load tile image
+        self.load_tiles([(50, 67)])
         # world pixels per second
         self.speed = 64.0
         # sync position state

@@ -7,9 +7,9 @@ FLOOR, WALL = 0, 1
 class Avatar(DomainObject):
     def __init__(self, position):
         super().__init__()
-        # load tile images
+        # load tile animated sequence
         tiles = [(36, 68), (37, 68), (38, 68), (39, 68)]
-        self.animation_tiles(tiles)
+        self.load_tiles(tiles)
         # interval between tile images
         self.interval = 0.08
         # world pixels per second
