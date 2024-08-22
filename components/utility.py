@@ -15,14 +15,12 @@ tile_images = {}
 
 def cut_tile(tile):
     # if the tile is cached return that otherwise create the graphic image and cache it
-    if tile in tile_images.keys():
-        return tile_images[tile]
-    else:
+    if tile not in tile_images.keys():
         x, y = tile
         surface = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)
         surface.blit(tiles, (0, 0), Rect(x * tile_size, y * tile_size, tile_size, tile_size))
         tile_images[tile] = surface
-        return tile_images[tile]
+    return tile_images[tile]
 
 def image_alpha(*names):
     # load, convert with an alpha channel, and return an image surface
