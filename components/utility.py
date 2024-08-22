@@ -11,22 +11,8 @@ font_object = None
 tiles = None
 tile_size = 32
 
-def sprite_sheet(*names):
-    # to-do: a dictionary for each domain object which has a subkey dictionary
-    # for each animation sequence and then each of those is a list of animation frames
-    image = pygame.image.load(file_resource(*names)).convert_alpha()
-    rect = image.get_rect()
-    # each image is one frame tall by number of frames to the right
-    frames = int(rect.width / rect.height)
-    frames_list = []
-    for frame in range(frames):
-        surface = pygame.Surface((rect.height, rect.height), pygame.SRCALPHA)
-        surface.blit(image, (0, 0), Rect(frame * rect.height, 0, rect.height, rect.height))
-        frames_list.append(surface)
-    # returns list of frames
-    return frames_list
-
 def cut_tile(tile):
+    # cut a tile out of the tile sheet and return it as a surface
     x, y = tile
     surface = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)
     surface.blit(tiles, (0, 0), Rect(x * tile_size, y * tile_size, tile_size, tile_size))
