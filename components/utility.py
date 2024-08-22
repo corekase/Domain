@@ -26,7 +26,8 @@ def sprite_sheet(*names):
     # returns list of frames
     return frames_list
 
-def cut_tile(x, y):
+def cut_tile(tile):
+    x, y = tile
     surface = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)
     surface.blit(tiles, (0, 0), Rect(x * tile_size, y * tile_size, tile_size, tile_size))
     return surface

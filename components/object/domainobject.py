@@ -11,8 +11,8 @@ from components.object.objectmanager import ObjectManager
 from components.gui.guimanager import GuiManager
 from components.domain.domainmanager import DomainManager
 
-# sprite sheet loader for animation
-from ..utility import sprite_sheet
+# tile cutter
+from ..utility import cut_tile
 
 # the name of the namedtuple is the name of the command
 from collections import namedtuple
@@ -156,9 +156,11 @@ class DomainObject(Sprite):
         self.rect.center = int(self.centre_xpos), int(self.centre_ypos)
         self.coord = position
 
-    def load_sheet(self, *image):
-        # load the sprite sheet for this domain object
-        self.animations = sprite_sheet(*image)
+    def animation_tiles(self, tiles):
+        # load a tile sequence from tile sheet as an animation
+        self.animations = []
+        for tile in tiles:
+            self.animations.append(cut_tile(tile))
         self.frame = 0
         self.frames = len(self.animations)
         self.image = self.animations[self.frame]
