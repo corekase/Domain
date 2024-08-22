@@ -7,6 +7,10 @@ from .gui.guimanager import colours
 font_size = None
 font_object = None
 
+# filled in by Main() is the tile sheet tiles are cut out of
+tiles = None
+tile_size = 32
+
 def sprite_sheet(*names):
     # to-do: a dictionary for each domain object which has a subkey dictionary
     # for each animation sequence and then each of those is a list of animation frames
@@ -21,6 +25,11 @@ def sprite_sheet(*names):
         frames_list.append(surface)
     # returns list of frames
     return frames_list
+
+def cut_tile(x, y):
+    surface = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)
+    surface.blit(tiles, (0, 0), Rect(x * tile_size, y * tile_size, tile_size, tile_size))
+    return surface
 
 def image_alpha(*names):
     # load, convert with an alpha channel, and return an image surface

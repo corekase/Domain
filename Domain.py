@@ -27,6 +27,8 @@ class Main:
         # set the default font for utility functions
         utility.font_size = 16
         utility.font_object = pygame.font.Font(file_resource('fonts', 'Ubuntu', 'Ubuntu-Medium.ttf'), utility.font_size)
+        # load tile sheet for utility functions
+        utility.tiles = pygame.image.load(file_resource('domains', 'ProjectUtumno_full.png'))
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), FULLSCREEN | SCALED)
         # set window caption

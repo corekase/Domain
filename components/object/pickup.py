@@ -1,10 +1,13 @@
 from .domainobject import DomainObject, Stall
+from ..utility import cut_tile
 
 class Pickup(DomainObject):
     def __init__(self, position):
         super().__init__()
         # load image
-        self.load_sheet('sprites', 'item', 'pickups', 'pickup.png')
+        #self.load_sheet('sprites', 'item', 'pickups', 'pickup.png')
+        self.image = cut_tile(43, 41)
+        self.rect = self.image.get_rect()
         # sync position state
         self.sync_cell(position)
 
