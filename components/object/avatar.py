@@ -1,5 +1,6 @@
 from .domainobject import DomainObject, Path
 from components.domain.domainmanager import Coordinate
+from ..utility import cut_tile
 
 # named indexes for tiles to map the correct gid
 FLOOR, WALL = 0, 1
@@ -8,9 +9,8 @@ class Avatar(DomainObject):
     def __init__(self, position):
         super().__init__()
         # load images
-        self.load_sheet('sprites', 'avatar', 'avatar.png')
-        # frame time
-        self.interval = 0.2
+        self.image = cut_tile(25, 62)
+        self.rect = self.image.get_rect()
         # world pixels per second
         self.speed = 64.0
         # sync position state
