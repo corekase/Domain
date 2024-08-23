@@ -16,12 +16,6 @@ from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 
 class Main:
     def __init__(self):
-        # tile_gid is a ordered tuple containing Tiled map gid numbers. if gid's change only here needs to be updated
-        # indexes are named: WALL, FLOOR = 0, 1 (for the values of 1, 2 in tile_gid)
-        tile_gid = (1, 2)
-        # give both the domain manager and domain objects the tile_gid tuple
-        DomainManager.tile_gid = tile_gid
-        DomainObject.tile_gid = tile_gid
         # initialize pygame
         pygame.init()
         # set the default font for utility functions
