@@ -43,9 +43,9 @@ class DomainManager:
         self.map_object = load_pygame(file_resource('domains', 'domain.tmx'))
         # give DomainObject subclasses a common reference to the map
         DomainObject.map_object = self.map_object
-        # floor and wall gid's from known positions on the map
+        # known positions for floor and wall tiles on the map
         floor_tile, wall_tile = (0, 0), (0, 3)
-        # read those positions and store them in both DomainManager and DomainObject as tile_gid
+        # read those positions and store their gid's in both DomainManager and DomainObject as tile_gid
         DomainManager.tile_gid = DomainObject.tile_gid = (self.cell_gid(floor_tile), self.cell_gid(wall_tile))
         # surface to draw on
         self.surface = surface
