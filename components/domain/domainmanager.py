@@ -54,8 +54,8 @@ class DomainManager:
         # reference to the renderer
         self.renderer = BufferedRenderer(TiledMapData(self.map_object), size, False)
         # set the zoom levels for the renderer
-        self.zoom_amounts_index = 0
-        self.zoom_amounts = [2.0, 4.0, 8.0]
+        self.zoom_amounts_index = 2
+        self.zoom_amounts = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0]
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
         # create an object manager
         self.object_manager = ObjectManager(self.renderer)
