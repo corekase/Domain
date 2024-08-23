@@ -79,8 +79,8 @@ class Main:
         frame = Frame(self.screen, 'none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
         # pickup and putdown rect
         area_1_rect = Rect(gui_xpos, floor_0_rect.bottom + 4, button_width, button_height)
-        # won and exit rect, '22' accounts for the scroll bar
-        area_2_rect = Rect(gui_xpos + button_width, self.view_surface_rect.bottom - button_height + 22,
+        # won and exit rect
+        area_2_rect = Rect(gui_xpos + button_width, self.screen.get_rect().bottom - button_height - 10 + 1,
                            button_width, button_height)
         # pickup button context
         self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', area_1_rect, 'Pick Up'))
