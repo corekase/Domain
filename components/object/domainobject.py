@@ -61,7 +61,7 @@ class DomainObject(Sprite):
         self.frame = 0
         # total number of frames
         self.frames = 0
-        # whether to follow the domain object through a teleporter
+        # whether to switch floors when a domain object goes through a teleporter
         self.follow = False
         # subclasess must call either sync_coordinate or sync_cell before they exit their __init__
 
