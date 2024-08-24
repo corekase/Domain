@@ -43,9 +43,10 @@ class DomainObject(Sprite):
         # self.image is managed by the domain object class, subclasses give their animations to it
         self.image = None
         # values updated by either sync_coordinate or sync_cell
-        self.rect = None
-        self.centre_xpos, self.centre_ypos = None, None
+        self.centre_xpos = self.centre_ypos = None
         self.coord = None
+        # filled in by load_tiles
+        self.rect = None
         # world pixels per second
         self.speed = 0.0
         # command queue
