@@ -71,29 +71,30 @@ class Main:
         self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
         self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
         frame = Frame(self.screen, 'none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
+        # global widgets
+        self.gui_manager.add_widget('global', floor_label)
+        self.gui_manager.add_widget('global', floor_0)
+        self.gui_manager.add_widget('global', floor_1)
+        self.gui_manager.add_widget('global', self.hbar)
+        self.gui_manager.add_widget('global', self.vbar)
+        self.gui_manager.add_widget('global', frame)
         # pickup and putdown rect
         area_1_rect = Rect(gui_xpos, floor_0_rect.bottom + 4, button_width, button_height)
         # won and exit rect
         area_2_rect = Rect(gui_xpos + button_width, self.screen.get_rect().bottom - button_height - 10 + 1,
                            button_width, button_height)
-        # pickup button context
-        self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', area_1_rect, 'Pick Up'))
-        # putdown button context
-        self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', area_1_rect, 'Put Down'))
-        # game won context
-        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', area_2_rect, 'Won!'))
         # exit button
         exit_button = Button(self.screen, 'exit', area_2_rect, 'Exit')
-        # add common controls to all contexts, also creates default context
-        for context in ('pickup_context', 'putdown_context', 'win_context', 'default'):
-            self.gui_manager.add_widget(context, floor_label)
-            self.gui_manager.add_widget(context, floor_0)
-            self.gui_manager.add_widget(context, floor_1)
-            self.gui_manager.add_widget(context, self.hbar)
-            self.gui_manager.add_widget(context, self.vbar)
-            self.gui_manager.add_widget(context, frame)
-            if context != 'win_context':
-                self.gui_manager.add_widget(context, exit_button)
+        # default context
+        self.gui_manager.add_widget('default', exit_button)
+        # pickup button context
+        self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', area_1_rect, 'Pick Up'))
+        self.gui_manager.add_widget('pickup_context', exit_button)
+        # putdown button context
+        self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', area_1_rect, 'Put Down'))
+        self.gui_manager.add_widget('putdown_context', exit_button)
+        # game won context
+        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', area_2_rect, 'Won!'))
         # switch to default context
         self.gui_manager.switch_context('default')
         # state for whether or not dragging the view

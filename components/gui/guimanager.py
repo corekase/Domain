@@ -6,6 +6,8 @@ class GuiManager:
     def __init__(self):
         # widgets to be managed: key:value -> group_name:list_of_widgets
         self.widgets = {}
+        # global context widgets are always shown and processed
+        self.widgets['global'] = []
         # which key group to show
         self.context = None
         # lock to this context
@@ -25,7 +27,9 @@ class GuiManager:
     def handle_event(self, event):
         # if a widget signals that it had an action return the widget id
         if self.context != None:
-            for widget in self.widgets[self.context]:
+            # handle events for the global context and the active context
+            widgets = self.widgets['global'] + self.widgets[self.context]
+            for widget in widgets:
                 # test widget activation
                 if widget.handle_event(event):
                     # widget activated, return its id
@@ -36,7 +40,9 @@ class GuiManager:
     def draw_widgets(self):
         # draw all widgets to their surfaces
         if self.context != None:
-            for widget in self.widgets[self.context]:
+            # handle events for the global context and the active context
+            widgets = self.widgets['global'] + self.widgets[self.context]
+            for widget in widgets:
                 widget.draw()
 
     def add_widget(self, context, widget):
