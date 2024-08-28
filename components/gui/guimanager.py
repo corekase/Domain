@@ -26,24 +26,20 @@ class GuiManager:
 
     def handle_event(self, event):
         # if a widget signals that it had an action return the widget id
-        if self.context != None:
-            # handle events for the global context and the active context
-            widgets = self.widgets['global'] + self.widgets[self.context]
-            for widget in widgets:
-                # test widget activation
-                if widget.handle_event(event):
-                    # widget activated, return its id
-                    return widget.id
+        widgets = self.widgets['global'] + self.widgets.get(self.context, [])
+        for widget in widgets:
+            # test widget activation
+            if widget.handle_event(event):
+                # widget activated, return its id
+                return widget.id
         # no widget activated to this event
         return None
 
     def draw_widgets(self):
         # draw all widgets to their surfaces
-        if self.context != None:
-            # handle events for the global context and the active context
-            widgets = self.widgets['global'] + self.widgets[self.context]
-            for widget in widgets:
-                widget.draw()
+        widgets = self.widgets['global'] + self.widgets.get(self.context, [])
+        for widget in widgets:
+            widget.draw()
 
     def add_widget(self, context, widget):
         # add a widget to the manager
