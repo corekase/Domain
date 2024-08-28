@@ -6,7 +6,7 @@ class GuiManager:
     def __init__(self):
         # widgets to be managed: key:value -> group_name:list_of_widgets
         self.widgets = {}
-        # global context widgets are always shown and processed
+        # global widgets which are always shown and processed
         self.widgets['global'] = []
         # which key group to show
         self.context = None
