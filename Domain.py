@@ -46,31 +46,31 @@ class Main:
         # give domain objects a reference to the domain manager
         DomainObject.domain_manager = self.domain_manager
         # create a gui manager
-        self.gui_manager = GuiManager()
+        self.gui_manager = GuiManager(self.screen)
         # give domain objects a reference to the gui manager
         DomainObject.gui_manager = self.gui_manager
         # area for gui elements
         gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
         # create a rect for the information panel
-        information_frame_rect = Rect(gui_xpos, 10, gui_width, padding(2) + 4)
+        self.information_frame_rect = Rect(gui_xpos, 10, gui_width, padding(2) + 4)
         # create information panel frame
-        self.information_frame = Frame(self.screen, 'info_frame', information_frame_rect)
+        self.gui_manager.add_widget('global', Frame('info_frame', self.information_frame_rect))
         # button width and height
         button_width, button_height = int(gui_width / 2), 22
         # set up the floor buttons
-        floor_label = Label(self.screen, (gui_xpos, information_frame_rect.bottom + 5), 'Floor:')
-        floor_0_rect = Rect(floor_label.rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
-        floor_1_rect = Rect(floor_0_rect.right + 4, information_frame_rect.bottom + 4, button_height, button_height)
-        floor_0 = PushButtonGroup(self.screen, 'floor0', floor_0_rect, '1', 'floors')
-        floor_1 = PushButtonGroup(self.screen, 'floor1', floor_1_rect, '2', 'floors')
+        floor_label = Label((gui_xpos, self.information_frame_rect.bottom + 5), 'Floor:')
+        floor_0_rect = Rect(floor_label.rect.right + 4, self.information_frame_rect.bottom + 4, button_height, button_height)
+        floor_1_rect = Rect(floor_0_rect.right + 4, self.information_frame_rect.bottom + 4, button_height, button_height)
+        floor_0 = PushButtonGroup('floor0', floor_0_rect, '1', 'floors')
+        floor_1 = PushButtonGroup('floor1', floor_1_rect, '2', 'floors')
         # pass the group push button widgets to the domain manager and push the button for which floor is active
         DomainManager.floor_group = (floor_0, floor_1)
         DomainManager.floor_group[self.domain_manager.floor].select()
         # scrollbars
-        self.hbar = Scrollbar(self.screen, 'hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
-        self.vbar = Scrollbar(self.screen, 'vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
-        frame = Frame(self.screen, 'none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
+        self.hbar = Scrollbar('hbar', (view_xpos + 1, view_ypos + view_height + 1, view_width, 17), True)
+        self.vbar = Scrollbar('vbar', (view_xpos + view_width + 1, view_ypos + 1, 17, view_height), False)
+        frame = Frame('none', (view_xpos + view_width + 1, view_ypos + view_height + 1, 17, 17))
         # global widgets
         self.gui_manager.add_widget('global', floor_label)
         self.gui_manager.add_widget('global', floor_0)
@@ -84,17 +84,17 @@ class Main:
         area_2_rect = Rect(gui_xpos + button_width, self.screen.get_rect().bottom - button_height - 10 + 1,
                            button_width, button_height)
         # exit button
-        exit_button = Button(self.screen, 'exit', area_2_rect, 'Exit')
+        exit_button = Button('exit', area_2_rect, 'Exit')
         # default context
         self.gui_manager.add_widget('default', exit_button)
         # pickup button context
-        self.gui_manager.add_widget('pickup_context', Button(self.screen, 'pick_up', area_1_rect, 'Pick Up'))
+        self.gui_manager.add_widget('pickup_context', Button('pick_up', area_1_rect, 'Pick Up'))
         self.gui_manager.add_widget('pickup_context', exit_button)
         # putdown button context
-        self.gui_manager.add_widget('putdown_context', Button(self.screen, 'put_down', area_1_rect, 'Put Down'))
+        self.gui_manager.add_widget('putdown_context', Button('put_down', area_1_rect, 'Put Down'))
         self.gui_manager.add_widget('putdown_context', exit_button)
         # game won context
-        self.gui_manager.add_widget('win_context', Button(self.screen, 'won', area_2_rect, 'Won!'))
+        self.gui_manager.add_widget('win_context', Button('won', area_2_rect, 'Won!'))
         # switch to default context
         self.gui_manager.switch_context('default')
         # state for whether or not dragging the view
@@ -169,7 +169,7 @@ class Main:
             # fill mouse damaged area
             self.screen.fill(colours['background'], damaged_rect)
             # fill gui damaged areas
-            for widget in self.gui_manager.widgets[self.gui_manager.context]:
+            for widget in (self.gui_manager.widgets[self.gui_manager.context] + self.gui_manager.widgets['global']):
                 self.screen.fill(colours['background'], widget.rect)
             # check for winning conditions after gui damage has been filled as the gui context may be changed
             if not won:
@@ -297,10 +297,8 @@ class Main:
 
     def draw_info_panel(self, fps):
         fps = f'FPS: {int(round(fps))}'
-        # draw frame
-        self.information_frame.draw()
         # layout coordinates
-        x_pos, y_pos, _, _ = self.information_frame.rect
+        x_pos, y_pos, _, _ = self.information_frame_rect
         # draw each text line onto the screen
         self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(1)))

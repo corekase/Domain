@@ -2,9 +2,9 @@ from pygame import Rect
 
 # widget is the base class all gui widgets inherit from
 class Widget:
-    def __init__(self, surface, id, rect):
+    def __init__(self, id, rect):
         # surface to draw the widget on
-        self.surface = surface
+        self.surface = None
         # identifier for widget, can be any kind like int or string
         self.id = id
         # rect for widget position and size on the surface

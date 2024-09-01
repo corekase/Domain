@@ -6,8 +6,8 @@ from enum import Enum
 State = Enum('State', ['IDLE', 'HOVER', 'ARMED'])
 
 class Frame(Widget):
-    def __init__(self, surface, id, rect):
-        super().__init__(surface, id, rect)
+    def __init__(self, id, rect):
+        super().__init__(id, rect)
         self.state = State.IDLE
 
     def handle_event(self, _):

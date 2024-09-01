@@ -3,9 +3,9 @@ from pygame.locals import MOUSEMOTION, MOUSEBUTTONDOWN, MOUSEBUTTONUP
 from ..utility import render_text, centre
 
 class Button(Frame):
-    def __init__(self, surface, id, rect, text):
+    def __init__(self, id, rect, text):
         # initialize common widget values
-        super().__init__(surface, id, rect)
+        super().__init__(id, rect)
         # button state
         self.state = State.IDLE
         # text bitmaps

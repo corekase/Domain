@@ -3,7 +3,9 @@ colours = {'full': (255, 255, 255), 'light': (200, 200, 200), 'medium': (150, 15
            'text': (255, 255, 255), 'highlight': (238, 230, 0), 'background': (60, 60, 60)}
 
 class GuiManager:
-    def __init__(self):
+    def __init__(self, surface):
+        # surface to draw the widget to
+        self.surface = surface
         # widgets to be managed: key:value -> group_name:list_of_widgets
         self.widgets = {}
         # global widgets which are always shown and processed
@@ -45,4 +47,7 @@ class GuiManager:
         # add a widget to the manager
         if context not in self.widgets.keys():
             self.widgets[context] = []
+        # give the widget a reference to the screen
+        widget.surface = self.surface
+        # append the widget to the context
         self.widgets[context].append(widget)

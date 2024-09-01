@@ -5,9 +5,9 @@ from pygame.draw import rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP
 
 class Scrollbar(Frame):
-    def __init__(self, surface, id, rect, horizontal):
+    def __init__(self, id, rect, horizontal):
         # initialize common widget values
-        super().__init__(surface, id, rect)
+        super().__init__(id, rect)
         # maximum area that can be filled
         self.graphic_rect = Rect(self.rect.left + 4, self.rect.top + 4, self.rect.width - 8, self.rect.height - 8)
         # total size, start position, and bar size within the graphic rect

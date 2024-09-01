@@ -7,8 +7,8 @@ class PushButtonGroup(Button):
     # PushButtonGroup objects
     groups = {}
 
-    def __init__(self, surface, id, rect, text, group):
-        super().__init__(surface, id, rect, text)
+    def __init__(self, id, rect, text, group):
+        super().__init__(id, rect, text)
         self.group = group
         if group not in PushButtonGroup.groups.keys():
             PushButtonGroup.groups[group] = []
