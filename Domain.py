@@ -278,6 +278,8 @@ class Main:
                         x, y = event.rel
                         self.domain_manager.main_viewport[0] += x
                         self.domain_manager.main_viewport[1] += y
+                        if not self.view_surface_rect.collidepoint(event.pos):
+                            pygame.mouse.set_pos(self.dragging_position)
 
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
