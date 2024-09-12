@@ -269,15 +269,15 @@ class Main:
                     if event.button == 3:
                         # right button up, end dragging
                         self.dragging = False
+                        pygame.mouse.set_pos(self.dragging_position)
                 # dragging action
                 if self.dragging:
                     # if the mouse is moving
                     if event.type == MOUSEMOTION:
                         # move the centre of the viewport
-                        x, y = event.pos
-                        self.domain_manager.main_viewport[0] += x - self.dragging_position[0]
-                        self.domain_manager.main_viewport[1] += y - self.dragging_position[1]
-                        pygame.mouse.set_pos(self.dragging_position)
+                        x, y = event.rel
+                        self.domain_manager.main_viewport[0] += x
+                        self.domain_manager.main_viewport[1] += y
 
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
