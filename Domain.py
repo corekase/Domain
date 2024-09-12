@@ -114,7 +114,7 @@ class Main:
         # is the game won flag
         won = False
         # maximum frames-per-second, 0 for unlimited
-        fps = 0
+        fps = 120
         # maximum frame time, if above this switch to non-realtime movement
         max_time = 1000 / 60
         # instantiate a pygame clock for frame maximum limits
