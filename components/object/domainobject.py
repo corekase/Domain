@@ -1,6 +1,6 @@
 # machine epsilon, smallest difference between floats
 import sys
-eps = sys.float_info.epsilon
+here = 1.0 + sys.float_info.epsilon
 
 # functions used for movement
 from math import sqrt, atan2, cos, sin
@@ -81,7 +81,7 @@ class DomainObject(Sprite):
                 # move straight line to the destination in renderer map rect pixel coordinates
                 destination = command.destination
                 # check to see if within 1 pixel of destination
-                if self.distance_from(destination) <= 1.0 + eps:
+                if self.distance_from(destination) <= here:
                     # arrived at destination
                     self.sync_coordinate(destination)
                     # remove this command item from the queue
