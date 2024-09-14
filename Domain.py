@@ -186,7 +186,7 @@ class Main:
         map_rect = self.domain_manager.renderer.map_rect
         # update the horizontal scrollbar data, subtract the floor from the view rect then the hbar is normalized
         self.hbar.set(map_rect.width / self.domain_manager.floors,
-                        view_rect.x - (self.domain_manager.floor * self.domain_manager.floor_size), view_rect.width)
+                      view_rect.x - (self.domain_manager.floor * self.domain_manager.floor_size), view_rect.width)
         # update the vertical scrollbar data
         self.vbar.set(map_rect.height, view_rect.y, view_rect.height)
 
@@ -254,8 +254,9 @@ class Main:
                             # toggle follow_avatar between true and false
                             self.follow_avatar = not self.follow_avatar
                         elif event.button == 3:
-                            # right button down, begin dragging
+                            # right button down, begin dragging state
                             self.dragging = True
+                            # save postion to restore the physical mouse location to when the state ends
                             self.dragging_position = event.pos
                             # cancel follow
                             self.follow_avatar = False
@@ -267,9 +268,10 @@ class Main:
                             self.domain_manager.set_zoom_delta(-1)
                 elif event.type == MOUSEBUTTONUP:
                     if (event.button == 3) and self.dragging:
-                        # right button up, end dragging
-                        self.dragging = False
+                        # set the physical mouse position to the dragging position
                         pygame.mouse.set_pos(self.dragging_position)
+                        # end dragging state
+                        self.dragging = False
                 # dragging action
                 if self.dragging:
                     # if the mouse is moving
@@ -278,8 +280,10 @@ class Main:
                         x, y = event.rel
                         self.domain_manager.main_viewport[0] += x
                         self.domain_manager.main_viewport[1] += y
+                        # keep the physical mouse position within the view surface rect as much as possible
                         if not self.view_surface_rect.collidepoint(event.pos):
-                            pygame.mouse.set_pos(self.dragging_position)
+                            # outside of view surface rect, move physical mouse position back to that centre
+                            pygame.mouse.set_pos(self.view_surface_rect.center)
 
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
