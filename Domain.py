@@ -266,7 +266,7 @@ class Main:
                             # wheel scroll down, decrease zoom index
                             self.domain_manager.set_zoom_delta(-1)
                 elif event.type == MOUSEBUTTONUP:
-                    if event.button == 3:
+                    if (event.button == 3) and self.dragging:
                         # right button up, end dragging
                         self.dragging = False
                         pygame.mouse.set_pos(self.dragging_position)
