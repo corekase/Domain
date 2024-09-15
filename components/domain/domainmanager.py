@@ -11,16 +11,14 @@ class Coordinate:
 class DomainManager:
     # reference to tile_gid tuple
     tile_gid = None
-    # neighbours and indexes are for find_path, the list indexes map like this:
+    # neighbours are for find_path, the tuple indexes map like this:
     # 0 1 2
     # 3 4 5
     # 6 7 8
-    # an ordered 9 element list where indexes are delta x and y coordinates around a centre point
+    # indexes are delta x and y coordinates around 4 which is the centre point
     neighbours = ((-1, -1), (0, -1), (1, -1),
                   (-1,  0), (0,  0), (1,  0),
                   (-1,  1), (0,  1), (1,  1))
-    # order to return the neighbours in, this affects how straight the paths are
-    indexes = (1, 5, 7, 3, 2, 8, 6, 0)
     # floor push button group
     floor_group = None
 
@@ -168,7 +166,7 @@ class DomainManager:
             # update the floor push button group selection
             self.floor_group[self.floor].select()
 
-    def find_path(self, start_position, destination_objects):
+    def find_path(self, start_position, destinations):
         frontier = [start_position]
         came_from = {}
         came_from[start_position] = goal = goal_object = None
@@ -179,7 +177,7 @@ class DomainManager:
             # get the frontier cell coordinate
             current = frontier.pop(0)
             # compare that coordinate against all destination objects
-            for item in destination_objects:
+            for item in destinations:
                 if item.coord == current:
                     # destination object is found
                     found = True
@@ -210,21 +208,21 @@ class DomainManager:
             # fill list with cell positions by adding neighbour deltas to each axis
             for neighbour in self.neighbours:
                 adjacents.append(self.cell_gid((current[0] + neighbour[0], current[1] + neighbour[1])))
-            # block out invalid moves due to walls
-            if adjacents[1] == self.tile_gid[WALL]:
+            # block out invalid moves depending on present floor tiles
+            if adjacents[1] != self.tile_gid[FLOOR]:
                 adjacents[0] = None
                 adjacents[2] = None
-            if adjacents[5] == self.tile_gid[WALL]:
+            if adjacents[5] != self.tile_gid[FLOOR]:
                 adjacents[2] = None
                 adjacents[8] = None
-            if adjacents[7] == self.tile_gid[WALL]:
+            if adjacents[7] != self.tile_gid[FLOOR]:
                 adjacents[6] = None
                 adjacents[8] = None
-            if adjacents[3] == self.tile_gid[WALL]:
+            if adjacents[3] != self.tile_gid[FLOOR]:
                 adjacents[0] = None
                 adjacents[6] = None
-            # add neighbours that are floor tiles to the frontier in indexes order
-            for index in self.indexes:
+            # add neighbours that are floor tiles to the frontier, the order affects how straight the paths are
+            for index in (1, 5, 7, 3, 2, 8, 6, 0):
                 # if it is a floor tile
                 if adjacents[index] == self.tile_gid[FLOOR]:
                     new_position = current[0] + self.neighbours[index][0], current[1] + self.neighbours[index][1]
