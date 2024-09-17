@@ -114,9 +114,7 @@ class Main:
         # is the game won flag
         won = False
         # maximum frames-per-second, 0 for unlimited
-        fps = 120
-        # maximum frame time, if above this switch to non-realtime movement
-        max_time = 1000 / 60
+        fps = 60
         # instantiate a pygame clock for frame maximum limits
         clock = pygame.time.Clock()
         # track elapsed_time with more accurate os clock
@@ -133,9 +131,6 @@ class Main:
             now_time = time.time()
             elapsed_time = now_time - previous_time
             previous_time = now_time
-            # if a frame takes longer than max time then switch to non-realtime movement
-            if elapsed_time > max_time:
-                elapsed_time = max_time
             if not won:
                 # update whether to follow the avatar through teleporters
                 self.domain_manager.avatar.follow = self.follow_avatar
