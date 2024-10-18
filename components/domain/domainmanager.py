@@ -1,8 +1,5 @@
 from random import randint
 
-# named indexes for tiles to map the correct gid
-FLOOR, WALL = 0, 1
-
 class Coordinate:
     # coordinate container for find_path() when only one destination is needed
     def __init__(self, position):
@@ -10,7 +7,7 @@ class Coordinate:
 
 class DomainManager:
     # reference to tile_gid tuple
-    tile_gid = None
+    floor_gid = None
     # neighbours are for find_path, the tuple indexes map like this:
     # 0 1 2
     # 3 4 5
@@ -41,10 +38,10 @@ class DomainManager:
         self.map_object = load_pygame(file_resource('domains', 'domain.tmx'))
         # give DomainObject subclasses a common reference to the map
         DomainObject.map_object = self.map_object
-        # known positions for floor and wall tiles on the map
-        floor_tile, wall_tile = (0, 0), (0, 3)
-        # read those positions and store their gid's in both DomainManager and DomainObject as tile_gid
-        DomainManager.tile_gid = DomainObject.tile_gid = (self.cell_gid(floor_tile), self.cell_gid(wall_tile))
+        # known positions for floor tile on the map
+        floor_tile = (0, 0)
+        # read that position and store the gid in both DomainManager and DomainObject as floor_gid
+        DomainManager.floor_gid = DomainObject.floor_gid = self.cell_gid(floor_tile)
         # surface to draw on
         self.surface = surface
         self.surface_rect = surface.get_rect()
@@ -98,7 +95,7 @@ class DomainManager:
         def populate(number, cls, layer, group):
             for floor in range(self.floors):
                 for _ in range(number):
-                    position = self.random_position_floor(self.tile_gid[FLOOR], floor)
+                    position = self.random_position_floor(self.floor_gid, floor)
                     # instantiate from the class
                     instance = cls(position)
                     # set the layer, higher takes priority
@@ -112,7 +109,7 @@ class DomainManager:
         # create agents
         populate(8, Agent, 4, 'agents')
         # create a player avatar and add it to the domain
-        position = self.random_position_floor(self.tile_gid[FLOOR], 0)
+        position = self.random_position_floor(self.floor_gid, 0)
         self.avatar = Avatar(position)
         self.avatar.layer = 5
         self.object_manager.object_add('avatar', self.avatar)
@@ -209,22 +206,22 @@ class DomainManager:
             for neighbour in self.neighbours:
                 adjacents.append(self.cell_gid((current[0] + neighbour[0], current[1] + neighbour[1])))
             # block out invalid moves depending on present floor tiles
-            if adjacents[1] != self.tile_gid[FLOOR]:
+            if adjacents[1] != self.floor_gid:
                 adjacents[0] = None
                 adjacents[2] = None
-            if adjacents[5] != self.tile_gid[FLOOR]:
+            if adjacents[5] != self.floor_gid:
                 adjacents[2] = None
                 adjacents[8] = None
-            if adjacents[7] != self.tile_gid[FLOOR]:
+            if adjacents[7] != self.floor_gid:
                 adjacents[6] = None
                 adjacents[8] = None
-            if adjacents[3] != self.tile_gid[FLOOR]:
+            if adjacents[3] != self.floor_gid:
                 adjacents[0] = None
                 adjacents[6] = None
             # add neighbours that are floor tiles to the frontier, the order affects how straight the paths are
             for index in (1, 5, 7, 3, 2, 8, 6, 0):
                 # if it is a floor tile
-                if adjacents[index] == self.tile_gid[FLOOR]:
+                if adjacents[index] == self.floor_gid:
                     new_position = current[0] + self.neighbours[index][0], current[1] + self.neighbours[index][1]
                     # if the neighbour is on the same floor then it is valid
                     if self.get_floor(current) == self.get_floor(new_position):

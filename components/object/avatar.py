@@ -1,9 +1,6 @@
 from .domainobject import DomainObject, Path
 from components.domain.domainmanager import Coordinate
 
-# named indexes for tiles to map the correct gid
-FLOOR, WALL = 0, 1
-
 class Avatar(DomainObject):
     def __init__(self, position):
         super().__init__()
@@ -34,7 +31,7 @@ class Avatar(DomainObject):
                 self.gui_manager.switch_context('putdown_context')
 
     def move_to(self, position):
-        if self.domain_manager.cell_gid(position) == self.tile_gid[FLOOR]:
+        if self.domain_manager.cell_gid(position) == self.floor_gid:
             # perform move
             destination = self.reset_queue()
             if destination == None:

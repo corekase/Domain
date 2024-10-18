@@ -36,7 +36,7 @@ class DomainObject(Sprite):
     # reference for the domain manager
     domain_manager: DomainManager
     # tile_gid tuple, useful for subclasses
-    tile_gid = None
+    floor_gid = None
 
     def __init__(self):
         super().__init__()

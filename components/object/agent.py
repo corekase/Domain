@@ -1,9 +1,6 @@
 from .domainobject import DomainObject, Path
 from .generic import Generic
 
-# named indexes for tiles to map the correct gid
-FLOOR, WALL = 0, 1
-
 class Agent(DomainObject):
     def __init__(self, position):
         super().__init__()
@@ -29,7 +26,7 @@ class Agent(DomainObject):
             # remove reference to old object
             self.object_manager.delete('generic', self.destination_object)
             # create a new generic object
-            position = self.domain_manager.random_position(self.tile_gid[FLOOR], 0, 0,
+            position = self.domain_manager.random_position(self.floor_gid, 0, 0,
                                                            self.map_object.width, self.map_object.height)
             item_object = Generic(position)
             item_object.layer = 1
