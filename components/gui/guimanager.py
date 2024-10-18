@@ -1,5 +1,5 @@
 # named colour values, in one location to change everywhere
-colours = {'full': (255, 255, 255), 'light': (0, 160, 160), 'medium': (0, 120, 120), 'dark': (0, 80, 80), 'none': (0, 0, 0),
+colours = {'full': (255, 255, 255), 'light': (0, 200, 200), 'medium': (0, 150, 150), 'dark': (0, 100, 100), 'none': (0, 0, 0),
            'text': (255, 255, 255), 'highlight': (238, 230, 0), 'background': (0, 60, 60)}
 
 class GuiManager:
