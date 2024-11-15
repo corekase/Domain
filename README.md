@@ -8,7 +8,7 @@ Left-click anywhere on the map moves the avatar to that location.  Mouse-wheel c
 
 Winning:
 
-The game is won by gathering the items you can pick up and putting them all down into the same square.  The items you can pick up are a triangle graphic.  If you can pick up an item a button will appear for that when you are on the same square, and then when you have an item there will be a put down button.  You may only have one item in your inventory at a time.
+The game is won by gathering the items you can pick up and putting them all down into the same square.  The items you can pick up are a blue circular graphic with a musical note inside it.  If you can pick up an item a button will appear for that when you are on the same square, and then when you have an item there will be a put down button.  You may only have one item in your inventory at a time.
 
 Graphics:
 
