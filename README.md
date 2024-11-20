@@ -12,6 +12,4 @@ The game is won by gathering the items you can pick up and putting them all down
 
 Graphics:
 
-Graphics are purposely minimal, years can be spent on them and this application isn't about graphics, it's about game systems.
-
 What is displayed is just the moveable area of the map, that is layer 0.  Layer 0 in a more developed domain isn't displayed, it's just where you can move to.  Then with the layer 0 moveable areas, layers 1 and higher are all the art assets and those layers are as many as needed.
