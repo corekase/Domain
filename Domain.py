@@ -12,7 +12,7 @@ from components.gui.pushbuttongroup import PushButtonGroup
 from components.gui.scrollbar import Scrollbar
 from components.gui.button import Button
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_F1
-from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
+from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION, MOUSEWHEEL
 
 class Main:
     def __init__(self):
@@ -255,18 +255,15 @@ class Main:
                             self.dragging_position = event.pos
                             # cancel follow
                             self.follow_avatar = False
-                        elif event.button == 4:
-                            # wheel scroll up, increase zoom index
-                            self.domain_manager.set_zoom_delta(1)
-                        elif event.button == 5:
-                            # wheel scroll down, decrease zoom index
-                            self.domain_manager.set_zoom_delta(-1)
                 elif event.type == MOUSEBUTTONUP:
                     if (event.button == 3) and self.dragging:
                         # set the physical mouse position to the dragging position
                         pygame.mouse.set_pos(self.dragging_position)
                         # end dragging state
                         self.dragging = False
+                elif event.type == MOUSEWHEEL:
+                    # adjust the zoom level, event.y will either be a -1 or a 1
+                    self.domain_manager.set_zoom_delta(event.y)
                 # dragging action
                 if self.dragging:
                     # if the mouse is moving
