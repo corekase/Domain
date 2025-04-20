@@ -251,8 +251,8 @@ class Main:
                         elif event.button == 3:
                             # right button down, begin dragging state
                             self.dragging = True
-                            # save position to restore the physical mouse location to when the state ends
-                            self.dragging_position = event.pos
+                            # save positions to restore the physical mouse location when the state ends
+                            self.dragging_position = self.mouse_position = event.pos
                             # cancel follow
                             self.follow_avatar = False
                 elif event.type == MOUSEBUTTONUP:
@@ -268,8 +268,6 @@ class Main:
                     self.domain_manager.set_zoom_delta(event.y)
                 # dragging action
                 elif event.type == MOUSEMOTION:
-                    # update the stored mouse position
-                    self.mouse_position = event.pos
                     if self.dragging:
                         # move the centre of the viewport
                         x, y = event.rel
@@ -277,8 +275,12 @@ class Main:
                         self.domain_manager.main_viewport[1] += y
                         # keep the physical mouse position within the view surface rect as much as possible
                         if not self.view_surface_rect.collidepoint(event.pos):
-                            # outside of view surface rect, move physical mouse position back dragging position
-                            pygame.mouse.set_pos(self.dragging_position)
+                            # outside of view surface rect, move physical mouse position to center of view_surface_rect
+                            pygame.mouse.set_pos(self.view_surface_rect.center)
+                    else:
+                        # update the stored mouse position
+                        self.mouse_position = event.pos
+
 
     def update_status(self):
         # update the x and y map indexes for the information panel
