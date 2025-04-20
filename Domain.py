@@ -97,6 +97,8 @@ class Main:
         self.gui_manager.add_widget('win_context', Button('won', area_2_rect, 'Won!'))
         # switch to default context
         self.gui_manager.switch_context('default')
+        # mouse position
+        self.mouse_position = pygame.mouse.get_pos()
         # state for whether or not dragging the view
         self.dragging = False
         # when dragging lock mouse position to this position
@@ -147,16 +149,14 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw gui widgets
             self.gui_manager.draw_widgets()
-            # poll for mouse position
-            x, y = pygame.mouse.get_pos()
             # mouse damage to background. tracking damage is much faster than filling entire screen
-            damaged_rect = Rect(x - 6, y, 16, 16)
+            damaged_rect = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
             # update self.status for the information panel
-            self.update_status(x, y)
+            self.update_status()
             # draw information panel
             self.draw_info_panel(clock.get_fps())
             # draw mouse cursor
-            self.draw_mouse(x, y)
+            self.draw_mouse()
             # limit frames-per-second
             clock.tick(fps)
             # swap screen buffers
@@ -251,7 +251,7 @@ class Main:
                         elif event.button == 3:
                             # right button down, begin dragging state
                             self.dragging = True
-                            # save postion to restore the physical mouse location to when the state ends
+                            # save position to restore the physical mouse location to when the state ends
                             self.dragging_position = event.pos
                             # cancel follow
                             self.follow_avatar = False
@@ -259,24 +259,30 @@ class Main:
                     if (event.button == 3) and self.dragging:
                         # set the physical mouse position to the dragging position
                         pygame.mouse.set_pos(self.dragging_position)
+                        # update the mouse position with the same value
+                        self.mouse_position = self.dragging_position
                         # end dragging state
                         self.dragging = False
                 elif event.type == MOUSEWHEEL:
                     # adjust the zoom level, event.y will either be a -1 or a 1
                     self.domain_manager.set_zoom_delta(event.y)
                 # dragging action
-                elif event.type == MOUSEMOTION and self.dragging:
-                    # move the centre of the viewport
-                    x, y = event.rel
-                    self.domain_manager.main_viewport[0] += x
-                    self.domain_manager.main_viewport[1] += y
-                    # keep the physical mouse position within the view surface rect as much as possible
-                    if not self.view_surface_rect.collidepoint(event.pos):
-                        # outside of view surface rect, move physical mouse position back to that centre
-                        pygame.mouse.set_pos(self.view_surface_rect.center)
+                elif event.type == MOUSEMOTION:
+                    # update the stored mouse position
+                    self.mouse_position = event.pos
+                    if self.dragging:
+                        # move the centre of the viewport
+                        x, y = event.rel
+                        self.domain_manager.main_viewport[0] += x
+                        self.domain_manager.main_viewport[1] += y
+                        # keep the physical mouse position within the view surface rect as much as possible
+                        if not self.view_surface_rect.collidepoint(event.pos):
+                            # outside of view surface rect, move physical mouse position back dragging position
+                            pygame.mouse.set_pos(self.dragging_position)
 
-    def update_status(self, x, y):
+    def update_status(self):
         # update the x and y map indexes for the information panel
+        x, y = self.mouse_position
         if self.view_surface_rect.collidepoint(x, y):
             # inside the view_surface_rect, get the cell coordinate
             x_coord, y_coord = self.domain_manager.pixel_to_cell(x - self.view_surface_rect.x, y - self.view_surface_rect.y)
@@ -299,12 +305,12 @@ class Main:
         self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(1)))
 
-    def draw_mouse(self, x, y):
+    def draw_mouse(self):
         # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
         if self.dragging:
             position = self.dragging_position[0] - 6, self.dragging_position[1]
         else:
-            position = x - 6, y
+            position = self.mouse_position[0] - 6, self.mouse_position[1]
         # blit the cursor image to the screen
         self.screen.blit(self.cursor_image, position)
 
