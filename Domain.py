@@ -265,17 +265,15 @@ class Main:
                     # adjust the zoom level, event.y will either be a -1 or a 1
                     self.domain_manager.set_zoom_delta(event.y)
                 # dragging action
-                if self.dragging:
-                    # if the mouse is moving
-                    if event.type == MOUSEMOTION:
-                        # move the centre of the viewport
-                        x, y = event.rel
-                        self.domain_manager.main_viewport[0] += x
-                        self.domain_manager.main_viewport[1] += y
-                        # keep the physical mouse position within the view surface rect as much as possible
-                        if not self.view_surface_rect.collidepoint(event.pos):
-                            # outside of view surface rect, move physical mouse position back to that centre
-                            pygame.mouse.set_pos(self.view_surface_rect.center)
+                elif event.type == MOUSEMOTION and self.dragging:
+                    # move the centre of the viewport
+                    x, y = event.rel
+                    self.domain_manager.main_viewport[0] += x
+                    self.domain_manager.main_viewport[1] += y
+                    # keep the physical mouse position within the view surface rect as much as possible
+                    if not self.view_surface_rect.collidepoint(event.pos):
+                        # outside of view surface rect, move physical mouse position back to that centre
+                        pygame.mouse.set_pos(self.view_surface_rect.center)
 
     def update_status(self, x, y):
         # update the x and y map indexes for the information panel
