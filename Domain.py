@@ -153,8 +153,10 @@ class Main:
             self.update_status()
             # draw information panel
             self.draw_info_panel(clock.get_fps())
-            # draw mouse cursor
-            self.draw_mouse()
+            # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
+            position = self.mouse_position[0] - 6, self.mouse_position[1]
+            # blit the mouse cursor image to the screen
+            self.screen.blit(self.cursor_image, position)
             # limit frames-per-second
             clock.tick(fps)
             # swap screen buffers
@@ -304,12 +306,6 @@ class Main:
         # draw each text line onto the screen
         self.screen.blit(render_text(fps), (x_pos + 3, y_pos + padding(0)))
         self.screen.blit(render_text(self.status), (x_pos + 3, y_pos + padding(1)))
-
-    def draw_mouse(self):
-        # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
-        position = self.mouse_position[0] - 6, self.mouse_position[1]
-        # blit the cursor image to the screen
-        self.screen.blit(self.cursor_image, position)
 
 if __name__ == '__main__':
     Main().run()
