@@ -278,8 +278,10 @@ class Main:
                         # end dragging state
                         self.dragging = False
                 elif event.type == MOUSEWHEEL:
-                    # adjust the zoom level, event.y will either be a -1 or a 1
-                    self.domain_manager.set_zoom_delta(event.y)
+                    # only zoom when the mouse position is within the view surface rect
+                    if self.view_surface_rect.collidepoint(self.mouse_position):
+                        # adjust the zoom level, event.y will either be a -1 or a 1
+                        self.domain_manager.set_zoom_delta(event.y)
 
     def update_status(self):
         # update the x and y map indexes for the information panel
