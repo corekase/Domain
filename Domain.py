@@ -101,8 +101,6 @@ class Main:
         self.mouse_position = pygame.mouse.get_pos()
         # state for whether or not dragging the view
         self.dragging = False
-        # when dragging lock mouse position to this position
-        self.dragging_position = None
         # toggle for following the avatar
         self.follow_avatar = False
         # whether to show absolute x and y, or x and y relative to floor
@@ -268,16 +266,12 @@ class Main:
                         elif event.button == 3:
                             # right button down, begin dragging state
                             self.dragging = True
-                            # save positions to restore the physical mouse location when the state ends
-                            self.dragging_position = self.mouse_position = event.pos
                             # cancel follow
                             self.follow_avatar = False
                 elif event.type == MOUSEBUTTONUP:
                     if (event.button == 3) and self.dragging:
-                        # set the physical mouse position to the dragging position
-                        pygame.mouse.set_pos(self.dragging_position)
-                        # update the mouse position with the same value
-                        self.mouse_position = self.dragging_position
+                        # put the physical cursor back to the mouse position
+                        pygame.mouse.set_pos(self.mouse_position)
                         # end dragging state
                         self.dragging = False
                 elif event.type == MOUSEWHEEL:
@@ -313,10 +307,7 @@ class Main:
 
     def draw_mouse(self):
         # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
-        if self.dragging:
-            position = self.dragging_position[0] - 6, self.dragging_position[1]
-        else:
-            position = self.mouse_position[0] - 6, self.mouse_position[1]
+        position = self.mouse_position[0] - 6, self.mouse_position[1]
         # blit the cursor image to the screen
         self.screen.blit(self.cursor_image, position)
 
