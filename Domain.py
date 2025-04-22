@@ -147,14 +147,14 @@ class Main:
             self.screen.blit(self.view_surface, self.view_surface_rect)
             # draw gui widgets
             self.gui_manager.draw_widgets()
-            # mouse damage to background. tracking damage is much faster than filling entire screen
-            damaged_rect = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
             # update self.status for the information panel
             self.update_status()
             # draw information panel
             self.draw_info_panel(clock.get_fps())
             # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
             position = self.mouse_position[0] - 6, self.mouse_position[1]
+            # mouse damage to background. tracking damage is much faster than filling entire screen
+            damaged_rect = Rect(position[0], position[1], 16, 16)
             # blit the mouse cursor image to the screen
             self.screen.blit(self.cursor_image, position)
             # limit frames-per-second
