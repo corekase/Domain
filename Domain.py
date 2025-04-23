@@ -211,15 +211,15 @@ class Main:
                     self.domain_manager.main_viewport = list(self.domain_manager.renderer.view_rect.center)
                     # stop following avatar
                     self.follow_avatar = False
-                    # update the mouse position if it was a motion event for the scrollbars
-                    if event.type == MOUSEMOTION:
-                        self.mouse_position = event.pos
                 elif gui_event == 'pick_up':
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
                     self.domain_manager.avatar.put_down()
                 elif (gui_event == 'won') or (gui_event == 'exit'):
                     self.running = False
+                # update the mouse position if it was a motion event
+                if event.type == MOUSEMOTION:
+                    self.mouse_position = event.pos
             else:
                 # handle other events
                 if event.type == QUIT:
