@@ -2,6 +2,7 @@ import pygame
 from pygame import FULLSCREEN, SCALED
 from components import utility
 from components.utility import file_resource, image_alpha
+from components.scenes.mainmenu import MainMenu
 from components.scenes.game import Game
 
 class Main:
@@ -23,8 +24,12 @@ class Main:
         pygame.display.set_icon(image_alpha('icon.png'))
 
     def run(self):
-        game = Game(self.screen)
-        game.run()
+        while True:
+            choice = MainMenu(self.screen).run()
+            if choice == 0:
+                break
+            elif choice == 1:
+                Game(self.screen).run()
         # release resources
         pygame.quit()
 
