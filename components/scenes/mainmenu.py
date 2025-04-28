@@ -51,20 +51,18 @@ class MainMenu:
 
     def handle_events(self):
         for event in pygame.event.get():
+            if event.type == MOUSEMOTION:
+                self.mouse_position = event.pos
             gui_event = self.gui_manager.handle_event(event)
             if gui_event != None:
                 if gui_event == 'play':
                     return 1
                 elif gui_event == 'exit':
                     return 0
-                if event.type == MOUSEMOTION:
-                    self.mouse_position = event.pos
             else:
                 if event.type == QUIT:
                     return 0
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         return 0
-                elif event.type == MOUSEMOTION:
-                    self.mouse_position = event.pos
         return None
