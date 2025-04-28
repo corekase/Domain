@@ -174,6 +174,21 @@ class Game:
     def handle_events(self):
         # handle event queue
         for event in pygame.event.get():
+            # mouse movement and dragging
+            if event.type == MOUSEMOTION:
+                if self.dragging:
+                    # move the centre of the viewport
+                    x, y = event.rel
+                    self.domain_manager.main_viewport[0] += x
+                    self.domain_manager.main_viewport[1] += y
+                    # keep the physical mouse position within the view surface rect as much as possible
+                    if not self.view_surface_rect.collidepoint(event.pos):
+                        # outside of view surface rect, move physical mouse position to center of view_surface_rect
+                        pygame.mouse.set_pos(self.view_surface_rect.center)
+                else:
+                    # update the stored mouse position
+                    self.mouse_position = event.pos
+            # gui events
             gui_event = self.gui_manager.handle_event(event)
             if gui_event != None:
                 # handle gui events
@@ -203,9 +218,6 @@ class Game:
                     self.domain_manager.avatar.put_down()
                 elif (gui_event == 'won') or (gui_event == 'exit'):
                     self.running = False
-                # update the mouse position if it was a motion event
-                if event.type == MOUSEMOTION:
-                    self.mouse_position = event.pos
             else:
                 # handle other events
                 if event.type == QUIT:
@@ -219,20 +231,6 @@ class Game:
                     elif event.key == K_F1:
                         # toggle whether coordinates shown are relative or absolute
                         self.coordinate_toggle = not self.coordinate_toggle
-                # mouse movement and dragging
-                elif event.type == MOUSEMOTION:
-                    if self.dragging:
-                        # move the centre of the viewport
-                        x, y = event.rel
-                        self.domain_manager.main_viewport[0] += x
-                        self.domain_manager.main_viewport[1] += y
-                        # keep the physical mouse position within the view surface rect as much as possible
-                        if not self.view_surface_rect.collidepoint(event.pos):
-                            # outside of view surface rect, move physical mouse position to center of view_surface_rect
-                            pygame.mouse.set_pos(self.view_surface_rect.center)
-                    else:
-                        # update the stored mouse position
-                        self.mouse_position = event.pos
                 # mouse buttons
                 elif event.type == MOUSEBUTTONDOWN:
                     x, y = event.pos
