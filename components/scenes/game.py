@@ -149,9 +149,8 @@ class Game:
             pygame.display.flip()
             # fill mouse damaged area
             self.screen.fill(colours['background'], damaged_rect)
-            # fill gui damaged areas
-            for widget in (self.gui_manager.widgets[self.gui_manager.context] + self.gui_manager.widgets['global']):
-                self.screen.fill(colours['background'], widget.rect)
+            # restore bitmaps under gui objects
+            self.gui_manager.undraw_widgets()
             # check for winning conditions after gui damage has been filled as the gui context may be changed
             if not won:
                 if self.domain_manager.check_win():

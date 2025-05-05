@@ -46,8 +46,7 @@ class MainMenu:
             pygame.display.flip()
             self.screen.fill(colours['background'], damaged_rect)
             # fill gui damaged areas
-            for widget in (self.gui_manager.widgets[self.gui_manager.context] + self.gui_manager.widgets['global']):
-                self.screen.fill(colours['background'], widget.rect)
+            self.gui_manager.undraw_widgets()
 
     def handle_events(self):
         for event in pygame.event.get():
