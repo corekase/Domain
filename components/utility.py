@@ -14,8 +14,8 @@ tile_size = 32
 # dictionary to cache images so one surface for one tile position and reused on later calls
 tile_images = {}
 
-def cut(surface, rect):
-    bitmap = pygame.Surface((rect.width, rect.height), pygame.SRCALPHA)
+def cut(surface, rect, flags = 0):
+    bitmap = pygame.Surface((rect.width, rect.height), flags)
     bitmap.blit(surface, (0, 0), rect)
     return bitmap
 
@@ -23,7 +23,7 @@ def cut_tile(tile):
     # if the tile is cached return that otherwise create the graphic image and cache it
     if tile not in tile_images.keys():
         x, y = tile
-        surface = cut(tiles, Rect(x * tile_size, y * tile_size, tile_size, tile_size))
+        surface = cut(tiles, Rect(x * tile_size, y * tile_size, tile_size, tile_size), pygame.SRCALPHA)
         tile_images[tile] = surface
     return tile_images[tile]
 
