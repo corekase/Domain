@@ -1,5 +1,5 @@
-import pygame
-from pygame import Rect
+from components.utility import cut
+
 # named colour values, in one location to change everywhere
 colours = {'full': (255, 255, 255), 'light': (0, 200, 200), 'medium': (0, 150, 150), 'dark': (0, 100, 100), 'none': (0, 0, 0),
            'text': (255, 255, 255), 'highlight': (238, 230, 0), 'background': (0, 60, 60)}
@@ -45,14 +45,10 @@ class GuiManager:
         # draw all widgets to their surfaces
         widgets = self.widgets['global'] + self.widgets.get(self.context, [])
         # clear previous bitmaps
-        self.bitmaps = []
+        self.bitmaps.clear()
         for widget in widgets:
-            # create a surface of the same size as the widget
-            bitmap = pygame.Surface((widget.rect.width, widget.rect.height))
-            # save the bitmap that is under the widget rect
-            bitmap.blit(self.surface, (0, 0), widget.rect)
             # each list item is a tuple of the bitmap and its rect
-            self.bitmaps += [(bitmap, widget.rect)]
+            self.bitmaps += [(cut(self.surface, widget.rect), widget.rect)]
             # draw the widget
             widget.draw()
 

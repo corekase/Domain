@@ -5,7 +5,7 @@ from components.gui.guimanager import GuiManager, colours
 from components.gui.frame import Frame
 from components.gui.button import Button
 from components.gui.label import Label
-from components.utility import image_alpha
+from components.utility import image_alpha, cut
 
 class MainMenu:
     def __init__(self, screen):
@@ -39,12 +39,12 @@ class MainMenu:
             if signal != None:
                 return signal
             self.gui_manager.draw_widgets()
-            position = self.mouse_position[0] - 6, self.mouse_position[1]
-            damaged_rect = Rect(position[0], position[1], 16, 16)
+            position = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
+            bitmap = cut(self.screen, position)
             self.screen.blit(self.cursor_image, position)
             clock.tick(fps)
             pygame.display.flip()
-            self.screen.fill(colours['background'], damaged_rect)
+            self.screen.blit(bitmap, position)
             # fill gui damaged areas
             self.gui_manager.undraw_widgets()
 

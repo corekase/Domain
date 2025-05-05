@@ -4,7 +4,7 @@ from pygame import Rect
 from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
 from components.gui.guimanager import GuiManager, colours
-from components.utility import image_alpha, padding, render_text
+from components.utility import image_alpha, padding, render_text, cut
 from components.gui.frame import Frame
 from components.gui.label import Label
 from components.gui.pushbuttongroup import PushButtonGroup
@@ -138,17 +138,16 @@ class Game:
             # draw information panel
             self.draw_info_panel(clock.get_fps())
             # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
-            position = self.mouse_position[0] - 6, self.mouse_position[1]
-            # mouse damage to background. tracking damage is much faster than filling entire screen
-            damaged_rect = Rect(position[0], position[1], 16, 16)
+            position = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
+            bitmap = cut(self.screen, position)
             # blit the mouse cursor image to the screen
             self.screen.blit(self.cursor_image, position)
             # limit frames-per-second
             clock.tick(fps)
             # swap screen buffers
             pygame.display.flip()
-            # fill mouse damaged area
-            self.screen.fill(colours['background'], damaged_rect)
+            # restore mouse damaged area
+            self.screen.blit(bitmap, position)
             # restore bitmaps under gui objects
             self.gui_manager.undraw_widgets()
             # check for winning conditions after gui damage has been filled as the gui context may be changed

@@ -2,6 +2,7 @@ import pygame
 from pygame import FULLSCREEN, SCALED
 from components import utility
 from components.utility import file_resource, image_alpha
+from components.gui.guimanager import colours
 from components.scenes.mainmenu import MainMenu
 from components.scenes.game import Game
 
@@ -16,6 +17,9 @@ class Main:
         utility.tiles = pygame.image.load(file_resource('domains', 'ProjectUtumno_full.png'))
         # create main window surface
         self.screen = pygame.display.set_mode((1920, 1080), FULLSCREEN | SCALED)
+        # set the screen in utility
+        utility.screen = self.screen
+        utility.colours = colours
         # set window caption
         pygame.display.set_caption('Domain')
         # hide system mouse pointer
