@@ -5,7 +5,7 @@ from components.gui.guimanager import GuiManager, colours
 from components.gui.frame import Frame
 from components.gui.button import Button
 from components.gui.label import Label
-from components.utility import image_alpha, cut
+from components.utility import image_alpha, cut, file_resource
 
 class MainMenu:
     def __init__(self, screen):
@@ -29,11 +29,12 @@ class MainMenu:
         self.gui_manager.switch_context('menu')
         self.cursor_image = image_alpha('cursors', 'normal.png')
         self.mouse_position = pygame.mouse.get_pos()
+        # set a background image
+        self.screen.blit(pygame.image.load(file_resource('images', 'backdrop.jpg')).convert(), (0, 0))
 
     def run(self):
         fps = 60
         clock = pygame.time.Clock()
-        self.screen.fill(colours['background'])
         while True:
             signal = self.handle_events()
             if signal != None:

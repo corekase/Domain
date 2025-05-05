@@ -4,7 +4,7 @@ from pygame import Rect
 from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
 from components.gui.guimanager import GuiManager, colours
-from components.utility import image_alpha, padding, render_text, cut
+from components.utility import image_alpha, padding, render_text, cut, file_resource
 from components.gui.frame import Frame
 from components.gui.label import Label
 from components.gui.pushbuttongroup import PushButtonGroup
@@ -95,6 +95,8 @@ class Game:
         self.status = None
         # Set the state of the application to "running"
         self.running = True
+        # set a background image
+        self.screen.blit(pygame.image.load(file_resource('images', 'backdrop.jpg')).convert(), (0, 0))
 
     def run(self):
         # is the game won flag
@@ -105,8 +107,6 @@ class Game:
         clock = pygame.time.Clock()
         # track elapsed_time with more accurate os clock
         previous_time = time.time()
-        # clear main surface
-        self.screen.fill(colours['background'])
         # continue while the running flag is true
         while self.running:
             # update scroll bar states
