@@ -28,9 +28,9 @@ class Main:
     def run(self):
         while True:
             choice = MainMenu(self.screen).run()
-            if choice == 0:
+            if choice == 'exit':
                 break
-            elif choice == 1:
+            elif choice == 'play':
                 Game(self.screen).run()
         # release resources
         pygame.quit()

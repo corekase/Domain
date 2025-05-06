@@ -55,13 +55,13 @@ class MainMenu:
             gui_event = self.gui_manager.handle_event(event)
             if gui_event != None:
                 if gui_event == 'play':
-                    return 1
+                    return 'play'
                 elif gui_event == 'exit':
-                    return 0
+                    return 'exit'
             else:
                 if event.type == QUIT:
-                    return 0
+                    return 'exit'
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
-                        return 0
+                        return 'exit'
         return None
