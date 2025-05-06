@@ -11,21 +11,21 @@ class MainMenu:
     def __init__(self, screen):
         # main window surface
         self.screen = screen
-        self.width = 200
-        self.height = 80
-        self.x = int((self.screen.get_rect().width - self.width) / 2)
-        self.y = int((self.screen.get_rect().height - self.height) / 2)
-        self.frame_rect = Rect(self.x, self.y, self.width, self.height)
+        width = 200
+        height = 80
+        x = centre(self.screen.get_rect().width, width)
+        y = centre(self.screen.get_rect().height, height)
+        frame = Rect(x, y, width, height)
         self.gui_manager = GuiManager(self.screen)
-        self.gui_manager.add_widget('menu', Frame('frame', self.frame_rect))
+        self.gui_manager.add_widget('menu', Frame('frame', frame))
         label = Label((0, 0), 'Main Menu')
-        label.rect.x = self.frame_rect.x + centre(self.frame_rect.width, label.rect.width)
-        label.rect.y = self.y + 2
+        label.rect.x = frame.x + centre(frame.width, label.rect.width)
+        label.rect.y = y + 2
         self.gui_manager.add_widget('menu', label)
         self.gui_manager.add_widget('menu', Button('play',
-                        Rect(self.x + 10, self.y + 25, self.width - 20, 20), 'Play'))
+                        Rect(x + 10, y + 25, width - 20, 20), 'Play'))
         self.gui_manager.add_widget('menu', Button('exit',
-                        Rect(self.x + 10, self.y + 50, self.width - 20, 20), 'Exit'))
+                        Rect(x + 10, y + 50, width - 20, 20), 'Exit'))
         self.gui_manager.switch_context('menu')
         self.cursor_image = image_alpha('cursors', 'normal.png')
         self.mouse_position = pygame.mouse.get_pos()
