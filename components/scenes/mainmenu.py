@@ -1,7 +1,7 @@
 import pygame
 from pygame import Rect, QUIT
 from pygame.locals import MOUSEMOTION, KEYDOWN, K_ESCAPE
-from components.gui.guimanager import GuiManager, colours
+from components.gui.guimanager import GuiManager
 from components.gui.frame import Frame
 from components.gui.button import Button
 from components.gui.label import Label

@@ -1,5 +1,4 @@
-from .widget import Widget
-from .guimanager import colours
+from .widget import Widget, colours
 from pygame.draw import rect, line
 
 from enum import Enum

@@ -1,5 +1,5 @@
 from .frame import Frame, State
-from components.gui.guimanager import colours
+from .widget import colours
 from pygame import Rect
 from pygame.draw import rect
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP

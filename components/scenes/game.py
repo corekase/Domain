@@ -3,7 +3,8 @@ import pygame
 from pygame import Rect
 from components.domain.domainmanager import DomainManager
 from components.object.domainobject import DomainObject
-from components.gui.guimanager import GuiManager, colours
+from components.gui.guimanager import GuiManager
+from components.gui.widget import colours
 from components.utility import image_alpha, padding, render_text, cut, file_resource
 from components.gui.frame import Frame
 from components.gui.label import Label

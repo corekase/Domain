@@ -1,9 +1,9 @@
 import os
 import pygame
 from pygame import Rect
+from components.gui.widget import colours
 
 # these are filled in during the initializer of Main()
-colours = None
 font_size = None
 font_object = None
 screen = None
