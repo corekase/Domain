@@ -5,7 +5,7 @@ from components.gui.guimanager import GuiManager, colours
 from components.gui.frame import Frame
 from components.gui.button import Button
 from components.gui.label import Label
-from components.utility import image_alpha, cut, file_resource
+from components.utility import image_alpha, cut, file_resource, centre
 
 class MainMenu:
     def __init__(self, screen):
@@ -19,7 +19,7 @@ class MainMenu:
         self.gui_manager = GuiManager(self.screen)
         self.gui_manager.add_widget('menu', Frame('frame', self.frame_rect))
         label = Label((0, 0), 'Main Menu')
-        label.rect.x = int((self.screen.get_rect().width - label.rect.width) / 2)
+        label.rect.x = self.frame_rect.x + centre(self.frame_rect.width, label.rect.width)
         label.rect.y = self.y + 2
         self.gui_manager.add_widget('menu', label)
         self.gui_manager.add_widget('menu', Button('play',
