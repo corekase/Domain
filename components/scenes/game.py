@@ -23,8 +23,6 @@ class Game:
         self.view_surface = pygame.Surface((view_width, view_height)).convert()
         # create a collision rect for the surface size for interface logic
         self.view_surface_rect = Rect(view_xpos, view_ypos, view_width, view_height)
-        # create a rect that outlines view_surface_rect and the scrollbars
-        self.view_surface_outline_rect = Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
         # create domain manager
         self.domain_manager = DomainManager(self.view_surface)
         # give domain objects a reference to the domain manager
@@ -97,6 +95,10 @@ class Game:
         self.running = True
         # set a background image
         self.screen.blit(pygame.image.load(file_resource('images', 'backdrop.jpg')).convert(), (0, 0))
+        # create a rect that outlines view_surface_rect and the scrollbars
+        view_surface_outline = Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
+        # draw the outline around the main viewport
+        pygame.draw.rect(self.screen, colours['light'], view_surface_outline, 1)
 
     def run(self):
         # is the game won flag
@@ -125,8 +127,6 @@ class Game:
                 # if follow_avatar centre on avatar, after update_domain to avoid jitter
                 if self.follow_avatar:
                     self.domain_manager.main_viewport = list(self.domain_manager.avatar.rect.center)
-            # draw the outline around the main viewport
-            pygame.draw.rect(self.screen, colours['light'], self.view_surface_outline_rect, 1)
             # draw the main viewport to the viewport surface
             self.domain_manager.draw_domain()
             # copy domain view surface into the main screen surface
