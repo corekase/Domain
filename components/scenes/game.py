@@ -138,16 +138,16 @@ class Game:
             # draw information panel
             self.draw_info_panel(clock.get_fps())
             # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
-            position = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
-            bitmap = cut(self.screen, position)
+            mouse_rect = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
+            mouse_bitmap = cut(self.screen, mouse_rect)
             # blit the mouse cursor image to the screen
-            self.screen.blit(self.cursor_image, position)
+            self.screen.blit(self.cursor_image, mouse_rect)
             # limit frames-per-second
             clock.tick(fps)
             # swap screen buffers
             pygame.display.flip()
             # restore mouse damaged area
-            self.screen.blit(bitmap, position)
+            self.screen.blit(mouse_bitmap, mouse_rect)
             # restore bitmaps under gui objects
             self.gui_manager.undraw_widgets()
             # check for winning conditions after gui damage has been filled as the gui context may be changed
