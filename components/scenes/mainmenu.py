@@ -40,13 +40,12 @@ class MainMenu:
             if signal != None:
                 return signal
             self.gui_manager.draw_widgets()
-            position = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
-            bitmap = cut(self.screen, position)
-            self.screen.blit(self.cursor_image, position)
+            mouse_rect = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
+            mouse_bitmap = cut(self.screen, mouse_rect)
+            self.screen.blit(self.cursor_image, mouse_rect)
             clock.tick(fps)
             pygame.display.flip()
-            self.screen.blit(bitmap, position)
-            # fill gui damaged areas
+            self.screen.blit(mouse_bitmap, mouse_rect)
             self.gui_manager.undraw_widgets()
 
     def handle_events(self):
