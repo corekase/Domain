@@ -80,6 +80,8 @@ class Game:
         self.gui_manager.add_widget('putdown_context', exit_button)
         # game won context
         self.gui_manager.add_widget('win_context', Button('won', area_2_rect, 'Won!'))
+        # game lost context
+        self.gui_manager.add_widget('lost_context', Button('lost', area_2_rect, 'Lost!'))
         # switch to default context
         self.gui_manager.switch_context('default')
         # mouse position
@@ -103,7 +105,7 @@ class Game:
 
     def run(self):
         # is the game won flag
-        won = False
+        gameover = False
         # maximum frames-per-second, 0 for unlimited
         fps = 60
         # instantiate a pygame clock for frame maximum limits
@@ -120,7 +122,7 @@ class Game:
             now_time = time.time()
             elapsed_time = now_time - previous_time
             previous_time = now_time
-            if not won:
+            if not gameover:
                 # update whether to follow the avatar through teleporters
                 self.domain_manager.avatar.follow = self.follow_avatar
                 # update domain state
@@ -152,11 +154,15 @@ class Game:
             # restore bitmaps under gui objects
             self.gui_manager.undraw_widgets()
             # check for winning conditions after gui damage has been filled as the gui context may be changed
-            if not won:
+            if not gameover:
+                # check for game win
                 if self.domain_manager.check_win():
-                    # display winning screen here
                     self.gui_manager.lock_context('win_context')
-                    won = True
+                    gameover = True
+                # check for collision with any agent which is a loss
+                if self.domain_manager.check_lost():
+                    self.gui_manager.lock_context('lost_context')
+                    gameover = True
         # return from scene
         return
 
@@ -215,7 +221,7 @@ class Game:
                     self.domain_manager.avatar.pick_up()
                 elif gui_event == 'put_down':
                     self.domain_manager.avatar.put_down()
-                elif (gui_event == 'won') or (gui_event == 'exit'):
+                elif (gui_event == 'won') or (gui_event == 'lost') or (gui_event == 'exit'):
                     self.running = False
             else:
                 # handle other events

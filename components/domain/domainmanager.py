@@ -1,3 +1,4 @@
+import pygame
 from random import randint
 
 class Coordinate:
@@ -301,6 +302,14 @@ class DomainManager:
                 break
         # if true then won
         return matched
+
+    def check_lost(self):
+        # if the avatar sprite collides with any member of the agents group that is a loss
+        if pygame.sprite.spritecollideany(self.avatar, self.object_manager.objects('agents')):
+            # collided
+            return True
+        # did not collide with any agents
+        return False
 
     def pixel_to_cell(self, x, y):
         # normalize x and y mouse position to the centre of the surface rect, in screen pixels
