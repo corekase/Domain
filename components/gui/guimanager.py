@@ -44,7 +44,7 @@ class GuiManager:
         self.bitmaps.clear()
         for widget in widgets:
             # each list item is a tuple of the bitmap and its rect, the parenthesis matter
-            self.bitmaps.append(((cut(self.surface, widget.rect)), widget.rect))
+            self.bitmaps.append((cut(self.surface, widget.rect), widget.rect))
             # draw the widget
             widget.draw()
 
