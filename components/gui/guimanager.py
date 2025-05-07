@@ -50,7 +50,8 @@ class GuiManager:
 
     def undraw_widgets(self):
         # restore the bitmaps that were under each gui object drawn in reverse order
-        for bitmap, rect in self.bitmaps[::-1]:
+        self.bitmaps.reverse()
+        for bitmap, rect in self.bitmaps:
             self.surface.blit(bitmap, rect)
 
     def add_widget(self, context, widget):
