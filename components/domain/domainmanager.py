@@ -51,14 +51,14 @@ class DomainManager:
         self.renderer = BufferedRenderer(TiledMapData(self.map_object), size, False)
         # set the zoom levels for the renderer
         self.zoom_amounts_index = 2
-        self.zoom_amounts = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0]
+        self.zoom_amounts = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0]
         self.renderer.zoom = self.zoom_amounts[self.zoom_amounts_index]
         # create an object manager
         self.object_manager = ObjectManager(self.renderer)
         # share the object manager with domain objects
         DomainObject.object_manager = self.object_manager
         # map constants
-        self.floor_tiles = 60
+        self.floor_tiles = 30
         self.floors = int(self.map_object.width / self.floor_tiles)
         # each floor_ports is a rect which has the boundaries for the floor
         self.floor_ports = []
@@ -102,7 +102,7 @@ class DomainManager:
         # create pickup items
         populate(1, Pickup, 2, 'pickups')
         # create agents
-        populate(8, Agent, 4, 'agents')
+        populate(4, Agent, 4, 'agents')
         # create a player avatar and add it to the domain
         position = self.random_position_floor(self.floor_gid, 0)
         self.avatar = Avatar(position)
