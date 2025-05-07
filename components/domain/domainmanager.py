@@ -74,24 +74,18 @@ class DomainManager:
         self.floor = None
         # add in teleporters, 'teleporters' is a reserved group name, the domain manager uses it
         # so other code may not use that group name
-        teleporters = {(1, 1): ['up', (61, 1)],
-                       (61, 1): ['down', (1, 1)],
-                       (58, 1): ['up', (118, 1)],
-                       (118, 1): ['down', (58, 1)],
-                       (1, 58): ['up', (61, 58)],
-                       (61, 58): ['down', (1, 58)],
-                       (58, 58): ['up', (118, 58)],
-                       (118, 58): ['down', (58, 58)],
-                       (29, 29): ['up', (89, 29)],
-                       (89, 29): ['down', (29, 29)]}
-        for position, info in teleporters.items():
-            # whether to show an up or down graphic and destination coordinate for the teleport in cells
-            up_down, destination = info
-            # instantiate the teleport
-            instance = Teleporter(up_down, position, destination)
-            instance.layer = 3
-            # add it to the domain, in 'teleporters' reserved name
-            self.object_manager.object_add('teleporters', instance)
+        for item in self.map_object.objects:
+            if item.type == 'Teleporter':
+                # x and y of the teleporter in cell coordinates
+                position = (int(item.x / 32), int(item.y / 32))
+                # destination of the teleporter in cell coordinates
+                destination = (item.properties['dest_x'], item.properties['dest_y'])
+                # create a teleporter object
+                instance = Teleporter(position, destination)
+                # and set its layer
+                instance.layer = 3
+                # add the teleporter to the teleporters group
+                self.object_manager.object_add('teleporters', instance)
         # helper function to create objects
         def populate(number, cls, layer, group):
             for floor in range(self.floors):
