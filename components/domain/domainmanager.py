@@ -79,7 +79,7 @@ class DomainManager:
                 # x and y of the teleporter in cell coordinates
                 position = (int(item.x / self.map_object.tilewidth), int(item.y / self.map_object.tileheight))
                 # destination of the teleporter in cell coordinates
-                destination = (item.properties['dest_x'], item.properties['dest_y'])
+                destination = (int(item.properties['dest_x']), int(item.properties['dest_y']))
                 # create a teleporter object
                 instance = Teleporter(position, destination)
                 # and set its layer
