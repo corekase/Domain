@@ -10,7 +10,7 @@ The game is won by gathering the items you can pick up and putting them all down
 
 Losing:
 
-Contact with any agent is a loss.
+Contact with any agent is a loss. 
 
 Graphics:
 
