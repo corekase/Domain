@@ -43,14 +43,13 @@ class GuiManager:
         # clear previous bitmaps
         self.bitmaps.clear()
         for widget in widgets:
-            # each list item is a tuple of the bitmap and its rect
-            self.bitmaps.append((cut(self.surface, widget.rect), widget.rect))
+            # tuple of the bitmap and its rect, after loop ends in reverse order
+            self.bitmaps.insert(0, (cut(self.surface, widget.rect), widget.rect))
             # draw the widget
             widget.draw()
 
     def undraw_widgets(self):
-        # restore the bitmaps that were under each gui object drawn in reverse order
-        self.bitmaps.reverse()
+        # reverse the bitmaps that were under each gui object drawn
         for bitmap, rect in self.bitmaps:
             self.surface.blit(bitmap, rect)
 
