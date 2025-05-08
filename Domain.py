@@ -15,7 +15,7 @@ class Main:
         # load tile sheet for utility functions
         utility.tiles = pygame.image.load(file_resource('domains', 'ProjectUtumno_full.png'))
         # create main window surface
-        self.screen = pygame.display.set_mode((1920, 1080), FULLSCREEN | SCALED)
+        self.screen = pygame.display.set_mode((1920, 1080), FULLSCREEN | SCALED, vsync=1)
         # set the screen in utility
         utility.screen = self.screen
         # set window caption
