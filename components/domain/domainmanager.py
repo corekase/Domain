@@ -86,6 +86,10 @@ class DomainManager:
                 instance.layer = 3
                 # add the teleporter to the teleporters group
                 self.object_manager.object_add('teleporters', instance)
+            # elif for more object types
+            else:
+                raise Exception(f'Object: {item.type} not recognized')
+
         # helper function to create objects
         def populate(number, cls, layer, group):
             for floor in range(self.floors):
