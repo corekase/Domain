@@ -1,3 +1,8 @@
+import os
+if os.name == 'nt':
+    # corrects graphical scaling issues with Windows
+    import ctypes
+    ctypes.windll.user32.SetProcessDPIAware()
 import pygame
 from pygame import FULLSCREEN, SCALED
 # importing utility initializes its namespace for its functions
