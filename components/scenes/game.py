@@ -107,7 +107,7 @@ class Game:
         # is the game won flag
         gameover = False
         # maximum frames-per-second, 0 for unlimited
-        fps = 60
+        fps = 0
         # instantiate a pygame clock for frame maximum limits
         clock = pygame.time.Clock()
         # track elapsed_time with more accurate os clock

@@ -33,7 +33,7 @@ class MainMenu:
         self.screen.blit(pygame.image.load(file_resource('images', 'backdrop.jpg')).convert(), (0, 0))
 
     def run(self):
-        fps = 60
+        fps = 0
         clock = pygame.time.Clock()
         while True:
             signal = self.handle_events()
