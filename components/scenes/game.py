@@ -160,7 +160,7 @@ class Game:
                     self.gui_manager.lock_context('win_context')
                     gameover = True
                 # check for collision with any agent which is a loss
-                if self.domain_manager.check_lost():
+                if self.domain_manager.check_loss():
                     self.gui_manager.lock_context('lost_context')
                     gameover = True
         # return from scene
