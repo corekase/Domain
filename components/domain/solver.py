@@ -15,9 +15,33 @@ class Solver():
                   (-1,  1), (0,  1), (1,  1))
 
     def __init__(self, domain):
-        from components.domain.domainmanager import DomainManager
-        self.domain_manager: DomainManager = domain
+        self.domain_manager = domain
+        self.map_object = self.domain_manager.map_object
+        self.renderer = self.domain_manager.renderer
+        self.surface_rect = self.domain_manager.surface_rect
         self.floor_gid = self.domain_manager.floor_gid
+
+    def pixel_to_cell(self, x, y):
+        # convert a pixel coordinate within the drawing area to a cell coordinate for indexing
+        # normalize x and y mouse position to the centre of the surface rect, in screen pixels
+        x_pos, y_pos = x - self.surface_rect.centerx, y - self.surface_rect.centery
+        # get all the needed information from the map and renderer, scaled to screen pixels
+        x_tile_size = self.map_object.tilewidth * self.renderer.zoom
+        y_tile_size = self.map_object.tileheight * self.renderer.zoom
+        map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
+        map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
+        view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
+        view_centre_y = self.renderer.view_rect.centery * self.renderer.zoom
+        # go through each geometry frame ending at the x and y mouse position
+        relative_x = map_centre_x - view_centre_x - x_pos
+        relative_y = map_centre_y - view_centre_y - y_pos
+        # divide those into tile sizes to get cartesian coordinates
+        x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
+        # convert cartesian coordinates into array indexes for programming
+        x_coord = int(-x_coord + (self.map_object.width / 2))
+        y_coord = int(-y_coord + (self.map_object.height / 2))
+        # coordinates are now in array indexes
+        return x_coord, y_coord
 
     def find_path(self, start_position, destinations):
         # solve a path from a start to multiple destinations and return shortest

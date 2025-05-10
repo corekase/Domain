@@ -108,6 +108,14 @@ class DomainManager:
         # create a solver
         self.solver = Solver(self)
 
+    # solver
+    def pixel_to_cell(self, x, y):
+        return self.solver.pixel_to_cell(x, y)
+
+    # solver
+    def find_path(self, start_position, destinations):
+        return self.solver.find_path(start_position, destinations)
+
     def random_position(self, gid, x_min, y_min, width, height):
         # return a random empty cell position which is a specific tile gid
         while True:
@@ -150,9 +158,6 @@ class DomainManager:
         if self.floor_group != None:
             # update the floor push button group selection
             self.floor_group[self.floor].select()
-
-    def find_path(self, start_position, destinations):
-        return self.solver.find_path(start_position, destinations)
 
     def cell_gid(self, position):
         # get the tile gid for a cell position
@@ -206,27 +211,6 @@ class DomainManager:
             return True
         # did not collide with any agents
         return False
-
-    def pixel_to_cell(self, x, y):
-        # normalize x and y mouse position to the centre of the surface rect, in screen pixels
-        x_pos, y_pos = x - self.surface_rect.centerx, y - self.surface_rect.centery
-        # get all the needed information from the map and renderer, scaled to screen pixels
-        x_tile_size = self.map_object.tilewidth * self.renderer.zoom
-        y_tile_size = self.map_object.tileheight * self.renderer.zoom
-        map_centre_x = self.renderer.map_rect.centerx * self.renderer.zoom
-        map_centre_y = self.renderer.map_rect.centery * self.renderer.zoom
-        view_centre_x = self.renderer.view_rect.centerx * self.renderer.zoom
-        view_centre_y = self.renderer.view_rect.centery * self.renderer.zoom
-        # go through each geometry frame ending at the x and y mouse position
-        relative_x = map_centre_x - view_centre_x - x_pos
-        relative_y = map_centre_y - view_centre_y - y_pos
-        # divide those into tile sizes to get cartesian coordinates
-        x_coord, y_coord = relative_x / x_tile_size, relative_y / y_tile_size
-        # convert cartesian coordinates into array indexes for programming
-        x_coord = int(-x_coord + (self.map_object.width / 2))
-        y_coord = int(-y_coord + (self.map_object.height / 2))
-        # coordinates are now in array indexes
-        return x_coord, y_coord
 
     def set_zoom_delta(self, index_delta):
         # clamp index inside zoom_amounts list.
