@@ -3,7 +3,7 @@ class Coordinate:
     def __init__(self, position):
         self.coord = position
 
-class Solver():
+class Solver:
     # this class is where various problem solving methods go
     # neighbours are for find_path, the tuple indexes map like this:
     # 0 1 2

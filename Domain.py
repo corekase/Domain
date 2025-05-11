@@ -1,6 +1,6 @@
 import os
 if os.name == 'nt':
-    # corrects graphical scaling issues with Windows
+    # fixes graphical scaling issues with Windows
     import ctypes
     ctypes.windll.user32.SetProcessDPIAware()
 import pygame
