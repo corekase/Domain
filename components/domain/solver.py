@@ -13,20 +13,20 @@ class Solver:
     neighbours = ((-1, -1), (0, -1), (1, -1),
                   (-1,  0), (0,  0), (1,  0),
                   (-1,  1), (0,  1), (1,  1))
-    domain_manager = None
-    map_object = None
-    renderer = None
-    surface_rect = None
-    floor_gid = None
 
     def __init__(self, domain):
         from components.bundled.pytmx import TiledMap
         from components.bundled.pyscroll.orthographic import BufferedRenderer
-        Solver.domain_manager = domain
-        Solver.map_object:TiledMap = domain.map_object
-        Solver.renderer:BufferedRenderer = domain.renderer
-        Solver.surface_rect = domain.surface_rect
-        Solver.floor_gid = domain.floor_gid
+        # which domain manager the solver is attached to
+        self.domain_manager = domain
+        # the map object of that domain
+        self.map_object:TiledMap = domain.map_object
+        # and its renderer
+        self.renderer:BufferedRenderer = domain.renderer
+        # the rect for the domain graphical area
+        self.surface_rect = domain.surface_rect
+        # the gid for which tile is a floor tile
+        self.floor_gid = domain.floor_gid
 
     def pixel_to_cell(self, x, y):
         # convert a pixel coordinate within the drawing area to a cell coordinate for indexing
