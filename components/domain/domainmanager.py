@@ -206,7 +206,8 @@ class DomainManager:
 
     def check_loss(self):
         # if the avatar sprite collides with any member of the agents group that is a loss
-        if pygame.sprite.spritecollideany(self.avatar, self.object_manager.objects('agents')):
+        if pygame.sprite.spritecollide(self.avatar, self.object_manager.objects('agents'),
+                                          False, pygame.sprite.collide_mask):
             # collided
             return True
         # did not collide with any agents

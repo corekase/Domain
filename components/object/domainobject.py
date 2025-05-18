@@ -1,3 +1,5 @@
+import pygame
+
 # machine epsilon, smallest difference between floats
 import sys
 here = 1.0 + sys.float_info.epsilon
@@ -42,6 +44,7 @@ class DomainObject(Sprite):
         super().__init__()
         # self.image is managed by the domain object class, subclasses give their animations to it
         self.image = None
+        self.mask = None
         # values updated by either sync_coordinate or sync_cell
         self.centre_xpos = self.centre_ypos = None
         self.coord = None
@@ -161,11 +164,13 @@ class DomainObject(Sprite):
         # load a tile sequence from tile sheet as an animation
         self.animations = []
         for tile in tiles:
-            self.animations.append(cut_tile(tile))
+            tile = cut_tile(tile)
+            tile_mask = pygame.mask.from_surface(tile)
+            self.animations.append((tile, tile_mask))
         self.frame = 0
         self.frames = len(self.animations)
-        self.image = self.animations[self.frame]
-        self.rect = self.animations[self.frame].get_rect()
+        self.image, self.mask = self.animations[self.frame]
+        self.rect = self.animations[self.frame][0].get_rect()
 
     def update_image(self, elapsed_time):
         # handle animation frames
@@ -182,4 +187,4 @@ class DomainObject(Sprite):
                 if self.frame >= self.frames:
                     self.frame = 0
                 # update sprite image from frame
-                self.image = self.animations[self.frame]
+                self.image, self.mask = self.animations[self.frame]
