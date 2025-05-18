@@ -42,8 +42,9 @@ class DomainObject(Sprite):
 
     def __init__(self):
         super().__init__()
-        # self.image is managed by the domain object class, subclasses give their animations to it
+        # current image to be drawn on-screen by Sprite parent class methods
         self.image = None
+        # current mask of that image for pixel-accurate collisions
         self.mask = None
         # values updated by either sync_coordinate or sync_cell
         self.centre_xpos = self.centre_ypos = None
