@@ -30,7 +30,7 @@ class MainMenu:
         self.cursor_image = image_alpha('cursors', 'normal.png')
         self.mouse_position = pygame.mouse.get_pos()
         # set a background image
-        self.screen.blit(pygame.image.load(file_resource('images', 'backdrop.jpg')).convert(), (0, 0))
+        self.screen.blit(pygame.image.load(file_resource('images', 'watercolor-green-wallpaper-modified.jpg')).convert(), (0, 0))
 
     def run(self):
         fps = 0

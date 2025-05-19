@@ -97,7 +97,7 @@ class Game:
         # Set the state of the application to "running"
         self.running = True
         # set a background image
-        self.screen.blit(pygame.image.load(file_resource('images', 'backdrop.jpg')).convert(), (0, 0))
+        self.screen.blit(pygame.image.load(file_resource('images', 'watercolor-green-wallpaper-modified.jpg')).convert(), (0, 0))
         # create a rect that outlines view_surface_rect and the scrollbars
         view_surface_outline = Rect(view_xpos - 1, view_ypos - 1, view_width + 20, view_height + 20)
         # draw the outline around the main viewport
