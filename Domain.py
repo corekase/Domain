@@ -1,9 +1,10 @@
 import os
 import pygame
 from pygame import FULLSCREEN, SCALED
-# importing utility initializes its namespace for its functions
+# the first time utility is imported its namespace is initialized, every subsequent import
+# anywhere else reuses the namespace - intialization is done once by the interpreter
 from components import utility
-from components.utility import file_resource, image_alpha
+from components.utility import file_resource
 from components.scenes.mainmenu import MainMenu
 from components.scenes.game import Game
 
@@ -25,8 +26,6 @@ class Main:
         pygame.display.set_caption('Domain')
         # hide system mouse pointer
         pygame.mouse.set_visible(False)
-        # set window icon
-        pygame.display.set_icon(image_alpha('icon.png'))
         # set the screen in utility
         utility.screen = self.screen
         # set the default font for utility functions
