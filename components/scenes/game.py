@@ -140,7 +140,7 @@ class Game:
             self.update_status()
             # draw information panel
             self.draw_info_panel(clock.get_fps())
-            # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
+            # position is relative to the hot-spot for the cursor image, which is (-3, 0) here.
             mouse_rect = Rect(self.mouse_position[0] - 3, self.mouse_position[1], 16, 16)
             mouse_bitmap = cut(self.screen, mouse_rect)
             # blit the mouse cursor image to the screen
