@@ -27,7 +27,7 @@ class MainMenu:
         self.gui_manager.add_widget('menu', Button('exit',
                         Rect(x + 10, y + 50, width - 20, 20), 'Exit'))
         self.gui_manager.switch_context('menu')
-        self.cursor_image = image_alpha('cursors', 'normal.png')
+        self.cursor_image = image_alpha('cursors', 'Icons8_cursor.png')
         self.mouse_position = pygame.mouse.get_pos()
         # set a background image
         self.screen.blit(pygame.image.load(file_resource('images', 'watercolor-green-wallpaper-modified.jpg')).convert(), (0, 0))
@@ -40,7 +40,7 @@ class MainMenu:
             if signal != None:
                 return signal
             self.gui_manager.draw_widgets()
-            mouse_rect = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
+            mouse_rect = Rect(self.mouse_position[0] - 3, self.mouse_position[1], 16, 16)
             mouse_bitmap = cut(self.screen, mouse_rect)
             self.screen.blit(self.cursor_image, mouse_rect)
             clock.tick(fps)

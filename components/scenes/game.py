@@ -33,7 +33,7 @@ class Game:
         # give domain objects a reference to the gui manager
         DomainObject.gui_manager = self.gui_manager
         # load images for custom mouse pointer
-        self.cursor_image = image_alpha('cursors', 'normal.png')
+        self.cursor_image = image_alpha('cursors', 'Icons8_cursor.png')
         # area for gui elements
         gui_xpos = view_xpos + view_width + 30
         gui_width = 1920 - gui_xpos - 10
@@ -141,7 +141,7 @@ class Game:
             # draw information panel
             self.draw_info_panel(clock.get_fps())
             # position is relative to the hot-spot for the cursor image, which is (-6, 0) here.
-            mouse_rect = Rect(self.mouse_position[0] - 6, self.mouse_position[1], 16, 16)
+            mouse_rect = Rect(self.mouse_position[0] - 3, self.mouse_position[1], 16, 16)
             mouse_bitmap = cut(self.screen, mouse_rect)
             # blit the mouse cursor image to the screen
             self.screen.blit(self.cursor_image, mouse_rect)
