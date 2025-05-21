@@ -1,4 +1,4 @@
-from components.utility import cut
+from ..utility import cut
 
 class GuiManager:
     def __init__(self, surface):
